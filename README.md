@@ -1,4 +1,4 @@
-📘 Resume Analyzer Pro
+📘 Resume Analyzer 
 🚀 AI-powered Resume vs Job Description Analysis System
 
 Built using
