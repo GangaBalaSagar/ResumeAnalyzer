@@ -18,7 +18,7 @@ if (!API_KEY) {
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // IMPORTANT: this MUST MATCH exactly what your Google AI Studio shows
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 function buildPrompt(resumeText, jobDescription) {
   return `
@@ -54,7 +54,7 @@ async function analyzeWithGemini({ resumeText, jobDescription }) {
   const prompt = buildPrompt(resumeText, jobDescription);
 
   console.log("🔑 Using Gemini Key (first 5 chars):", API_KEY?.slice(0,5));
-console.log("🤖 Using model: gemini-2.0-flash");
+console.log("🤖 Using model: gemini-2.5-flash");
 console.log("📄 Prompt length:", prompt.length);
 
   const result = await model.generateContent(prompt);
