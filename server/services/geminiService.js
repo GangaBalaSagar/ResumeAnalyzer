@@ -18,7 +18,7 @@ if (!API_KEY) {
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // IMPORTANT: this MUST MATCH exactly what your Google AI Studio shows
-const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 function buildPrompt(resumeText, jobDescription) {
   return `
