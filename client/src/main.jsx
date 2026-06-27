@@ -8,6 +8,9 @@ import { AuthModalProvider } from "./context/AuthModalContext";
 import AuthModal from "./components/auth/AuthModal";
 import "./styles.css";
 
+// Clear any stale auth message on fresh application start
+sessionStorage.removeItem("authMessage");
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>

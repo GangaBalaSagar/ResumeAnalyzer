@@ -4,9 +4,12 @@ import AnalysisDetail from "./AnalysisDetail";
 import EmptyHistory from "./history/EmptyHistory";
 import HistoryList from "./history/HistoryList";
 import DeleteConfirmation from "./history/DeleteConfirmation";
+import { useAuth } from "../context/AuthContext";
 
 export default function PastAnalysesList({ setActiveTab }) {
+  const { user } = useAuth();
   const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState(null);
   const [confirmingDeleteId, setConfirmingDeleteId] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -14,12 +17,27 @@ export default function PastAnalysesList({ setActiveTab }) {
   const [loadError, setLoadError] = useState("");
   const loadGuard = useRef(false);
 
+  // Clear list and selection on logout
+  useEffect(() => {
+    if (!user) {
+      setItems([]);
+      setLoaded(false);
+      setSelected(null);
+      setConfirmingDeleteId(null);
+      setDeleteLoading(false);
+      setDeleteError("");
+      setLoadError("");
+      loadGuard.current = false;
+    }
+  }, [user]);
+
   async function load() {
     setLoadError("");
 
     try {
-      const res = await api.get("/analyses");
+      const res = await api.get("/analyses", { params: { page: 1, limit: 10 } });
       setItems(res.data.items);
+      setLoaded(true);
     } catch (error) {
       const status = error.response?.status;
 
@@ -73,8 +91,18 @@ export default function PastAnalysesList({ setActiveTab }) {
     }
   }
 
-  // Empty state - no analyses yet
-  if (items.length === 0) {
+  // Error state: show error instead of misleading EmptyHistory
+  if (loadError) {
+    return (
+      <div className="card" style={{ borderColor: "var(--danger)" }}>
+        <h3>Past Analyses</h3>
+        <p style={{ color: "var(--danger)", marginTop: 12 }}>{loadError}</p>
+      </div>
+    );
+  }
+
+  // Empty state: only shown after a successful load with zero results
+  if (loaded && items.length === 0) {
     return <EmptyHistory onAnalyzeClick={() => setActiveTab("analyze")} />;
   }
 

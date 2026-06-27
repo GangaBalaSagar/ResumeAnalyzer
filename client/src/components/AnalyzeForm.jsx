@@ -5,6 +5,7 @@ import { useAuthGate } from "./auth/AuthGate";
 import UploadBox from "./analyze/UploadBox";
 import JobDescriptionInput from "./analyze/JobDescriptionInput";
 import ActionControls from "./analyze/ActionControls";
+import { useAuth } from "../context/AuthContext";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -17,8 +18,16 @@ export default function AnalyzeForm() {
   const [result, setResult] = useState(null);
 
   const { requireAuth } = useAuthGate();
+  const { user } = useAuth();
   const progressRef = useRef(null);
-  const fileInputRef = useRef(null); // important
+  const fileInputRef = useRef(null);
+
+  // Reset form and cache on logout
+  useEffect(() => {
+    if (!user) {
+      handleReset();
+    }
+  }, [user]);
 
   useEffect(() => {
     const saved = localStorage.getItem(LS_JD_KEY);

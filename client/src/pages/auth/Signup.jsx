@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useAuthModal } from "../../context/AuthModalContext";
 
 export default function Signup() {
-  const { signUp } = useAuth();
+  const { signUp, signOut } = useAuth();
+  const { openLoginModal } = useAuthModal();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,9 +22,13 @@ export default function Signup() {
     if (result.error) {
       setError(result.error.message || "Signup failed. Please try again.");
     } else {
-      setMessage("Account created successfully. You can now log in.");
+      if (result.data?.session) {
+        await signOut();
+      }
+      sessionStorage.setItem("authMessage", "Registration successful");
       setEmail("");
       setPassword("");
+      openLoginModal();
     }
 
     setLoading(false);

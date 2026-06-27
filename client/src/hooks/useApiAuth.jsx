@@ -5,16 +5,16 @@ import { setupApiInterceptor } from "../api";
 
 /**
  * useApiAuth Hook
- * 
+ *
  * Automatically configures the API client with Supabase authentication token
  * and handles session expiration globally.
- * 
+ *
  * Usage:
  *   function MyComponent() {
- *     useApiAuth();  // Just call it once, usually in App.jsx or top-level component
+ *     useApiAuth();  // Call once in App.jsx or top-level component
  *     return ...
  *   }
- * 
+ *
  * How it works:
  * 1. Subscribes to auth state changes via useAuth()
  * 2. When session changes, updates the API interceptor
@@ -40,20 +40,11 @@ export function useApiAuth() {
   } = useAuthModal();
 
   useEffect(() => {
-    // Configure interceptor whenever session changes
-    // Pass callbacks for session expiration handling
     setupApiInterceptor(session, signOut, openLoginModal, setPendingAction);
 
-    if (session?.access_token) {
-      console.log("🔐 API auth configured with access token");
-      console.log("📋 Session expiration handler enabled");
-
-      if (pendingAction) {
-        executePendingAction();
-        clearPendingAction();
-      }
-    } else {
-      console.log("🔓 API auth cleared (no active session)");
+    if (session?.access_token && pendingAction) {
+      executePendingAction();
+      clearPendingAction();
     }
   }, [
     session,

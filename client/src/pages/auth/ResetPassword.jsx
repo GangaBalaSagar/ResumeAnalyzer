@@ -16,13 +16,9 @@ export default function ResetPassword() {
 
   useEffect(() => {
     async function checkRecoverySession() {
-      console.log("URL:", window.location.href);
-
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
-      console.log("Recovery Session:", session);
 
       if (!session) {
         setError(
@@ -58,14 +54,21 @@ export default function ResetPassword() {
       password,
     });
 
-    setLoading(false);
-
     if (error) {
+      setLoading(false);
       setError(error.message);
       return;
     }
 
-    setSuccess("Password updated successfully. Redirecting to login...");
+    // Immediately sign out the temporary recovery session and clear session
+    await supabase.auth.signOut();
+
+    setLoading(false);
+    setSuccess("Password updated successfully.");
+
+    // Queue login modal auto-open with success message for the main page
+    sessionStorage.setItem("authMessage", "Password updated successfully.");
+    sessionStorage.setItem("openLogin", "true");
 
     setTimeout(() => {
       navigate("/");

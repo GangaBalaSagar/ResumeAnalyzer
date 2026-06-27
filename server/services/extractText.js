@@ -35,9 +35,6 @@ async function extractResumeText(filePath, mimetype) {
   } else if (lower.includes('word') || lower.includes('msword') || filePath.toLowerCase().endsWith('.docx')) {
     return await extractFromDOCX(filePath);
   } else {
-    // Attempt to parse by extension:
-    if (filePath.toLowerCase().endsWith('.pdf')) return await extractFromPDF(filePath);
-    if (filePath.toLowerCase().endsWith('.docx')) return await extractFromDOCX(filePath);
     throw new Error('Unsupported file type for text extraction');
   }
 }

@@ -45,14 +45,12 @@ async function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      console.log("❌ Missing Authorization header");
       return res.status(401).json({ error: "Missing authorization header" });
     }
 
     // Extract token from "Bearer <token>" format
     const parts = authHeader.split(" ");
     if (parts.length !== 2 || parts[0] !== "Bearer") {
-      console.log("❌ Invalid Authorization header format");
       return res.status(401).json({ error: "Invalid authorization format. Use: Bearer <token>" });
     }
 
@@ -62,7 +60,6 @@ async function authMiddleware(req, res, next) {
     const { data, error } = await supabase.auth.getUser(token);
 
     if (error || !data.user) {
-      console.log("❌ Token verification failed:", error?.message || "Invalid token");
       return res.status(401).json({ error: "Invalid or expired token" });
     }
 
@@ -71,8 +68,6 @@ async function authMiddleware(req, res, next) {
       id: data.user.id,          // Supabase user UUID
       email: data.user.email     // User email from Supabase
     };
-
-    console.log(`✅ User authenticated: ${req.user.email} (ID: ${req.user.id})`);
 
     // Continue to next middleware/route handler
     next();

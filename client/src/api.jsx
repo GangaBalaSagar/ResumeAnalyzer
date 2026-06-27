@@ -31,7 +31,6 @@ export function setupApiInterceptor(session, signOut, openLoginModal, setPending
     (config) => {
       if (session?.access_token) {
         config.headers.Authorization = `Bearer ${session.access_token}`;
-        console.log("✅ Authorization header attached");
       }
       return config;
     },
@@ -44,8 +43,6 @@ export function setupApiInterceptor(session, signOut, openLoginModal, setPending
       const status = error.response?.status;
 
       if (status === 401) {
-        console.warn("⚠ Session expired");
-
         if (isLoggingOut) {
           return Promise.reject(error);
         }

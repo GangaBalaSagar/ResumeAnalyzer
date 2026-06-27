@@ -19,7 +19,7 @@ export default function AuthModal() {
   } = useAuthModal();
   const [authMessage, setAuthMessage] = useState(null);
 
-  // Check for session expiration message when modal opens
+  // Check for session expiration message when modal opens or mode changes
   useEffect(() => {
     if (isOpen) {
       const message = sessionStorage.getItem("authMessage");
@@ -28,8 +28,10 @@ export default function AuthModal() {
         // Clear the message after displaying it once
         sessionStorage.removeItem("authMessage");
       }
+    } else {
+      setAuthMessage(null);
     }
-  }, [isOpen]);
+  }, [isOpen, mode]);
 
   if (!isOpen) {
     return null;

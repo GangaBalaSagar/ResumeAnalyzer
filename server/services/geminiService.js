@@ -70,7 +70,6 @@ function delay(ms) {
 
 async function generateWithModel(modelName, prompt) {
   const model = genAI.getGenerativeModel({ model: modelName });
-  console.log("🤖 Using Gemini model:", modelName);
 
   for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
     try {
@@ -91,9 +90,6 @@ async function generateWithModel(modelName, prompt) {
 
 async function analyzeWithGemini({ resumeText, jobDescription }) {
   const prompt = buildPrompt(resumeText, jobDescription);
-
-  console.log("🔑 Using Gemini Key (first 5 chars):", API_KEY?.slice(0, 5));
-  console.log("📄 Prompt length:", prompt.length);
 
   let lastError = null;
 

@@ -13,6 +13,11 @@
  * - suggestions: Mixed (String or Array)
  * - scoreBreakdown: Mixed (object)
  * - createdAt: Date
+ *
+ * Indexes:
+ * - { userId: 1, createdAt: -1 } compound index — supports the primary
+ *   listAnalyses query: filter by owner then sort by newest first.
+ * - { createdAt: -1 } single-field index — covers any sort-only query path.
  */
 
 const mongoose = require('mongoose');
@@ -31,4 +36,11 @@ const AnalysisSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Compound index: filter by user, sort by newest — covers listAnalyses perfectly
+AnalysisSchema.index({ userId: 1, createdAt: -1 });
+
+// Single-field index on createdAt for any sort-only paths
+AnalysisSchema.index({ createdAt: -1 });
+
 module.exports = mongoose.model('Analysis', AnalysisSchema);
+
