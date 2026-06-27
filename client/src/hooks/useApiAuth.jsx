@@ -31,7 +31,13 @@ import { setupApiInterceptor } from "../api";
  */
 export function useApiAuth() {
   const { session, signOut } = useAuth();
-  const { openLoginModal, setPendingAction } = useAuthModal();
+  const {
+    openLoginModal,
+    setPendingAction,
+    pendingAction,
+    executePendingAction,
+    clearPendingAction,
+  } = useAuthModal();
 
   useEffect(() => {
     // Configure interceptor whenever session changes
@@ -41,10 +47,23 @@ export function useApiAuth() {
     if (session?.access_token) {
       console.log("🔐 API auth configured with access token");
       console.log("📋 Session expiration handler enabled");
+
+      if (pendingAction) {
+        executePendingAction();
+        clearPendingAction();
+      }
     } else {
       console.log("🔓 API auth cleared (no active session)");
     }
-  }, [session, signOut, openLoginModal, setPendingAction]);
+  }, [
+    session,
+    signOut,
+    openLoginModal,
+    setPendingAction,
+    pendingAction,
+    executePendingAction,
+    clearPendingAction,
+  ]);
 }
 
 export default useApiAuth;

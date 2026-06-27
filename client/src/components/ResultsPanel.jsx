@@ -1,20 +1,7 @@
-import { Bar, Pie } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Tooltip, Legend);
-
-// small chip component inline to avoid extra imports
-function Chip({ children, type }) {
-  return <div className={`chip ${type === "match" ? "match" : "miss"}`}>{children}</div>;
-}
+import ChartsSection from "./results/ChartsSection";
+import SkillsSection from "./results/SkillsSection";
+import SuggestionsSection from "./results/SuggestionsSection";
+import ScoreCard from "./results/ScoreCard";
 
 function highlightJD(jd, matchedSkills = []) {
   if (!jd) return jd;
@@ -68,68 +55,13 @@ export default function ResultsPanel({ result, jd }) {
     <div className="results-panel-column">
       <h3>Analysis Result</h3>
 
-      {/* PIE CHART */}
-      <div className="chart-wrap">
-        <h4 className="small">Match Percentage</h4>
-        <Pie data={pieData} />
-      </div>
+      <ChartsSection pieData={pieData} barData={barData} />
 
-      {/* BAR CHART */}
-      <div className="chart-wrap">
-        <h4 className="small">Skills Overview</h4>
-        <Bar data={barData} />
-      </div>
+      <SkillsSection matchedSkills={matchedSkills} missingSkills={missingSkills} />
 
-      {/* MATCHED / MISSING SKILLS */}
-      <div style={{ marginTop: 10 }}>
-        <h4 className="small">Matched Skills</h4>
-        <div className="chips">
-          {matchedSkills.map((s, i) => (
-            <Chip key={i} type="match">
-              {s}
-            </Chip>
-          ))}
-        </div>
+      <SuggestionsSection suggestions={suggestions} onCopy={copySuggestions} />
 
-        <h4 className="small" style={{ marginTop: 12 }}>
-          Missing Skills
-        </h4>
-        <div className="chips">
-          {missingSkills.map((s, i) => (
-            <Chip key={i} type="miss">
-              {s}
-            </Chip>
-          ))}
-        </div>
-
-        {/* AI SUGGESTIONS */}
-        <h4 className="small" style={{ marginTop: 12 }}>
-          AI Suggestions
-        </h4>
-
-        <div className="suggestions-area">
-          <textarea
-            rows={6}
-            value={Array.isArray(suggestions) ? suggestions.join("\n") : suggestions}
-            readOnly
-          />
-        </div>
-
-        {/* COPY BUTTON BELOW SUGGESTIONS */}
-        <div className="copy-btn-wrap">
-          <button className="btn" onClick={copySuggestions}>
-            Copy Suggestions
-          </button>
-        </div>
-
-        {/* JD PREVIEW BELOW COPY BUTTON */}
-        <div className="jd-preview-box">
-          <div className="small" style={{ marginBottom: 6 }}>
-            Job Description preview (keywords highlighted)
-          </div>
-          <div className="jd-preview" dangerouslySetInnerHTML={highlightedHtml} />
-        </div>
-      </div>
+      <ScoreCard highlightedHtml={highlightedHtml} />
     </div>
   );
 }

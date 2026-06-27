@@ -4,7 +4,7 @@ import { useAuthModal } from "../../context/AuthModalContext";
 
 export default function Login() {
   const { signIn, signOut, user } = useAuth();
-  const { executePendingAction, clearPendingAction, closeAuthModal, openForgotPasswordModal } = useAuthModal();
+  const { closeAuthModal, openForgotPasswordModal } = useAuthModal();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,8 +25,6 @@ export default function Login() {
       setMessage("Login successful.");
       setEmail("");
       setPassword("");
-      executePendingAction();
-      clearPendingAction();
       closeAuthModal();
     }
 

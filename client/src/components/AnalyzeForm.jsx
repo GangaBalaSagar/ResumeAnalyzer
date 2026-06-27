@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import api from "../api";
 import ResultsPanel from "./ResultsPanel";
 import { useAuthGate } from "./auth/AuthGate";
+import UploadBox from "./analyze/UploadBox";
+import JobDescriptionInput from "./analyze/JobDescriptionInput";
+import ActionControls from "./analyze/ActionControls";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -118,74 +121,22 @@ export default function AnalyzeForm() {
       <div className="card">
         <h3>Analyze Resume</h3>
 
-        {/* -------------------------------
-            FUTURISTIC FULL-WIDTH UPLOAD BOX
-        -------------------------------- */}
-        <div
-          className="upload-box"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={onDropFile}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <div className="upload-icon">⬆</div>
+        <UploadBox
+          file={file}
+          fileInputRef={fileInputRef}
+          onDropFile={onDropFile}
+          onPickFile={onPickFile}
+          filePreview={filePreview}
+        />
 
-          <div className="upload-title">Upload Resume</div>
-          <div className="upload-sub">Drag & drop or click to browse</div>
+        <JobDescriptionInput jd={jd} setJd={setJd} />
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            onChange={onPickFile}
-            style={{ display: "none" }}
-          />
-
-          {file && (
-            <div className="upload-file-info small">{filePreview()}</div>
-          )}
-        </div>
-
-        {/* TEXTAREA */}
-        <div style={{ marginTop: 16 }}>
-          <label className="small">Job Description</label>
-          <textarea
-            placeholder="Paste job description here..."
-            value={jd}
-            onChange={(e) => setJd(e.target.value)}
-            onInput={(e) => {
-              e.target.style.height = "auto";
-              e.target.style.height = e.target.scrollHeight + "px";
-            }}
-          />
-        </div>
-
-        <div style={{ marginTop: 12 }}>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <button
-            className="btn"
-            disabled={loading}
-            onClick={() => requireAuth(handleAnalyze)}
-          >
-            {loading ? "Analyzing…" : "Analyze"}
-          </button>
-
-            <button
-              className="btn btn-danger"
-              type="button"
-              onClick={handleReset}
-              disabled={loading}
-            >
-              Reset
-            </button>
-
-            {loading && (
-              <div className="small muted">Processing your file…</div>
-            )}
-          </div>
-
-          <div className="progress-wrap" style={{ marginTop: 12 }}>
-            <div className="progress" style={{ width: `${progress}%` }} />
-          </div>
-        </div>
+        <ActionControls
+          loading={loading}
+          progress={progress}
+          onAnalyze={() => requireAuth(handleAnalyze)}
+          onReset={handleReset}
+        />
       </div>
 
       {/* RIGHT CARD */}
