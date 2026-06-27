@@ -2,6 +2,8 @@
  * Analysis model
  *
  * Fields:
+ * - userId: String (Supabase user UUID)
+ * - userEmail: String (Supabase user email)
  * - resumeFilename: String
  * - jobDescription: String
  * - resumeText: String
@@ -16,6 +18,8 @@
 const mongoose = require('mongoose');
 
 const AnalysisSchema = new mongoose.Schema({
+  userId: { type: String, required: true },
+  userEmail: { type: String, required: true },
   resumeFilename: { type: String, required: true },
   jobDescription: { type: String, required: true },
   resumeText: { type: String, required: true },

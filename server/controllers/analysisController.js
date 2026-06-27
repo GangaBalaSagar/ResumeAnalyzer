@@ -6,6 +6,7 @@ const Analysis = require("../models/Analysis");
 
 async function analyze(req, res) {
   console.log("📥 /api/analyze called");
+  console.log("Authenticated User:", req.user);
 
   try {
     console.log("🔎 Body:", req.body);
@@ -45,6 +46,8 @@ async function analyze(req, res) {
 
     // Save to DB
     const analysis = await Analysis.create({
+      userId: req.user.id,
+      userEmail: req.user.email,
       resumeFilename: req.file.filename,
       jobDescription,
       resumeText,
@@ -65,23 +68,44 @@ async function analyze(req, res) {
 }
 
 async function listAnalyses(req, res) {
-  const items = await Analysis.find().sort({ createdAt: -1 });
+  console.log(`📋 Listing analyses for user: ${req.user.email}`);
+  const items = await Analysis.find({ userId: req.user.id }).sort({ createdAt: -1 });
+  console.log(`✅ Found ${items.length} analyses`);
   res.json({ items });
 }
 
 async function getAnalysis(req, res) {
+  console.log(`🔍 Fetching analysis ${req.params.id} for user: ${req.user.email}`);
   const item = await Analysis.findById(req.params.id);
-  if (!item) return res.status(404).json({ error: "Not found" });
+  
+  // Check if analysis exists AND belongs to the authenticated user
+  if (!item || item.userId !== req.user.id) {
+    console.log("❌ Analysis not found or not owned by user");
+    return res.status(404).json({ error: "Analysis not found" });
+  }
+  
+  console.log("✅ Analysis found and user is owner");
   res.json(item);
 }
 
 async function deleteAnalysis(req, res) {
-  const item = await Analysis.findByIdAndDelete(req.params.id);
-  if (!item) return res.status(404).json({ error: "Not found" });
+  console.log(`🗑️  Deleting analysis ${req.params.id} for user: ${req.user.email}`);
+  const item = await Analysis.findById(req.params.id);
+  
+  // Check if analysis exists AND belongs to the authenticated user
+  if (!item || item.userId !== req.user.id) {
+    console.log("❌ Analysis not found or not owned by user");
+    return res.status(404).json({ error: "Analysis not found" });
+  }
+  
+  // Delete the document
+  await Analysis.findByIdAndDelete(req.params.id);
 
+  // Delete the associated file
   const filePath = path.join(__dirname, "..", "uploads", item.resumeFilename);
   if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
+  console.log("✅ Analysis deleted");
   res.json({ success: true });
 }
 

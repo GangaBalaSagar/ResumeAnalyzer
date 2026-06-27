@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import api from "../api";
 import ResultsPanel from "./ResultsPanel";
+import { useAuthGate } from "./auth/AuthGate";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -12,6 +13,7 @@ export default function AnalyzeForm() {
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState(null);
 
+  const { requireAuth } = useAuthGate();
   const progressRef = useRef(null);
   const fileInputRef = useRef(null); // important
 
@@ -158,9 +160,13 @@ export default function AnalyzeForm() {
 
         <div style={{ marginTop: 12 }}>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <button className="btn" disabled={loading} onClick={handleAnalyze}>
-              {loading ? "Analyzing…" : "Analyze"}
-            </button>
+            <button
+            className="btn"
+            disabled={loading}
+            onClick={() => requireAuth(handleAnalyze)}
+          >
+            {loading ? "Analyzing…" : "Analyze"}
+          </button>
 
             <button
               className="btn btn-danger"

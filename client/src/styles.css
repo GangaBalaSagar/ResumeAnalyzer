@@ -93,6 +93,89 @@ body {
   box-shadow: 0 8px 22px rgba(77,166,255,0.3);
 }
 
+/* ==========================================================
+   NAVBAR AUTH CONTROLS
+   ========================================================== */
+.nav-left {
+  flex: 1;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex: 1;
+}
+
+.app-title {
+  flex: 1;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(77,166,255,0.2);
+}
+
+.auth-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+}
+
+.user-email {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  font-weight: 500;
+  padding: 0 8px;
+}
+
+.auth-button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: 0.18s ease;
+  white-space: nowrap;
+}
+
+.login-button {
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+}
+
+.login-button:hover {
+  background: rgba(77,166,255,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(77,166,255,0.25);
+}
+
+.signup-button {
+  background: linear-gradient(90deg, var(--primary), var(--primary-600));
+  color: #fff;
+}
+
+.signup-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(77,166,255,0.35);
+}
+
+.logout-button {
+  background: transparent;
+  border: 1.5px solid var(--danger);
+  color: var(--danger);
+}
+
+.logout-button:hover {
+  background: rgba(255,107,129,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255,107,129,0.25);
+}
+
 /* CARD */
 .card {
   background: var(--card-bg);
@@ -338,6 +421,46 @@ canvas { background: transparent !important; }
 }
 
 /* ==========================================================
+   EMPTY STATE
+   ========================================================== */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: rgba(255,255,255,0.04) !important;
+}
+
+.empty-state-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.empty-state h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.empty-description {
+  font-size: 1.05rem;
+  color: var(--text-soft);
+  margin: 0 0 8px 0;
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+/* ==========================================================
    MODAL
    ========================================================== */
 .modal-backdrop {
@@ -361,6 +484,24 @@ canvas { background: transparent !important; }
   border-radius: var(--radius);
   padding: 24px;
   backdrop-filter: blur(18px);
+}
+
+.confirmation-modal-card {
+  max-width: 520px;
+  padding: 22px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-error {
+  margin-top: 14px;
+  color: var(--danger);
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 /* ==========================================================
