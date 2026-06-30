@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const rateLimiter = require("./middleware/rateLimiter");
 const analysisRoutes = require("./routes/analysisRoutes");
 const logger = require("./utils/logger");
+const errorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use("/api", analysisRoutes);
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, time: new Date().toISOString() });
 });
+
+app.use(errorHandler);
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => logger.info("Connected to MongoDB Atlas"))
