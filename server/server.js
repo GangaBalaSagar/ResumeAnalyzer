@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const mongoose = require("mongoose");
 const rateLimiter = require("./middleware/rateLimiter");
 const analysisRoutes = require("./routes/analysisRoutes");
+const logger = require("./utils/logger");
 
 const app = express();
 
@@ -25,11 +26,11 @@ app.get("/api/health", (req, res) => {
 });
 
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB Atlas"))
-  .catch(err => console.error("MongoDB error:", err));
+  .then(() => logger.info("Connected to MongoDB Atlas"))
+  .catch(err => logger.error("MongoDB error:", err));
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log("Server running on port", process.env.PORT || 5000);
+  logger.info("Server running on port", process.env.PORT || 5000);
 });
 
 

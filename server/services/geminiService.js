@@ -8,11 +8,12 @@
 
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const logger = require("../utils/logger");
 
 const API_KEY = process.env.GEMINI_API_KEY;
 
 if (!API_KEY) {
-  console.error("❌ ERROR: GEMINI_API_KEY missing in .env");
+  logger.error("❌ ERROR: GEMINI_API_KEY missing in .env");
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -74,7 +75,7 @@ async function generateWithModel(modelName, prompt) {
   for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
     try {
       if (attempt > 0) {
-        console.log(`Retrying Gemini request (${attempt}/${RETRY_DELAYS_MS.length}) for ${modelName}`);
+        logger.info(`Retrying Gemini request (${attempt}/${RETRY_DELAYS_MS.length}) for ${modelName}`);
         await delay(RETRY_DELAYS_MS[attempt - 1]);
       }
 
@@ -103,7 +104,7 @@ async function analyzeWithGemini({ resumeText, jobDescription }) {
       const end = rawText.lastIndexOf("}");
 
       if (start === -1 || end === -1) {
-        console.error("❌ Invalid Gemini response:", rawText);
+        logger.error("❌ Invalid Gemini response:", rawText);
         throw new Error("Gemini did not return valid JSON");
       }
 
@@ -112,7 +113,7 @@ async function analyzeWithGemini({ resumeText, jobDescription }) {
       try {
         return JSON.parse(jsonStr);
       } catch (err) {
-        console.error("❌ JSON parse error:", err, "\nRaw:", rawText);
+        logger.error("❌ JSON parse error:", err, "\nRaw:", rawText);
         throw new Error("Gemini returned malformed JSON");
       }
     } catch (error) {
@@ -125,7 +126,7 @@ async function analyzeWithGemini({ resumeText, jobDescription }) {
 
       const message = String(error?.message ?? "").toLowerCase();
       const reason = message.includes("high demand") ? "high demand" : "Service Unavailable";
-      console.log(`Switching to fallback model: ${modelName} due to ${reason}`);
+      logger.info(`Switching to fallback model: ${modelName} due to ${reason}`);
     }
   }
 
