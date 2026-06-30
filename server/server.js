@@ -6,13 +6,14 @@ const mongoose = require("mongoose");
 const rateLimiter = require("./middleware/rateLimiter");
 const analysisRoutes = require("./routes/analysisRoutes");
 const logger = require("./utils/logger");
+const config = require("./config");
 const errorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(",") || "*"
+  origin: config.cors.allowedOrigins
 }));
 
 app.use(express.json());
@@ -28,12 +29,12 @@ app.get("/api/health", (req, res) => {
 
 app.use(errorHandler);
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(config.database.mongoUri)
   .then(() => logger.info("Connected to MongoDB Atlas"))
   .catch(err => logger.error("MongoDB error:", err));
 
-app.listen(process.env.PORT || 5000, () => {
-  logger.info("Server running on port", process.env.PORT || 5000);
+app.listen(config.server.port, () => {
+  logger.info("Server running on port", config.server.port);
 });
 
 
