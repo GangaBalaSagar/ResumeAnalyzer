@@ -5,9 +5,11 @@ import EmptyHistory from "./history/EmptyHistory";
 import HistoryList from "./history/HistoryList";
 import DeleteConfirmation from "./history/DeleteConfirmation";
 import { useAuth } from "../context/AuthContext";
+import { useAuthModal } from "../context/AuthModalContext";
 
 export default function PastAnalysesList({ setActiveTab }) {
   const { user } = useAuth();
+  const { openLoginModal, openSignupModal } = useAuthModal();
   const [items, setItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -17,7 +19,7 @@ export default function PastAnalysesList({ setActiveTab }) {
   const [loadError, setLoadError] = useState("");
   const loadGuard = useRef(false);
 
-  // Clear list and selection on logout
+  // Clear state on logout
   useEffect(() => {
     if (!user) {
       setItems([]);
@@ -35,7 +37,13 @@ export default function PastAnalysesList({ setActiveTab }) {
     setLoadError("");
 
     try {
-      const res = await api.get("/analyses", { params: { page: 1, limit: 10 } });
+      const res = await api.get("/analyses", {
+        params: {
+          page: 1,
+          limit: 10,
+        },
+      });
+
       setItems(res.data.items);
       setLoaded(true);
     } catch (error) {
@@ -50,16 +58,25 @@ export default function PastAnalysesList({ setActiveTab }) {
       } else if (status >= 500) {
         setLoadError("Something went wrong.");
       } else {
-        setLoadError(error.response?.data?.message || "Unable to load analyses.");
+        setLoadError(
+          error.response?.data?.message || "Unable to load analyses."
+        );
       }
     }
   }
 
+  // Load only for authenticated users
   useEffect(() => {
+    if (!user) {
+      loadGuard.current = false;
+      return;
+    }
+
     if (loadGuard.current) return;
+
     loadGuard.current = true;
     load();
-  }, []);
+  }, [user]);
 
   function openDeleteModal(id) {
     setConfirmingDeleteId(id);
@@ -74,36 +91,62 @@ export default function PastAnalysesList({ setActiveTab }) {
 
   async function handleDeleteConfirm() {
     if (!confirmingDeleteId) return;
+
     setDeleteLoading(true);
     setDeleteError("");
 
     try {
       await api.delete(`/analyses/${confirmingDeleteId}`);
-      setItems((current) => current.filter((item) => item._id !== confirmingDeleteId));
-      setSelected((current) => (current === confirmingDeleteId ? null : current));
+
+      setItems((current) =>
+        current.filter((item) => item._id !== confirmingDeleteId)
+      );
+
+      setSelected((current) =>
+        current === confirmingDeleteId ? null : current
+      );
+
       setConfirmingDeleteId(null);
     } catch (error) {
       setDeleteError(
-        error?.response?.data?.message || error?.message || "Failed to delete analysis. Please try again."
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to delete analysis. Please try again."
       );
     } finally {
       setDeleteLoading(false);
     }
   }
 
-  // Error state: show error instead of misleading EmptyHistory
   if (loadError) {
     return (
       <div className="card" style={{ borderColor: "var(--danger)" }}>
         <h3>Past Analyses</h3>
-        <p style={{ color: "var(--danger)", marginTop: 12 }}>{loadError}</p>
+        <p style={{ color: "var(--danger)", marginTop: 12 }}>
+          {loadError}
+        </p>
       </div>
     );
   }
 
-  // Empty state: only shown after a successful load with zero results
+  if (!user) {
+    return (
+      <div className="card">
+        <h3>Login Required</h3>
+        <p>Sign in to view your saved resume analyses.</p>
+        <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+          <button type="button" className="auth-button login-button" onClick={openLoginModal}>Login</button>
+          <button type="button" className="auth-button signup-button" onClick={openSignupModal}>Sign Up</button>
+        </div>
+      </div>
+    );
+  }
   if (loaded && items.length === 0) {
-    return <EmptyHistory onAnalyzeClick={() => setActiveTab("analyze")} />;
+    return (
+      <EmptyHistory
+        onAnalyzeClick={() => setActiveTab("analyze")}
+      />
+    );
   }
 
   return (
@@ -115,7 +158,12 @@ export default function PastAnalysesList({ setActiveTab }) {
         onDeleteClick={(id) => openDeleteModal(id)}
       />
 
-      {selected && <AnalysisDetail id={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <AnalysisDetail
+          id={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
 
       <DeleteConfirmation
         isOpen={Boolean(confirmingDeleteId)}

@@ -51,10 +51,13 @@ export function setupApiInterceptor(session, signOut, openLoginModal, setPending
 
         try {
           if (signOut && openLoginModal) {
-            if (setPendingAction && error.config) {
-              const retryAction = () => api.request(error.config);
-              setPendingAction(retryAction);
-            }
+if (setPendingAction && error.config) {
+               const hasAuth = !!error.config.headers?.Authorization;
+               if (hasAuth) {
+                 const retryAction = () => api.request(error.config);
+                 setPendingAction(retryAction);
+               }
+             }
 
             await signOut();
             openLoginModal();
