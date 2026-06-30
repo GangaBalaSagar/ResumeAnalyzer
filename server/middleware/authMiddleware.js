@@ -14,6 +14,7 @@
  */
 
 const { createClient } = require("@supabase/supabase-js");
+const logger = require("../utils/logger");
 
 // Initialize Supabase client with server key
 // The server key allows token verification
@@ -72,7 +73,7 @@ async function authMiddleware(req, res, next) {
     // Continue to next middleware/route handler
     next();
   } catch (err) {
-    console.error("❌ Auth middleware error:", err);
+    logger.error("❌ Auth middleware error:", err);
     return res.status(401).json({ error: "Authentication failed" });
   }
 }

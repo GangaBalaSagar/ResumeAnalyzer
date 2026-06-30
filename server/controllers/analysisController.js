@@ -1,4 +1,5 @@
 const fs = require("fs");
+const logger = require("../utils/logger");
 const path = require("path");
 const { extractResumeText } = require("../services/extractText");
 const { analyzeWithGemini } = require("../services/geminiService");
@@ -16,7 +17,7 @@ async function analyze(req, res) {
     try {
       resumeText = await extractResumeText(req.file.path, req.file.mimetype);
     } catch (err) {
-      console.error("Text extraction error:", err.message);
+      logger.error("Text extraction error:", err.message);
       return res.status(400).json({ error: "Failed to extract resume text" });
     }
 
@@ -25,7 +26,7 @@ async function analyze(req, res) {
     try {
       aiResult = await analyzeWithGemini({ resumeText, jobDescription });
     } catch (err) {
-      console.error("Gemini error:", err);
+      logger.error("Gemini error:", err);
       return res.status(502).json({ error: "AI analysis failed", details: err.message });
     }
 
@@ -45,7 +46,7 @@ async function analyze(req, res) {
 
     return res.json({ id: analysis._id, analysis });
   } catch (err) {
-    console.error("Controller error:", err);
+    logger.error("Controller error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
@@ -108,7 +109,7 @@ async function deleteAnalysis(req, res) {
   try {
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
   } catch (err) {
-    console.error("File deletion error (document already removed):", err.message);
+    logger.error("File deletion error (document already removed):", err.message);
   }
 
   res.json({ success: true });
