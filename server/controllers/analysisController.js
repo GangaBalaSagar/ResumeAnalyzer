@@ -6,14 +6,10 @@ const Analysis = require("../models/Analysis");
 
 async function analyze(req, res) {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "Resume file is required" });
-    }
+
 
     const jobDescription = req.body.jobDescription;
-    if (!jobDescription?.trim()) {
-      return res.status(400).json({ error: "Job description is required" });
-    }
+
 
     // Extract text from the uploaded resume
     let resumeText = "";

@@ -13,6 +13,7 @@ const router = express.Router();
 const upload = require('../middleware/upload');
 const authMiddleware = require('../middleware/authMiddleware');
 const controller = require('../controllers/analysisController');
+const analysisValidation = require('../middleware/validation/analysisValidation');
 
 // POST analyze: PROTECTED - requires authentication
 router.post('/analyze', authMiddleware, (req, res, next) => {
@@ -25,7 +26,7 @@ router.post('/analyze', authMiddleware, (req, res, next) => {
     }
     next();
   });
-}, controller.analyze);
+}, analysisValidation, controller.analyze);
 
 // GET list: PROTECTED - returns only authenticated user's analyses
 router.get('/analyses', authMiddleware, controller.listAnalyses);
