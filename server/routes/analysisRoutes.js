@@ -15,7 +15,17 @@ const authMiddleware = require('../middleware/authMiddleware');
 const controller = require('../controllers/analysisController');
 
 // POST analyze: PROTECTED - requires authentication
-router.post('/analyze', authMiddleware, upload.single('file'), controller.analyze);
+router.post('/analyze', authMiddleware, (req, res, next) => {
+  upload.single('file')(req, res, function (err) {
+    if (err) {
+      // Return JSON error for unsupported file types
+      const message = err.message || 'Only PDF (.pdf) and Word (.docx) files are supported.';
+      const status = err.status || 400;
+      return res.status(status).json({ error: message });
+    }
+    next();
+  });
+}, controller.analyze);
 
 // GET list: PROTECTED - returns only authenticated user's analyses
 router.get('/analyses', authMiddleware, controller.listAnalyses);

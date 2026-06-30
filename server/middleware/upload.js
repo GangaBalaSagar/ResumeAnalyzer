@@ -26,13 +26,15 @@ const storage = multer.diskStorage({
 
 // File filter
 function fileFilter(req, file, cb) {
-  const allowed = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'];
+  const allowedMime = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
   const ext = path.extname(file.originalname).toLowerCase();
-  const okExt = ['.pdf', '.docx', '.doc'];
-  if (allowed.includes(file.mimetype) || okExt.includes(ext)) {
+  const allowedExt = ['.pdf', '.docx'];
+  if (allowedMime.includes(file.mimetype) && allowedExt.includes(ext)) {
     cb(null, true);
   } else {
-    cb(new Error('Unsupported file type. Please upload PDF or DOCX.'));
+    const err = new Error('Only PDF (.pdf) and Word (.docx) files are supported.');
+    err.status = 400;
+    cb(err);
   }
 }
 

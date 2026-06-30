@@ -12,11 +12,6 @@ export default function UploadBox({
       onDrop={onDropFile}
       onClick={() => fileInputRef.current?.click()}
     >
-      <div className="upload-icon">⬆</div>
-
-      <div className="upload-title">Upload Resume</div>
-      <div className="upload-sub">Drag & drop or click to browse</div>
-
       <input
         ref={fileInputRef}
         type="file"
@@ -24,8 +19,15 @@ export default function UploadBox({
         style={{ display: "none" }}
       />
 
-      {file && (
+      {file ? (
         <div className="upload-file-info small">{filePreview()}</div>
+      ) : (
+        <>
+          <div className="upload-icon">📄</div>
+          <div className="upload-title">Upload Resume</div>
+          <div className="upload-sub">Drag &amp; Drop or Click to Browse</div>
+          <div className="upload-helper">PDF or DOCX • Max 5 MB</div>
+        </>
       )}
     </div>
   );

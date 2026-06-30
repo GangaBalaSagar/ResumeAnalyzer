@@ -16,6 +16,7 @@ export default function AnalyzeForm() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState(null);
+  const [uploadError, setUploadError] = useState("");
 
   const { requireAuth } = useAuthGate();
   const { user } = useAuth();
@@ -110,12 +111,48 @@ export default function AnalyzeForm() {
   function onDropFile(e) {
     e.preventDefault();
     const f = e.dataTransfer?.files?.[0];
-    if (f) setFile(f);
+    if (f) {
+      const validationError = validateFile(f);
+      if (validationError) {
+        setUploadError(validationError);
+        // Clear any previously selected file
+        setFile(null);
+        return;
+      }
+      setUploadError("");
+      setFile(f);
+    }
   }
 
   function onPickFile(e) {
     const f = e.target.files?.[0];
-    if (f) setFile(f);
+    if (f) {
+      const validationError = validateFile(f);
+      if (validationError) {
+        setUploadError(validationError);
+        // Clear any previously selected file
+        setFile(null);
+        // Reset file input so the same invalid file can be selected again
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+      setUploadError("");
+      setFile(f);
+    }
+  }
+
+  function validateFile(file) {
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+    const allowedExt = ['.pdf', '.docx'];
+    const ext = file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2).toLowerCase();
+    const dotExt = '.' + ext;
+    if (!allowedExt.includes(dotExt)) {
+      return 'Only PDF (.pdf) and Word (.docx) files are supported.';
+    }
+    if (file.size > maxSize) {
+      return 'File size exceeds the 5 MB limit.';
+    }
+    return null;
   }
 
   function filePreview() {
@@ -137,6 +174,11 @@ export default function AnalyzeForm() {
           onPickFile={onPickFile}
           filePreview={filePreview}
         />
+        {uploadError && (
+          <div className="upload-error">
+            {uploadError}
+          </div>
+        )}
 
         <JobDescriptionInput jd={jd} setJd={setJd} />
 
