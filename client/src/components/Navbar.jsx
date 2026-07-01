@@ -36,6 +36,13 @@ export default function Navbar({ activeTab, setActiveTab }) {
           Past Analyses
         </div>
 
+        <div
+          className={`pill ${activeTab === "report" ? "active" : ""}`}
+          onClick={() => setActiveTab("report")}
+        >
+          Report
+        </div>
+
         {/* AUTH CONTROLS */}
         <div className="auth-controls">
           {user ? (

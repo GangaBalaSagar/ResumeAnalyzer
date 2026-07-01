@@ -7,6 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import ResetPassword from "../pages/auth/ResetPassword";
 import Analyze from "../pages/app/Analyze";
 import History from "../pages/app/History";
+import Report from "../pages/app/Report";
 import { useAuthModal } from "../context/AuthModalContext";
 import useApiAuth from "../hooks/useApiAuth";
 
@@ -98,10 +99,7 @@ export default function AppRoutes() {
           />
           <Route path="/app/analyze" element={<Analyze />} />
           <Route path="/app/history" element={<History />} />
-          <Route
-            path="/app/history/:id"
-            element={<PlaceholderPage title="Analysis Report" />}
-          />
+          <Route path="/app/report" element={<Report />} />
           <Route
             path="/app/account"
             element={<PlaceholderPage title="Account" />}

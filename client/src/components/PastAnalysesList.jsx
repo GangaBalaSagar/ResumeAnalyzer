@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
-import AnalysisDetail from "./AnalysisDetail";
 import EmptyHistory from "./history/EmptyHistory";
 import HistoryList from "./history/HistoryList";
 import DeleteConfirmation from "./history/DeleteConfirmation";
 import { useAuth } from "../context/AuthContext";
+import { useReport } from "../context/ReportContext";
 
 export default function PastAnalysesList({ setActiveTab }) {
   const { user } = useAuth();
+  const { setCurrentReportId } = useReport();
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -140,16 +143,12 @@ export default function PastAnalysesList({ setActiveTab }) {
       <HistoryList
         items={items}
         loadError={loadError}
-        onViewClick={(id) => setSelected(id)}
+        onViewClick={(id) => {
+          setCurrentReportId(id);
+          navigate("/app/report");
+        }}
         onDeleteClick={(id) => openDeleteModal(id)}
       />
-
-      {selected && (
-        <AnalysisDetail
-          id={selected}
-          onClose={() => setSelected(null)}
-        />
-      )}
 
       <DeleteConfirmation
         isOpen={Boolean(confirmingDeleteId)}

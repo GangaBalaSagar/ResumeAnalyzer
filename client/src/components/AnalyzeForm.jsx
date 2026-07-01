@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
-import ResultsPanel from "./ResultsPanel";
 import { useAuthGate } from "./auth/AuthGate";
 import UploadBox from "./analyze/UploadBox";
 import JobDescriptionInput from "./analyze/JobDescriptionInput";
 import ActionControls from "./analyze/ActionControls";
 import { useAuth } from "../context/AuthContext";
+import { useReport } from "../context/ReportContext";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -15,11 +16,12 @@ export default function AnalyzeForm() {
   const [jd, setJd] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [result, setResult] = useState(null);
   const [uploadError, setUploadError] = useState("");
 
   const { requireAuth } = useAuthGate();
   const { user } = useAuth();
+  const { setCurrentReportId } = useReport();
+  const navigate = useNavigate();
   const progressRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -33,13 +35,6 @@ export default function AnalyzeForm() {
   useEffect(() => {
     const saved = localStorage.getItem(LS_JD_KEY);
     if (saved) setJd(saved);
-
-    const savedResult = localStorage.getItem(LS_LAST_RESULT);
-    if (savedResult) {
-      try {
-        setResult(JSON.parse(savedResult));
-      } catch (e) {}
-    }
   }, []);
 
   useEffect(() => {
@@ -73,11 +68,11 @@ export default function AnalyzeForm() {
       setProgress(100);
       setTimeout(() => setProgress(0), 400);
 
-      setResult(res.data);
-
-      try {
-        localStorage.setItem(LS_LAST_RESULT, JSON.stringify(res.data));
-      } catch (e) {}
+      const id = res.data?.id;
+      if (id) {
+        setCurrentReportId(id);
+      }
+      navigate("/app/report");
     } catch (err) {
       clearInterval(progressRef.current);
       setProgress(0);
@@ -90,7 +85,6 @@ export default function AnalyzeForm() {
   function handleReset() {
     setFile(null);
     setJd("");
-    setResult(null);
     setProgress(0);
 
     try {
@@ -190,25 +184,6 @@ export default function AnalyzeForm() {
         />
       </div>
 
-      {/* RIGHT CARD */}
-      <div className="card results-panel">
-        {result ? (
-          <ResultsPanel result={result.analysis} id={result.id} jd={jd} />
-        ) : (
-          <div>
-            <h3>Analysis Result</h3>
-            <div className="small muted" style={{ marginTop: 8 }}>
-              Run an Analysis to see Charts, Skills,  AI Suggestions and Job Description preview keywords highlighted.
-            </div>
-            <div
-              style={{ marginTop: 18 }}
-              className="chart-wrap center small muted"
-            >
-              No data yet
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
