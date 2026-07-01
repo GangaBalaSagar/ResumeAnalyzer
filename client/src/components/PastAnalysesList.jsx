@@ -5,11 +5,9 @@ import EmptyHistory from "./history/EmptyHistory";
 import HistoryList from "./history/HistoryList";
 import DeleteConfirmation from "./history/DeleteConfirmation";
 import { useAuth } from "../context/AuthContext";
-import { useAuthModal } from "../context/AuthModalContext";
 
 export default function PastAnalysesList({ setActiveTab }) {
   const { user } = useAuth();
-  const { openLoginModal, openSignupModal } = useAuthModal();
   const [items, setItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -129,18 +127,6 @@ export default function PastAnalysesList({ setActiveTab }) {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="card">
-        <h3>Login Required</h3>
-        <p>Sign in to view your saved resume analyses.</p>
-        <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
-          <button type="button" className="auth-button login-button" onClick={openLoginModal}>Login</button>
-          <button type="button" className="auth-button signup-button" onClick={openSignupModal}>Sign Up</button>
-        </div>
-      </div>
-    );
-  }
   if (loaded && items.length === 0) {
     return (
       <EmptyHistory

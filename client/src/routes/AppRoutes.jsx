@@ -5,7 +5,10 @@ import AuthLayout from "../layouts/AuthLayout";
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import ResetPassword from "../pages/auth/ResetPassword";
+import Analyze from "../pages/app/Analyze";
+import History from "../pages/app/History";
 import { useAuthModal } from "../context/AuthModalContext";
+import useApiAuth from "../hooks/useApiAuth";
 
 function PlaceholderPage({ title }) {
   return (
@@ -64,6 +67,8 @@ function AuthRouteBridge({ mode }) {
 }
 
 export default function AppRoutes() {
+  useApiAuth();
+
   return (
     <Routes>
       {/* Public Website */}
@@ -91,14 +96,8 @@ export default function AppRoutes() {
             path="/app/dashboard"
             element={<PlaceholderPage title="Dashboard" />}
           />
-          <Route
-            path="/app/analyze"
-            element={<PlaceholderPage title="Analyze Resume" />}
-          />
-          <Route
-            path="/app/history"
-            element={<PlaceholderPage title="History" />}
-          />
+          <Route path="/app/analyze" element={<Analyze />} />
+          <Route path="/app/history" element={<History />} />
           <Route
             path="/app/history/:id"
             element={<PlaceholderPage title="Analysis Report" />}

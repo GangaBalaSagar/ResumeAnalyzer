@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useAuthModal } from "../context/AuthModalContext";
 import { setupApiInterceptor } from "../api";
@@ -39,7 +39,7 @@ export function useApiAuth() {
     clearPendingAction,
   } = useAuthModal();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setupApiInterceptor(session, signOut, openLoginModal, setPendingAction);
 
     if (session?.access_token && pendingAction) {
