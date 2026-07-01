@@ -6,6 +6,7 @@ import UploadBox from "./analyze/UploadBox";
 import JobDescriptionInput from "./analyze/JobDescriptionInput";
 import ActionControls from "./analyze/ActionControls";
 import { useAuth } from "../context/AuthContext";
+import { useAuthModal } from "../context/AuthModalContext";
 import { useReport } from "../context/ReportContext";
 
 const LS_JD_KEY = "ra_jd_v1";
@@ -17,9 +18,11 @@ export default function AnalyzeForm() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [uploadError, setUploadError] = useState("");
+  const [showGuestModal, setShowGuestModal] = useState(false);
 
   const { requireAuth } = useAuthGate();
   const { user } = useAuth();
+  const { openLoginModal, openSignupModal } = useAuthModal();
   const { setCurrentReportId } = useReport();
   const navigate = useNavigate();
   const progressRef = useRef(null);
@@ -47,6 +50,11 @@ export default function AnalyzeForm() {
   async function handleAnalyze() {
     if (!file) return alert("Please upload a resume");
     if (!jd.trim()) return alert("Enter job description");
+
+    if (!user) {
+      setShowGuestModal(true);
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
@@ -80,6 +88,16 @@ export default function AnalyzeForm() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleOpenLogin() {
+    setShowGuestModal(false);
+    openLoginModal();
+  }
+
+  function handleOpenSignup() {
+    setShowGuestModal(false);
+    openSignupModal();
   }
 
   function handleReset() {
@@ -157,6 +175,25 @@ export default function AnalyzeForm() {
 
   return (
     <div className="analysis-grid">
+      {showGuestModal && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(17, 24, 39, 0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+          <div style={{ background: "#fff", borderRadius: "12px", padding: "2rem", maxWidth: "420px", width: "90%", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
+            <h3 style={{ marginTop: 0 }}>🔒 Analyze Your Resume</h3>
+            <p>Create a free account to:</p>
+            <ul style={{ paddingLeft: "1.2rem", marginBottom: "1rem" }}>
+              <li>Analyze your own resume</li>
+              <li>Generate ATS reports</li>
+              <li>Save analysis history</li>
+              <li>Track improvements</li>
+            </ul>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              <button type="button" onClick={handleOpenLogin}>Login</button>
+              <button type="button" onClick={handleOpenSignup}>Sign Up</button>
+              <button type="button" onClick={() => setShowGuestModal(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* LEFT CARD */}
       <div className="card">
         <h3>Analyze Resume</h3>
@@ -179,7 +216,13 @@ export default function AnalyzeForm() {
         <ActionControls
           loading={loading}
           progress={progress}
-          onAnalyze={() => requireAuth(handleAnalyze)}
+          onAnalyze={() => {
+            if (!user) {
+              setShowGuestModal(true);
+              return;
+            }
+            requireAuth(handleAnalyze);
+          }}
           onReset={handleReset}
         />
       </div>

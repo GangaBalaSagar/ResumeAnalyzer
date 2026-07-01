@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
-export default function AnalysisDetail({ id, onClose }) {
-  const [data, setData] = useState(null);
+export default function AnalysisDetail({ id, onClose, reportData }) {
+  const [data, setData] = useState(reportData ?? null);
 
   useEffect(() => {
+    if (reportData) {
+      setData(reportData);
+      return;
+    }
+
+    if (!id) return;
     api.get(`/analyses/${id}`).then((res) => setData(res.data));
-  }, [id]);
+  }, [id, reportData]);
 
   if (!data) return null;
 

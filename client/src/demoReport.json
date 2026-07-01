@@ -1,0 +1,10 @@
+{
+  "matchPercent": 87,
+  "matchedSkills": ["React", "JavaScript", "Node.js", "REST APIs"],
+  "missingSkills": ["TypeScript", "Testing", "Docker"],
+  "suggestions": [
+    "Add TypeScript experience to improve alignment.",
+    "Include unit and integration testing examples.",
+    "Highlight containerization and deployment experience."
+  ]
+}

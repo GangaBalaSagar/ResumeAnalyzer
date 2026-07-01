@@ -5,10 +5,12 @@ import EmptyHistory from "./history/EmptyHistory";
 import HistoryList from "./history/HistoryList";
 import DeleteConfirmation from "./history/DeleteConfirmation";
 import { useAuth } from "../context/AuthContext";
+import { useAuthModal } from "../context/AuthModalContext";
 import { useReport } from "../context/ReportContext";
 
 export default function PastAnalysesList({ setActiveTab }) {
   const { user } = useAuth();
+  const { openLoginModal, openSignupModal } = useAuthModal();
   const { setCurrentReportId } = useReport();
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -117,6 +119,27 @@ export default function PastAnalysesList({ setActiveTab }) {
     } finally {
       setDeleteLoading(false);
     }
+  }
+
+  if (!user) {
+    return (
+      <div className="card">
+        <h3>📂 Analysis History</h3>
+        <p style={{ marginTop: 12 }}>
+          Your analysis history will appear here after you create an account and analyze your resume.
+        </p>
+        <ul style={{ paddingLeft: "1.25rem", marginTop: 12 }}>
+          <li>View previous ATS reports</li>
+          <li>Track resume improvements</li>
+          <li>Compare ATS scores</li>
+          <li>Delete old analyses</li>
+        </ul>
+        <div style={{ display: "flex", gap: "0.75rem", marginTop: 16, flexWrap: "wrap" }}>
+          <button type="button" onClick={() => openLoginModal()}>Login</button>
+          <button type="button" onClick={() => openSignupModal()}>Sign Up</button>
+        </div>
+      </div>
+    );
   }
 
   if (loadError) {

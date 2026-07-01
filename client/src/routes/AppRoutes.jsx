@@ -90,16 +90,16 @@ export default function AppRoutes() {
         />
       </Route>
 
-      {/* Protected Application */}
+      {/* Application */}
       <Route element={<AppLayout />}>
+        <Route path="/app/analyze" element={<Analyze />} />
+        <Route path="/app/history" element={<History />} />
+        <Route path="/app/report" element={<Report />} />
         <Route element={<ProtectedRoute />}>
           <Route
             path="/app/dashboard"
             element={<PlaceholderPage title="Dashboard" />}
           />
-          <Route path="/app/analyze" element={<Analyze />} />
-          <Route path="/app/history" element={<History />} />
-          <Route path="/app/report" element={<Report />} />
           <Route
             path="/app/account"
             element={<PlaceholderPage title="Account" />}
