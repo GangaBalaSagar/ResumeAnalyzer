@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
-export default function AnalysisDetail({ id, onClose, reportData }) {
+export default function AnalysisDetail({ id, reportData }) {
   const [data, setData] = useState(reportData ?? null);
 
   useEffect(() => {
@@ -17,40 +17,31 @@ export default function AnalysisDetail({ id, onClose, reportData }) {
   if (!data) return null;
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal-card fixed-modal">
+    <div style={{ display: "grid", gap: "1rem" }}>
+      <div className="card">
+        <h3>Analysis Detail</h3>
+        <p><b>Match %:</b> {data.matchPercent}</p>
+      </div>
 
-        {/* HEADER */}
-        <div className="modal-header">
-          <h3>Analysis Detail</h3>
-          {/* <button className="btn modal-close-btn" onClick={onClose}>Close</button> */}
-        </div>
+      <div className="card">
+        <p><b>Matched Skills:</b></p>
+        <ul className="modal-list">
+          {data.matchedSkills.map((s, i) => <li key={i}>{s}</li>)}
+        </ul>
+      </div>
 
-        {/* SCROLLABLE CONTENT */}
-        <div className="modal-content">
-          <p><b>Match %:</b> {data.matchPercent}</p>
+      <div className="card">
+        <p><b>Missing Skills:</b></p>
+        <ul className="modal-list">
+          {data.missingSkills.map((s, i) => <li key={i}>{s}</li>)}
+        </ul>
+      </div>
 
-          <p><b>Matched Skills:</b></p>
-          <ul className="modal-list">
-            {data.matchedSkills.map((s, i) => <li key={i}>{s}</li>)}
-          </ul>
-
-          <p><b>Missing Skills:</b></p>
-          <ul className="modal-list">
-            {data.missingSkills.map((s, i) => <li key={i}>{s}</li>)}
-          </ul>
-
-          <p><b>Suggestions:</b></p>
-          <pre className="modal-pre">
-            {JSON.stringify(data.suggestions, null, 2)}
-          </pre>
-        </div>
-
-        {/* FOOTER */}
-        <div className="modal-footer">
-          <button className="btn modal-close-btn" onClick={onClose}>Close</button>
-        </div>
-
+      <div className="card">
+        <p><b>Suggestions:</b></p>
+        <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>
+          {JSON.stringify(data.suggestions, null, 2)}
+        </pre>
       </div>
     </div>
   );

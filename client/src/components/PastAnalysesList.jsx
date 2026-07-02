@@ -168,7 +168,7 @@ export default function PastAnalysesList({ setActiveTab }) {
         loadError={loadError}
         onViewClick={(id) => {
           setCurrentReportId(id);
-          navigate("/app/report");
+          navigate("/app/report", { state: { from: "/app/history" } });
         }}
         onDeleteClick={(id) => openDeleteModal(id)}
       />

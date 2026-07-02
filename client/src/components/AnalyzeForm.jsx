@@ -80,7 +80,7 @@ export default function AnalyzeForm() {
       if (id) {
         setCurrentReportId(id);
       }
-      navigate("/app/report");
+      navigate("/app/report", { state: { from: "/app/analyze" } });
     } catch (err) {
       clearInterval(progressRef.current);
       setProgress(0);

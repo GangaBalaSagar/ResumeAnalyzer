@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
-const rateLimiter = require("./middleware/rateLimiter");
+const { generalApiLimiter } = require("./middleware/rateLimiter");
 const analysisRoutes = require("./routes/analysisRoutes");
 const logger = require("./utils/logger");
 const config = require("./config");
@@ -18,7 +18,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(rateLimiter);
+app.use("/api", generalApiLimiter);
 
 // API routes
 app.use("/api", analysisRoutes);

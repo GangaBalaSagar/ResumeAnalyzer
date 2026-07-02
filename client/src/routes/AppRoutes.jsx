@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import AppLayout from "../layouts/AppLayout";
@@ -8,6 +8,7 @@ import ResetPassword from "../pages/auth/ResetPassword";
 import Analyze from "../pages/app/Analyze";
 import History from "../pages/app/History";
 import Report from "../pages/app/Report";
+import Dashboard from "../pages/app/Dashboard";
 import { useAuthModal } from "../context/AuthModalContext";
 import useApiAuth from "../hooks/useApiAuth";
 
@@ -92,14 +93,12 @@ export default function AppRoutes() {
 
       {/* Application */}
       <Route element={<AppLayout />}>
+        <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
         <Route path="/app/analyze" element={<Analyze />} />
         <Route path="/app/history" element={<History />} />
         <Route path="/app/report" element={<Report />} />
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="/app/dashboard"
-            element={<PlaceholderPage title="Dashboard" />}
-          />
+          <Route path="/app/dashboard" element={<Dashboard />} />
           <Route
             path="/app/account"
             element={<PlaceholderPage title="Account" />}

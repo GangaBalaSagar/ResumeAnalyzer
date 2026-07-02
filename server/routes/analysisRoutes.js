@@ -14,9 +14,10 @@ const upload = require('../middleware/upload');
 const authMiddleware = require('../middleware/authMiddleware');
 const controller = require('../controllers/analysisController');
 const analysisValidation = require('../middleware/validation/analysisValidation');
+const { analysisLimiter, dashboardLimiter, historyLimiter, reportLimiter } = require('../middleware/rateLimiter');
 
 // POST analyze: PROTECTED - requires authentication
-router.post('/analyze', authMiddleware, (req, res, next) => {
+router.post('/analyze', authMiddleware, analysisLimiter, (req, res, next) => {
   upload.single('file')(req, res, function (err) {
     if (err) {
       // Return JSON error for unsupported file types
@@ -29,12 +30,12 @@ router.post('/analyze', authMiddleware, (req, res, next) => {
 }, analysisValidation, controller.analyze);
 
 // GET list: PROTECTED - returns only authenticated user's analyses
-router.get('/analyses', authMiddleware, controller.listAnalyses);
+router.get('/analyses', authMiddleware, dashboardLimiter, controller.listAnalyses);
 
 // GET by id: PROTECTED - returns only authenticated user's analysis
-router.get('/analyses/:id', authMiddleware, controller.getAnalysis);
+router.get('/analyses/:id', authMiddleware, reportLimiter, controller.getAnalysis);
 
 // DELETE: PROTECTED - deletes only authenticated user's analysis
-router.delete('/analyses/:id', authMiddleware, controller.deleteAnalysis);
+router.delete('/analyses/:id', authMiddleware, historyLimiter, controller.deleteAnalysis);
 
 module.exports = router;
