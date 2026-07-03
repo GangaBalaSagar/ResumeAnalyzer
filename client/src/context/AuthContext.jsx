@@ -44,9 +44,15 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  const signUp = async (email, password) => {
+  const signUp = async (email, password, metadata = {}) => {
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: metadata,
+      },
+    });
     setLoading(false);
     return { data, error };
   };

@@ -5,12 +5,10 @@ import EmptyHistory from "./history/EmptyHistory";
 import HistoryList from "./history/HistoryList";
 import DeleteConfirmation from "./history/DeleteConfirmation";
 import { useAuth } from "../context/AuthContext";
-import { useAuthModal } from "../context/AuthModalContext";
 import { useReport } from "../context/ReportContext";
 
 export default function PastAnalysesList({ setActiveTab }) {
   const { user } = useAuth();
-  const { openLoginModal, openSignupModal } = useAuthModal();
   const { setCurrentReportId } = useReport();
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -135,8 +133,8 @@ export default function PastAnalysesList({ setActiveTab }) {
           <li>Delete old analyses</li>
         </ul>
         <div style={{ display: "flex", gap: "0.75rem", marginTop: 16, flexWrap: "wrap" }}>
-          <button type="button" onClick={() => openLoginModal()}>Login</button>
-          <button type="button" onClick={() => openSignupModal()}>Sign Up</button>
+          <button type="button" onClick={() => navigate("/login")}>Login</button>
+          <button type="button" onClick={() => navigate("/signup")}>Sign Up</button>
         </div>
       </div>
     );

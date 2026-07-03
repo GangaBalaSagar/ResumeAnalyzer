@@ -1,9 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useAuthModal } from "../context/AuthModalContext";
 
 export default function Navbar({ activeTab, setActiveTab }) {
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { openLoginModal, openSignupModal } = useAuthModal();
 
   const handleLogout = async () => {
     await signOut();
@@ -63,14 +63,14 @@ export default function Navbar({ activeTab, setActiveTab }) {
               <button
                 type="button"
                 className="auth-button login-button"
-                onClick={openLoginModal}
+                onClick={() => navigate("/login")}
               >
                 Login
               </button>
               <button
                 type="button"
                 className="auth-button signup-button"
-                onClick={openSignupModal}
+                onClick={() => navigate("/signup")}
               >
                 Sign Up
               </button>

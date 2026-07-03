@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import { ReportProvider } from "./context/ReportContext";
-import AuthModal from "./components/auth/AuthModal";
 import AppRoutes from "./routes/AppRoutes";
 import "./styles.css";
 
@@ -18,7 +17,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <AuthModalProvider>
           <ReportProvider>
             <AppRoutes />
-            <AuthModal />
           </ReportProvider>
         </AuthModalProvider>
       </AuthProvider>

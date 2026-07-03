@@ -1,9 +1,11 @@
 import { useAuth } from "../../context/AuthContext";
 import { useAuthModal } from "../../context/AuthModalContext";
+import { useNavigate } from "react-router-dom";
 
 export function useAuthGate() {
   const { user } = useAuth();
-  const { openLoginModal, setPendingAction } = useAuthModal();
+  const { setPendingAction } = useAuthModal();
+  const navigate = useNavigate();
 
   const requireAuth = (callback) => {
     if (user) {
@@ -12,7 +14,7 @@ export function useAuthGate() {
     }
 
     setPendingAction(() => callback);
-    openLoginModal();
+    navigate("/login");
   };
 
   return { requireAuth, user };

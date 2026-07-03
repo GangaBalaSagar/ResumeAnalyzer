@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase/client";
 
-export default function ForgotPassword({ onBack }) {
+export default function ForgotPassword() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -65,7 +67,7 @@ export default function ForgotPassword({ onBack }) {
 
       <button
         type="button"
-        onClick={onBack}
+        onClick={() => navigate("/login")}
         style={{
           width: "100%",
           padding: "0.75rem",

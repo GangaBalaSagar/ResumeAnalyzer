@@ -1,7 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
-import AuthLayout from "../layouts/AuthLayout";
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import ResetPassword from "../pages/auth/ResetPassword";
@@ -9,7 +7,9 @@ import Analyze from "../pages/app/Analyze";
 import History from "../pages/app/History";
 import Report from "../pages/app/Report";
 import Dashboard from "../pages/app/Dashboard";
-import { useAuthModal } from "../context/AuthModalContext";
+import Login from "../pages/auth/Login";
+import Signup from "../pages/auth/Signup";
+import ForgotPassword from "../pages/auth/ForgotPassword";
 import useApiAuth from "../hooks/useApiAuth";
 
 function PlaceholderPage({ title }) {
@@ -28,46 +28,6 @@ function PlaceholderPage({ title }) {
   );
 }
 
-function AuthRouteBridge({ mode }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { isOpen, openLoginModal, openSignupModal, openForgotPasswordModal, closeAuthModal } =
-    useAuthModal();
-  const wasOpenRef = useRef(false);
-
-  useEffect(() => {
-    if (mode === "login") {
-      openLoginModal();
-    } else if (mode === "signup") {
-      openSignupModal();
-    } else if (mode === "forgot") {
-      openForgotPasswordModal();
-    }
-  }, [mode, openLoginModal, openSignupModal, openForgotPasswordModal]);
-
-  useEffect(() => {
-    if (wasOpenRef.current && !isOpen) {
-      if (
-        location.pathname === "/login" ||
-        location.pathname === "/signup" ||
-        location.pathname === "/forgot-password"
-      ) {
-        navigate("/", { replace: true });
-      }
-    }
-
-    wasOpenRef.current = isOpen;
-  }, [isOpen, location.pathname, navigate]);
-
-  useEffect(() => {
-    return () => {
-      closeAuthModal();
-    };
-  }, [closeAuthModal]);
-
-  return null;
-}
-
 export default function AppRoutes() {
   useApiAuth();
 
@@ -79,16 +39,10 @@ export default function AppRoutes() {
         <Route path="/features" element={<PlaceholderPage title="Features" />} />
         <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
         <Route path="/preview" element={<PlaceholderPage title="Preview" />} />
-      </Route>
-
-      {/* Authentication */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<AuthRouteBridge mode="login" />} />
-        <Route path="/signup" element={<AuthRouteBridge mode="signup" />} />
-        <Route
-          path="/forgot-password"
-          element={<AuthRouteBridge mode="forgot" />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
 
       {/* Application */}

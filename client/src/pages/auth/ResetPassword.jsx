@@ -66,12 +66,10 @@ export default function ResetPassword() {
     setLoading(false);
     setSuccess("Password updated successfully.");
 
-    // Queue login modal auto-open with success message for the main page
     sessionStorage.setItem("authMessage", "Password updated successfully.");
-    sessionStorage.setItem("openLogin", "true");
 
     setTimeout(() => {
-      navigate("/");
+      navigate("/login");
     }, 2000);
   }
 

@@ -1,32 +1,26 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AuthModalContext = createContext(undefined);
 
 export function AuthModalProvider({ children }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState("login");
+  const navigate = useNavigate();
+  const location = useLocation();
   const [pendingAction, setPendingAction] = useState(null);
 
   const openLoginModal = useCallback(() => {
-    setMode("login");
-    setIsOpen(true);
-  }, []);
+    navigate("/login", {
+      state: { from: { pathname: location.pathname, search: location.search } },
+    });
+  }, [navigate, location.pathname, location.search]);
 
   const openSignupModal = useCallback(() => {
-    setMode("signup");
-    setIsOpen(true);
-  }, []);
+    navigate("/signup");
+  }, [navigate]);
 
   const openForgotPasswordModal = useCallback(() => {
-    setMode("forgot");
-    setIsOpen(true);
-  }, []);
-
-  const openAuthModal = useCallback(() => {
-    openLoginModal();
-  }, [openLoginModal]);
-
-  const closeAuthModal = useCallback(() => setIsOpen(false), []);
+    navigate("/forgot-password");
+  }, [navigate]);
 
   const executePendingAction = useCallback(() => {
     if (typeof pendingAction === "function") {
@@ -40,27 +34,20 @@ export function AuthModalProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      isOpen,
-      mode,
       pendingAction,
-      openAuthModal,
       openLoginModal,
       openSignupModal,
       openForgotPasswordModal,
-      closeAuthModal,
       setPendingAction,
       executePendingAction,
       clearPendingAction,
     }),
     [
-      isOpen,
-      mode,
       pendingAction,
-      openAuthModal,
       openLoginModal,
       openSignupModal,
       openForgotPasswordModal,
-      closeAuthModal,
+      setPendingAction,
       executePendingAction,
       clearPendingAction,
     ]

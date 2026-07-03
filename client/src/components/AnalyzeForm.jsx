@@ -6,7 +6,6 @@ import UploadBox from "./analyze/UploadBox";
 import JobDescriptionInput from "./analyze/JobDescriptionInput";
 import ActionControls from "./analyze/ActionControls";
 import { useAuth } from "../context/AuthContext";
-import { useAuthModal } from "../context/AuthModalContext";
 import { useReport } from "../context/ReportContext";
 
 const LS_JD_KEY = "ra_jd_v1";
@@ -22,7 +21,6 @@ export default function AnalyzeForm() {
 
   const { requireAuth } = useAuthGate();
   const { user } = useAuth();
-  const { openLoginModal, openSignupModal } = useAuthModal();
   const { setCurrentReportId } = useReport();
   const navigate = useNavigate();
   const progressRef = useRef(null);
@@ -92,12 +90,12 @@ export default function AnalyzeForm() {
 
   function handleOpenLogin() {
     setShowGuestModal(false);
-    openLoginModal();
+    navigate("/login");
   }
 
   function handleOpenSignup() {
     setShowGuestModal(false);
-    openSignupModal();
+    navigate("/signup");
   }
 
   function handleReset() {
