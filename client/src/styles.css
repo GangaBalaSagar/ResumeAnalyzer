@@ -191,6 +191,16 @@ body {
   animation: fadeUp 0.45s ease-out forwards;
 }
 
+.profile-label {
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.profile-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
 @keyframes fadeUp {
   to { opacity: 1; transform: translateY(0); }
 }

@@ -24,7 +24,9 @@ export function AuthProvider({ children }) {
       }
 
       setSession(data?.session ?? null);
-      setUser(data?.session?.user ?? null);
+      const authUser = data?.session?.user ?? null;
+      setUser(authUser);
+      console.log("AUTH USER", authUser);
       setLoading(false);
     }
 
@@ -35,7 +37,9 @@ export function AuthProvider({ children }) {
         return;
       }
       setSession(newSession);
-      setUser(newSession?.user ?? null);
+      const authUser = newSession?.user ?? null;
+      setUser(authUser);
+      console.log("AUTH USER", authUser);
     });
 
     return () => {

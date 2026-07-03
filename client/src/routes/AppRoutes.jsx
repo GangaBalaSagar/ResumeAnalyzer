@@ -7,6 +7,7 @@ import Analyze from "../pages/app/Analyze";
 import History from "../pages/app/History";
 import Report from "../pages/app/Report";
 import Dashboard from "../pages/app/Dashboard";
+import Account from "../pages/app/Account";
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import ForgotPassword from "../pages/auth/ForgotPassword";
@@ -53,10 +54,7 @@ export default function AppRoutes() {
         <Route path="/app/report" element={<Report />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/app/dashboard" element={<Dashboard />} />
-          <Route
-            path="/app/account"
-            element={<PlaceholderPage title="Account" />}
-          />
+          <Route path="/app/account" element={<Account />} />
         </Route>
       </Route>
 
