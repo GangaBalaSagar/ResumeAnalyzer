@@ -9,7 +9,6 @@ import { useAuth } from "../context/AuthContext";
 import { useReport } from "../context/ReportContext";
 
 const LS_JD_KEY = "ra_jd_v1";
-const LS_LAST_RESULT = "ra_last_result_v1";
 
 export default function AnalyzeForm() {
   const [file, setFile] = useState(null);
@@ -23,7 +22,8 @@ export default function AnalyzeForm() {
   const { user } = useAuth();
   const { setCurrentReportId } = useReport();
   const navigate = useNavigate();
-  const progressRef = useRef(null);
+  const progressIntervalRef = useRef(null);
+  const progressResetTimeoutRef = useRef(null);
   const fileInputRef = useRef(null);
 
   // Reset form and cache on logout
@@ -39,11 +39,35 @@ export default function AnalyzeForm() {
   }, []);
 
   useEffect(() => {
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      if (progressResetTimeoutRef.current) {
+        clearTimeout(progressResetTimeoutRef.current);
+        progressResetTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     const id = setTimeout(() => {
       localStorage.setItem(LS_JD_KEY, jd || "");
     }, 400);
     return () => clearTimeout(id);
   }, [jd]);
+
+  function clearProgressTimers() {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+    if (progressResetTimeoutRef.current) {
+      clearTimeout(progressResetTimeoutRef.current);
+      progressResetTimeoutRef.current = null;
+    }
+  }
 
   async function handleAnalyze() {
     if (!file) return alert("Please upload a resume");
@@ -62,7 +86,7 @@ export default function AnalyzeForm() {
       setLoading(true);
       setProgress(6);
 
-      progressRef.current = setInterval(() => {
+      progressIntervalRef.current = setInterval(() => {
         setProgress((p) => Math.min(92, p + Math.random() * 12));
       }, 350);
 
@@ -70,9 +94,12 @@ export default function AnalyzeForm() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      clearInterval(progressRef.current);
+      clearProgressTimers();
       setProgress(100);
-      setTimeout(() => setProgress(0), 400);
+      progressResetTimeoutRef.current = setTimeout(() => {
+        setProgress(0);
+        progressResetTimeoutRef.current = null;
+      }, 400);
 
       const id = res.data?.id;
       if (id) {
@@ -80,7 +107,7 @@ export default function AnalyzeForm() {
       }
       navigate("/app/report", { state: { from: "/app/analyze" } });
     } catch (err) {
-      clearInterval(progressRef.current);
+      clearProgressTimers();
       setProgress(0);
       alert(err.response?.data?.error || "Analysis failed");
     } finally {
@@ -99,13 +126,13 @@ export default function AnalyzeForm() {
   }
 
   function handleReset() {
+    clearProgressTimers();
     setFile(null);
     setJd("");
     setProgress(0);
 
     try {
       localStorage.removeItem(LS_JD_KEY);
-      localStorage.removeItem(LS_LAST_RESULT);
     } catch (e) {}
 
     if (fileInputRef.current) {

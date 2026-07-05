@@ -11,19 +11,48 @@ export default function Report() {
   const { user } = useAuth();
   const { currentReportId } = useReport();
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) {
       setData(demoReport);
+      setError(null);
+      setLoading(false);
       return;
     }
 
     if (!currentReportId) {
       setData(null);
+      setError(null);
+      setLoading(false);
       return;
     }
 
-    api.get(`/analyses/${currentReportId}`).then((res) => setData(res.data));
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+
+    api
+      .get(`/analyses/${currentReportId}`)
+      .then((res) => {
+        if (!isMounted) return;
+        setData(res.data);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        setData(null);
+        setError(err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [currentReportId, user]);
 
   if (!user) {
@@ -56,7 +85,38 @@ export default function Report() {
     );
   }
 
-  if (!data) return null;
+  if (loading) {
+    return (
+      <div style={{ padding: "2rem" }}>
+        <div className="card">
+          <h2>📊 Analysis Report</h2>
+          <p>Loading report details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div style={{ padding: "2rem" }}>
+        <div className="card" style={{ display: "grid", gap: "1rem" }}>
+          <div style={{ fontSize: "2rem" }}>⚠️</div>
+          <h2 style={{ margin: 0 }}>Unable to load report</h2>
+          <p style={{ margin: 0, color: "var(--text-soft)" }}>
+            We couldn’t load this analysis right now. This can happen if the report was deleted, the link is invalid, or the network request failed.
+          </p>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <button type="button" onClick={() => window.location.reload()}>
+              Retry
+            </button>
+            <button type="button" onClick={() => navigate("/app/dashboard")}>
+              Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: "2rem" }}>

@@ -42,8 +42,6 @@ function getInitials(firstName, lastName, fullName, email) {
 export default function Account() {
   const navigate = useNavigate();
   const { user, loading, signOut } = useAuth();
-  console.log("ACCOUNT USER", user);
-  console.log("USER METADATA", user?.user_metadata);
 
   const metadata = user?.user_metadata || {};
   const firstName = metadata.first_name || metadata.firstName || null;

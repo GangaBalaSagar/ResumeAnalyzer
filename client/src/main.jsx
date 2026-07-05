@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import { ReportProvider } from "./context/ReportContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 import AppRoutes from "./routes/AppRoutes";
 import "./styles.css";
 
@@ -12,14 +13,16 @@ sessionStorage.removeItem("authMessage");
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <AuthModalProvider>
-          <ReportProvider>
-            <AppRoutes />
-          </ReportProvider>
-        </AuthModalProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <AuthModalProvider>
+            <ReportProvider>
+              <AppRoutes />
+            </ReportProvider>
+          </AuthModalProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );
