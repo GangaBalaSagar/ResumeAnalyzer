@@ -3,19 +3,46 @@ import SkillsSection from "./results/SkillsSection";
 import SuggestionsSection from "./results/SuggestionsSection";
 import ScoreCard from "./results/ScoreCard";
 
-function highlightJD(jd, matchedSkills = []) {
-  if (!jd) return jd;
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-  let escaped = matchedSkills
+function highlightJD(jd, matchedSkills = []) {
+  if (!jd) return [];
+
+  const escapedSkills = matchedSkills
     .filter(Boolean)
-    .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .map((skill) => skill.trim())
+    .filter(Boolean)
+    .map((skill) => escapeRegExp(skill))
     .sort((a, b) => b.length - a.length);
 
-  if (escaped.length === 0) return jd;
+  if (escapedSkills.length === 0) return [jd];
 
-  const pattern = new RegExp(`\\b(${escaped.join("|")})\\b`, "gi");
+  const pattern = new RegExp(`\\b(${escapedSkills.join("|")})\\b`, "gi");
+  const parts = [];
+  let lastIndex = 0;
+  let match;
 
-  return jd.replace(pattern, (m) => `<span class="jd-highlight">${m}</span>`);
+  while ((match = pattern.exec(jd)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(jd.slice(lastIndex, match.index));
+    }
+
+    parts.push(
+      <span key={`${match.index}-${match[0]}`} className="jd-highlight">
+        {match[0]}
+      </span>
+    );
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < jd.length) {
+    parts.push(jd.slice(lastIndex));
+  }
+
+  return parts;
 }
 
 export default function ResultsPanel({ result, jd }) {
@@ -49,7 +76,7 @@ export default function ResultsPanel({ result, jd }) {
     alert("Copied to clipboard");
   }
 
-  const highlightedHtml = { __html: highlightJD(jd || "", matchedSkills) };
+  const highlightedContent = highlightJD(jd || "", matchedSkills);
 
   return (
     <div className="results-panel-column">
@@ -61,7 +88,7 @@ export default function ResultsPanel({ result, jd }) {
 
       <SuggestionsSection suggestions={suggestions} onCopy={copySuggestions} />
 
-      <ScoreCard highlightedHtml={highlightedHtml} />
+      <ScoreCard highlightedContent={highlightedContent} />
     </div>
   );
 }
