@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./ErrorBoundary.css";
 
-function ErrorBoundaryFallback({ onReload, onGoToDashboard }) {
+function ErrorBoundaryFallback({ onReload }) {
   return (
     <div className="error-boundary-shell">
       <div className="error-boundary-card">
@@ -14,9 +14,12 @@ function ErrorBoundaryFallback({ onReload, onGoToDashboard }) {
           <button type="button" onClick={onReload} className="error-boundary-button error-boundary-primary">
             Reload Page
           </button>
-          <button type="button" onClick={onGoToDashboard} className="error-boundary-button error-boundary-secondary">
-            Go to Dashboard
-          </button>
+<button type="button" onClick={() => {
+            const navigate = useNavigate();
+            navigate("/app/dashboard");
+          }} className="error-boundary-button error-boundary-secondary">
+          Go to Dashboard
+        </button>
         </div>
       </div>
     </div>
@@ -41,17 +44,14 @@ class ErrorBoundary extends React.Component {
     window.location.reload();
   };
 
-  handleGoToDashboard = () => {
-    this.props.navigate("/app/dashboard");
-  };
+  // Removed navigate handler – navigation now handled inside fallback via hook
 
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorBoundaryFallback
-          onReload={this.handleReload}
-          onGoToDashboard={this.handleGoToDashboard}
-        />
+<ErrorBoundaryFallback
+            onReload={this.handleReload}
+          />
       );
     }
 
@@ -59,7 +59,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default function ErrorBoundaryWrapper(props) {
-  const navigate = useNavigate();
-  return <ErrorBoundary {...props} navigate={navigate} />;
-}
+export default ErrorBoundary;
