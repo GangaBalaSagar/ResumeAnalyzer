@@ -12,8 +12,13 @@ import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import useApiAuth from "../hooks/useApiAuth";
+import Features from "../pages/public/Features";
+import FAQ from "../pages/public/FAQ";
 
 function PlaceholderPage({ title }) {
+  if (title === "FAQ") {
+    return <FAQ />;
+  }
   return (
     <div
       style={{
@@ -37,7 +42,7 @@ export default function AppRoutes() {
       {/* Public Website */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<PlaceholderPage title="Landing Page" />} />
-        <Route path="/features" element={<PlaceholderPage title="Features" />} />
+        <Route path="/features" element={<Features />} />
         <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
         <Route path="/preview" element={<PlaceholderPage title="Preview" />} />
         <Route path="/login" element={<Login />} />

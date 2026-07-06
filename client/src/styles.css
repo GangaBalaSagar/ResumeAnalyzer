@@ -869,3 +869,294 @@ canvas { background: transparent !important; }
   border: 1px solid rgba(255,255,255,0.12);
   margin-top: 6px;
 }
+
+/* ==========================================================
+   PUBLIC PAGES — Capability Section (Features Page)
+   ========================================================== */
+
+.capability-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 4rem;
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-1);
+  transition: border-color 0.25s ease;
+}
+
+.capability-section:hover {
+  border-color: rgba(77,166,255,0.18);
+}
+
+.capability-section[data-reversed] {
+  direction: rtl;
+}
+
+.capability-section[data-reversed] > * {
+  direction: ltr;
+}
+
+@media (max-width: 800px) {
+  .capability-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  .capability-section[data-reversed] {
+    direction: ltr;
+  }
+}
+
+.capability-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.capability-icon-block {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(77,166,255,0.15), rgba(99,183,255,0.08));
+  border: 1px solid rgba(77,166,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.capability-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.capability-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.capability-subtitle {
+  font-size: 0.92rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0.15rem 0 0;
+}
+
+.capability-description {
+  color: var(--text-soft);
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+  font-size: 0.96rem;
+}
+
+.capability-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.capability-why {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border-left: 3px solid var(--primary);
+}
+
+.capability-why-heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--primary);
+  margin: 0 0 0.35rem;
+}
+
+.capability-why-text {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.capability-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.capability-benefit {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  color: var(--text-soft);
+}
+
+.capability-benefit-check {
+  color: var(--success);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.capability-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ==========================================================
+   PUBLIC PAGES — FAQ Accordion
+   ========================================================== */
+
+.faq-accordion-item {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.faq-accordion-item:last-child {
+  border-bottom: none;
+}
+
+.faq-accordion-trigger {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: color 0.18s ease;
+}
+
+.faq-accordion-trigger:hover {
+  color: var(--primary);
+}
+
+.faq-accordion-question {
+  flex: 1;
+}
+
+.faq-accordion-chevron {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  transition: transform 0.25s ease;
+}
+
+.faq-accordion-item--open .faq-accordion-chevron {
+  transform: rotate(90deg);
+}
+
+.faq-accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 0 0 0.25rem;
+}
+
+.faq-accordion-item--open .faq-accordion-panel {
+  max-height: 200px;
+  padding: 0 0 1rem 0.25rem;
+}
+
+.faq-accordion-answer {
+  color: var(--text-soft);
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+/* ==========================================================
+   PUBLIC PAGES — FAQ Category Cards
+   ========================================================== */
+
+.faq-category-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+@media (max-width: 600px) {
+  .faq-category-card {
+    padding: 1rem 1.25rem;
+  }
+}
+
+.faq-category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.faq-category-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.faq-category-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.faq-category-desc {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+  margin: 0.15rem 0 0;
+}
+
+/* ==========================================================
+   PUBLIC PAGES — Popular Questions Grid
+   ========================================================== */
+
+.popular-questions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.popular-question-card {
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--glass-blur));
+  transition: border-color 0.25s ease;
+}
+
+.popular-question-card:hover {
+  border-color: rgba(77,166,255,0.18);
+}
+
+.popular-question-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.popular-question-answer {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0;
+}
