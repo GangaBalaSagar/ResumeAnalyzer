@@ -12,27 +12,9 @@ import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import useApiAuth from "../hooks/useApiAuth";
+import Landing from "../pages/public/Landing";
 import Features from "../pages/public/Features";
 import FAQ from "../pages/public/FAQ";
-
-function PlaceholderPage({ title }) {
-  if (title === "FAQ") {
-    return <FAQ />;
-  }
-  return (
-    <div
-      style={{
-        padding: "3rem",
-        textAlign: "center",
-      }}
-    >
-      <h1>{title}</h1>
-      <p style={{ color: "#888", marginTop: "10px" }}>
-        This page is under development.
-      </p>
-    </div>
-  );
-}
 
 export default function AppRoutes() {
   useApiAuth();
@@ -41,10 +23,10 @@ export default function AppRoutes() {
     <Routes>
       {/* Public Website */}
       <Route element={<PublicLayout />}>
-        <Route path="/" element={<PlaceholderPage title="Landing Page" />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/features" element={<Features />} />
-        <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
-        <Route path="/preview" element={<PlaceholderPage title="Preview" />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/preview" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
