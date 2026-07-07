@@ -95,24 +95,7 @@ export default function History() {
 
 
   if (!user) {
-    return (
-      <div className="card">
-        <h3>📂 Analysis History</h3>
-        <p style={{ marginTop: 12 }}>
-          Your analysis history will appear here after you create an account and analyze your resume.
-        </p>
-        <ul style={{ paddingLeft: "1.25rem", marginTop: 12 }}>
-          <li>View previous ATS reports</li>
-          <li>Track resume improvements</li>
-          <li>Compare ATS scores</li>
-          <li>Delete old analyses</li>
-        </ul>
-        <div style={{ display: "flex", gap: "0.75rem", marginTop: 16, flexWrap: "wrap" }}>
-          <button type="button" onClick={() => navigate("/login")}>Login</button>
-          <button type="button" onClick={() => navigate("/signup")}>Sign Up</button>
-        </div>
-      </div>
-    );
+    return <PublicArchiveEmptyState />;
   }
 
   async function deleteItem(id) {
@@ -454,7 +437,114 @@ function Pagination({ page, totalPages, onChange, windowStart, windowEnd, total 
   );
 }
 
-/* -------------------------------- empty ---------------------------------- */
+/* ------------------------------ public empty ----------------------------- */
+
+function PublicArchiveEmptyState() {
+  return (
+    <div className="space-y-10">
+      <header className="flex items-end justify-between gap-6 flex-wrap">
+        <div>
+          <Eyebrow>The archive · Filed readings</Eyebrow>
+          <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
+            Filed, dated, <span className="italic font-normal">kept.</span>
+          </h1>
+          <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
+            A private cabinet for your resume readings, ATS scores, and the reports you want to revisit later.
+          </p>
+        </div>
+        <Link
+          to="/login"
+          className="px-4 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
+        >
+          Sign In
+        </Link>
+      </header>
+
+      <div className="grid grid-cols-12 gap-6 lg:gap-10 items-start">
+        <div className="col-span-12 lg:col-span-8">
+          <Sheet className="relative p-8 md:p-10 text-center" lift>
+            <PaperClip />
+            <div className="mx-auto w-20 h-24 relative opacity-80 mb-6">
+              <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[-6deg]" />
+              <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[2deg] translate-x-1 translate-y-1" />
+              <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[6deg] translate-x-2 translate-y-2" />
+            </div>
+            <Eyebrow>Open the cabinet</Eyebrow>
+            <div className="mt-3 font-serif text-3xl">Your archive is ready to fill.</div>
+            <p className="mt-3 text-sm text-ink-muted max-w-xl mx-auto">
+              Create an account to keep every reading filed by date, compare ATS scores, and return to reports whenever you need them.
+            </p>
+            <div className="mt-6 flex justify-center gap-3 flex-wrap">
+              <Link
+                to="/login"
+                className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="px-5 py-3 border border-ink/15 hover:border-ink/50 text-sm rounded-sm transition-colors"
+              >
+                Create Account
+              </Link>
+            </div>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-3 text-left">
+              <div className="rounded-sm border border-rule bg-secondary/40 p-4">
+                <div className="eyebrow text-[10px]">Save each reading</div>
+                <div className="mt-2 text-sm text-ink-muted">
+                  Keep every analysis in a private archive for later review.
+                </div>
+              </div>
+              <div className="rounded-sm border border-rule bg-secondary/40 p-4">
+                <div className="eyebrow text-[10px]">Track progress</div>
+                <div className="mt-2 text-sm text-ink-muted">
+                  Compare ATS scores and watch your resumes improve over time.
+                </div>
+              </div>
+              <div className="rounded-sm border border-rule bg-secondary/40 p-4">
+                <div className="eyebrow text-[10px]">Return anytime</div>
+                <div className="mt-2 text-sm text-ink-muted">
+                  Reopen past reports without starting from scratch.
+                </div>
+              </div>
+            </div>
+          </Sheet>
+        </div>
+
+        <aside className="col-span-12 lg:col-span-4 space-y-6">
+          <StickyNote rotate={-2}>
+            <div className="text-[13.5px] leading-snug">
+              <div className="eyebrow text-[10px]">Cabinet note</div>
+              <div className="mt-1 font-serif">
+                The desk remembers what matters. A signed-in account keeps each reading close at hand.
+              </div>
+            </div>
+          </StickyNote>
+
+          <Sheet className="relative p-6">
+            <Eyebrow>Why create an account</Eyebrow>
+            <div className="rule-line mt-3 mb-4" />
+            <ul className="space-y-3 text-sm">
+              <li className="flex gap-3">
+                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="text-ink-muted">Access all your past analyses in one private archive.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="text-ink-muted">Compare ATS scores and track your resume improvements.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="text-ink-muted">Pick up where you left off without re-uploading files.</span>
+              </li>
+            </ul>
+          </Sheet>
+        </aside>
+      </div>
+    </div>
+  );
+}
 
 function EmptyCabinet() {
   return (
