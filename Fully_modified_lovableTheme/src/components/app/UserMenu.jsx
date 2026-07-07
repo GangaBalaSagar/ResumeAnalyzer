@@ -79,7 +79,7 @@ export default function UserMenu() {
           <div className="rule-line my-3" />
           <div className="space-y-1">
             <Link
-              to="/account"
+              to="/app/account"
               className="block px-2 py-1.5 rounded-sm text-sm text-ink-muted hover:text-ink hover:bg-secondary/60"
               role="menuitem"
             >

@@ -7,7 +7,24 @@ import { useReport } from "../../contexts/ReportContext.jsx";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
-const MAX_MB = 8;
+const MAX_MB = 5;
+
+// Validate file type and size before uploading
+function validateFile(file) {
+  const maxSize = 5 * 1024 * 1024; // 5 MB
+  const allowedExt = ['.pdf', '.docx'];
+  const ext = file.name.slice(((file.name.lastIndexOf('.') - 1) >>> 0) + 2).toLowerCase();
+  const dotExt = '.' + ext;
+  if (!allowedExt.includes(dotExt)) {
+    return 'Only PDF (.pdf) and Word (.docx) files are supported.';
+  }
+  if (file.size > maxSize) {
+    return 'File size exceeds the 5 MB limit.';
+  }
+  return null;
+}
+
+
 
 const READING_STAGES = [
   "Extracting text from the document…",
@@ -46,6 +63,22 @@ export default function Analyze() {
   const stageRef = useRef(null);
 
   // Restore saved JD
+// Validation helpers for file uploads
+function handleFileSelect(file) {
+  const validationError = validateFile(file);
+  if (validationError) {
+    setError(validationError);
+    setFile(null);
+  } else {
+    setError(null);
+    setFile(file);
+  }
+}
+
+function onPickFile(e) {
+  const f = e.target.files?.[0];
+  if (f) handleFileSelect(f);
+}
   useEffect(() => {
     const saved = localStorage.getItem(LS_JD_KEY);
     if (saved) setJd(saved);
@@ -172,7 +205,7 @@ export default function Analyze() {
     e.preventDefault();
     setDrag(false);
     const f = e.dataTransfer.files?.[0];
-    if (f) setFile(f);
+    if (f) handleFileSelect(f);
   }
 
   function clearFile() {
@@ -223,8 +256,8 @@ export default function Analyze() {
                   ref={fileInputRef}
                   type="file"
                   className="hidden"
-                  accept=".pdf,.doc,.docx,.txt"
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  accept=".pdf,.docx"
+                  onChange={onPickFile}
                 />
               </FileCard>
             ) : (
@@ -242,8 +275,8 @@ export default function Analyze() {
                   ref={fileInputRef}
                   type="file"
                   className="hidden"
-                  accept=".pdf,.doc,.docx,.txt"
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  accept=".pdf,.docx"
+                  onChange={onPickFile}
                 />
                 <PaperStack tilt={drag} />
                 <div className="mt-6 font-serif text-2xl md:text-[26px]">
