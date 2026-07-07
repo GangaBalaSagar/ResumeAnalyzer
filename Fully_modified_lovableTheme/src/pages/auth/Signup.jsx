@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import AuthLayout, {
   AuthField,
@@ -11,6 +11,8 @@ import AuthLayout, {
 export default function Signup() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/app/analyze";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,7 +42,7 @@ export default function Signup() {
       return;
     }
     if (data?.session) {
-      navigate("/upload", { replace: true });
+      navigate(from, { replace: true });
     } else {
       setNotice(
         "Check your inbox — we've sent a confirmation link to complete your registration."

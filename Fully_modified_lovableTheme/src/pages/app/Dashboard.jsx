@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import AtsScore from "../../components/app/AtsScore.jsx";
 import { useAuth } from "../../contexts/AuthContext.jsx";
+import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 
 /**
@@ -66,11 +67,20 @@ function fmtRelative(iso) {
 }
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
+  const { setCurrentReportId } = useReport();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [draft, setDraft] = useState({ jd: "", lastResult: null });
+
+  function handleOpenReport(id) {
+    if (id) {
+      setCurrentReportId(id);
+    }
+    navigate("/app/report");
+  }
 
   useEffect(() => {
     let alive = true;
@@ -180,12 +190,12 @@ export default function Dashboard() {
                         size="sm"
                       />
                     </div>
-                    <Link
-                      to="/analysis"
+                    <button
+                      onClick={() => handleOpenReport(draft.lastResult?.id)}
                       className="mt-3 inline-block story-link text-sm"
                     >
                       Reopen the report →
-                    </Link>
+                    </button>
                   </div>
                 )}
                 {draft.jd?.trim() && (
@@ -196,7 +206,7 @@ export default function Dashboard() {
                       {draft.jd.trim().length > 220 ? "…" : ""}"
                     </div>
                     <Link
-                      to="/upload"
+                      to="/app/analyze"
                       className="mt-3 inline-block story-link text-sm"
                     >
                       Keep drafting →
@@ -210,7 +220,7 @@ export default function Dashboard() {
                   No open folders. Place a resume on the desk to begin a fresh reading.
                 </p>
                 <Link
-                  to="/upload"
+                  to="/app/analyze"
                   className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
                 >
                   Begin a new analysis →
@@ -229,7 +239,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <Link
-                to="/archive"
+                to="/app/history"
                 className="eyebrow text-[10px] hover:text-ink text-ink-muted"
               >
                 Open the archive →
@@ -260,7 +270,7 @@ export default function Dashboard() {
                   Your first analysis will land here.
                 </div>
                 <Link
-                  to="/upload"
+                  to="/app/analyze"
                   className="mt-5 inline-block text-sm px-4 py-2 border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
                 >
                   Read a resume
@@ -289,12 +299,12 @@ export default function Dashboard() {
                     </div>
                     <div className="text-right shrink-0">
                       <AtsScore value={d.matchPercent} size="sm" />
-                      <Link
-                        to="/archive"
+                      <button
+                        onClick={() => handleOpenReport(d._id)}
                         className="mt-1 inline-block eyebrow text-[10px] text-ink-muted hover:text-ink"
                       >
                         Open
-                      </Link>
+                      </button>
                     </div>
                   </li>
                 ))}
@@ -348,19 +358,19 @@ export default function Dashboard() {
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
               <ShortcutRow
-                to="/upload"
+                to="/app/analyze"
                 num="01"
                 title="New analysis"
                 hint="Drop a resume, paste a JD"
               />
               <ShortcutRow
-                to="/archive"
+                to="/app/history"
                 num="02"
                 title="Past analyses"
                 hint="Every reading, filed and dated"
               />
               <ShortcutRow
-                to="/analysis"
+                onClick={() => handleOpenReport(draft.lastResult?.id)}
                 num="03"
                 title="Latest report"
                 hint="Reopen the most recent reading"
@@ -401,26 +411,37 @@ function StatCell({ label, value, accent = false }) {
   );
 }
 
-function ShortcutRow({ to, num, title, hint, muted = false }) {
+function ShortcutRow({ to, onClick, num, title, hint, muted = false }) {
+  const className = `group flex items-baseline gap-3 py-1 -mx-2 px-2 rounded-sm transition-colors hover:bg-secondary/50 w-full text-left ${
+    muted ? "opacity-70" : ""
+  }`;
+
+  const content = (
+    <>
+      <span className="font-serif text-[13px] text-ink-muted/70 w-5 shrink-0">
+        {num}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block font-serif text-[15px] text-ink group-hover:text-accent transition-colors">
+          {title}
+        </span>
+        <span className="block text-[12px] text-ink-muted">{hint}</span>
+      </span>
+      <span className="text-ink-muted/60 group-hover:text-ink transition-colors">→</span>
+    </>
+  );
+
   return (
     <li>
-      <Link
-        to={to}
-        className={`group flex items-baseline gap-3 py-1 -mx-2 px-2 rounded-sm transition-colors hover:bg-secondary/50 ${
-          muted ? "opacity-70" : ""
-        }`}
-      >
-        <span className="font-serif text-[13px] text-ink-muted/70 w-5 shrink-0">
-          {num}
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block font-serif text-[15px] text-ink group-hover:text-accent transition-colors">
-            {title}
-          </span>
-          <span className="block text-[12px] text-ink-muted">{hint}</span>
-        </span>
-        <span className="text-ink-muted/60 group-hover:text-ink transition-colors">→</span>
-      </Link>
+      {onClick ? (
+        <button type="button" onClick={onClick} className={className} disabled={muted}>
+          {content}
+        </button>
+      ) : (
+        <Link to={to} className={className}>
+          {content}
+        </Link>
+      )}
     </li>
   );
 }

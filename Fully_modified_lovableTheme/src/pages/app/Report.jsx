@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from "recharts";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import AtsScore, { bandFor, verdictFor } from "../../components/app/AtsScore.jsx";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import { useReport } from "../../contexts/ReportContext.jsx";
+import api from "../../api.js";
 
 /**
  * Report — the signature "expertly reviewed document" experience.
@@ -66,18 +69,80 @@ function suggestionsToList(s) {
     .filter(Boolean);
 }
 
+const DEMO_REPORT = {
+  matchPercent: 87,
+  matchedSkills: ["React", "JavaScript", "Node.js", "REST APIs"],
+  missingSkills: ["TypeScript", "Testing", "Docker"],
+  suggestions: [
+    "Add TypeScript experience to improve alignment.",
+    "Include unit and integration testing examples.",
+    "Highlight containerization and deployment experience."
+  ],
+  jobDescription: "We are looking for a Senior React Developer to join our team. You will build user interfaces with React and JavaScript, and design backend services with Node.js and REST APIs. Additionally, we expect experience with TypeScript, unit Testing, and containerization using Docker.",
+  resumeFilename: "demo_resume_frontend.pdf",
+  createdAt: new Date().toISOString()
+};
+
 export default function Report() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { currentReportId } = useReport();
   const [payload, setPayload] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LS_LAST_RESULT);
-      if (raw) setPayload(JSON.parse(raw));
-    } catch {}
-  }, []);
+    if (!user) {
+      setPayload(DEMO_REPORT);
+      setError(null);
+      setLoading(false);
+      return;
+    }
 
-  const result = payload?.analysis;
+    if (!currentReportId) {
+      try {
+        const raw = localStorage.getItem(LS_LAST_RESULT);
+        if (raw) {
+          setPayload(JSON.parse(raw));
+          setError(null);
+          setLoading(false);
+          return;
+        }
+      } catch {}
+      setPayload(null);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+
+    api
+      .get(`/analyses/${currentReportId}`)
+      .then((res) => {
+        if (!isMounted) return;
+        setPayload(res.data);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        setPayload(null);
+        setError(err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [currentReportId, user]);
+
+  const result = payload?.analysis || payload;
   const jd = payload?.jobDescription ?? "";
   const filename =
     payload?.resumeFilename || payload?.filename || result?.resumeFilename || "Untitled document";
@@ -115,6 +180,53 @@ export default function Report() {
     window.print();
   }
 
+  if (loading) {
+    return (
+      <div className="max-w-3xl mx-auto text-center py-16">
+        <Sheet className="relative p-10">
+          <PaperClip />
+          <Eyebrow>One moment</Eyebrow>
+          <div className="mt-2 font-serif text-2xl">Reading the report…</div>
+          <div className="rule-line my-5" />
+          <p className="text-sm text-ink-muted">
+            We are fetching the analysis details from the archives.
+          </p>
+        </Sheet>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-3xl mx-auto text-center py-16">
+        <Sheet className="relative p-10">
+          <PaperClip />
+          <Eyebrow>Trouble</Eyebrow>
+          <div className="mt-2 font-serif text-2xl">Unable to load report</div>
+          <div className="rule-line my-5" />
+          <p className="text-sm text-ink-muted mb-6">
+            We couldn't load this analysis right now. This can happen if the report was deleted, the link is invalid, or the network request failed.
+          </p>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
+            >
+              Retry
+            </button>
+            <Link
+              to="/app/dashboard"
+              className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
+            >
+              Back to Dashboard
+            </Link>
+          </div>
+        </Sheet>
+      </div>
+    );
+  }
+
   if (!result) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
@@ -126,7 +238,7 @@ export default function Report() {
             Place a resume and paste a job description to begin a new analysis.
           </p>
           <Link
-            to="/upload"
+            to="/app/analyze"
             className="inline-block mt-8 px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90"
           >
             Begin an analysis →
@@ -159,6 +271,33 @@ export default function Report() {
         }
       `}</style>
 
+      {!user && (
+        <Sheet className="relative p-8 md:p-10 border border-accent/20 bg-accent/5 no-print" lift>
+          <PaperClip />
+          <Eyebrow>📊 Demo Report</Eyebrow>
+          <h2 className="font-serif text-2xl mt-2 mb-3">This is a sample ATS analysis.</h2>
+          <p className="text-[15px] leading-relaxed text-ink-muted mb-6">
+            Sign in to analyze your own resume, generate customized ATS reports, and track your improvements over time.
+          </p>
+          <div className="flex items-center gap-3 flex-wrap">
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors bg-paper"
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/signup")}
+              className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
+            >
+              Sign Up
+            </button>
+          </div>
+        </Sheet>
+      )}
+
       {/* Masthead — treat the page like a document cover */}
       <header className="flex items-end justify-between gap-6 flex-wrap">
         <div>
@@ -185,7 +324,7 @@ export default function Report() {
             Print report
           </button>
           <Link
-            to="/upload"
+            to="/app/analyze"
             className="px-4 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
           >
             New analysis →

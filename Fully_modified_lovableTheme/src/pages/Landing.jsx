@@ -22,7 +22,7 @@ export default function Landing() {
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
-              to="/upload"
+              to="/app/analyze"
               className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
             >
               Place a resume on the desk
@@ -183,7 +183,7 @@ export default function Landing() {
           </p>
           <div className="mt-10 flex flex-wrap gap-3 justify-center">
             <Link
-              to="/upload"
+              to="/app/analyze"
               className="px-6 py-3.5 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
             >
               Begin an analysis

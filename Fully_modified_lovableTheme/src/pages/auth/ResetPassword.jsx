@@ -52,7 +52,7 @@ export default function ResetPassword() {
       return;
     }
     setNotice("Password updated. Redirecting you to the desk…");
-    setTimeout(() => navigate("/upload", { replace: true }), 1200);
+    setTimeout(() => navigate("/app/analyze", { replace: true }), 1200);
   };
 
   return (

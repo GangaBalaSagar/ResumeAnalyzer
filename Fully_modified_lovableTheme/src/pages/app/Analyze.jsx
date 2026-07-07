@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import api from "../../api.js";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import { useReport } from "../../contexts/ReportContext.jsx";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -29,6 +31,9 @@ function fileKind(name = "") {
 
 export default function Analyze() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { setCurrentReportId } = useReport();
+  const [showGuestModal, setShowGuestModal] = useState(false);
   const [file, setFile] = useState(null);
   const [jd, setJd] = useState("");
   const [drag, setDrag] = useState(false);
@@ -80,6 +85,11 @@ export default function Analyze() {
       return;
     }
 
+    if (!user) {
+      setShowGuestModal(true);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("jobDescription", jd);
@@ -106,12 +116,16 @@ export default function Analyze() {
       setProgress(100);
       setStageIdx(READING_STAGES.length - 1);
 
+      const id = res.data?.id;
+      if (id) {
+        setCurrentReportId(id);
+      }
       const payload = { ...res.data, jobDescription: jd };
       try {
         localStorage.setItem(LS_LAST_RESULT, JSON.stringify(payload));
       } catch {}
 
-      setTimeout(() => navigate("/analysis"), 450);
+      setTimeout(() => navigate("/app/report"), 450);
     } catch (err) {
       if (progressRef.current) clearInterval(progressRef.current);
       if (stageRef.current) clearInterval(stageRef.current);
@@ -125,6 +139,20 @@ export default function Analyze() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleOpenLogin() {
+    setShowGuestModal(false);
+    navigate("/login", {
+      state: { from: { pathname: "/app/analyze" } },
+    });
+  }
+
+  function handleOpenSignup() {
+    setShowGuestModal(false);
+    navigate("/signup", {
+      state: { from: { pathname: "/app/analyze" } },
+    });
   }
 
   function handleReset() {
@@ -346,6 +374,56 @@ export default function Analyze() {
           </Sheet>
         </aside>
       </div>
+
+      {showGuestModal && (
+        <div className="fixed inset-0 bg-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-up">
+          <Sheet className="relative p-8 md:p-10 max-w-md w-full" dogEar>
+            <PaperClip />
+            <Eyebrow>🔒 Authentication Required</Eyebrow>
+            <h3 className="font-serif text-2xl mt-3 mb-4">Analyze Your Resume</h3>
+            <p className="text-[15px] leading-relaxed text-ink-muted">
+              Create a free account to:
+            </p>
+            <ul className="mt-4 mb-6 space-y-2.5 text-sm">
+              {[
+                "Analyze your own resume",
+                "Generate ATS reports",
+                "Save analysis history",
+                "Track improvements",
+              ].map((item) => (
+                <li key={item} className="flex gap-2.5 items-baseline">
+                  <span className="text-accent font-serif shrink-0">§</span>
+                  <span className="text-ink-muted">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="rule-line my-5" />
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                type="button"
+                onClick={handleOpenLogin}
+                className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                onClick={handleOpenSignup}
+                className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
+              >
+                Sign Up
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowGuestModal(false)}
+                className="text-sm text-ink-muted hover:text-ink transition-colors px-3 py-2"
+              >
+                Close
+              </button>
+            </div>
+          </Sheet>
+        </div>
+      )}
     </div>
   );
 }

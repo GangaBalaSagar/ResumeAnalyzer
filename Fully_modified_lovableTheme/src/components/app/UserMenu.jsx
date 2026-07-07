@@ -13,9 +13,7 @@ function initials(nameOrEmail = "") {
 }
 
 /**
- * UserMenu — an editorial "signature card" that opens a small paper
- * dropdown with account links and sign-out. Reuses .sheet and existing
- * button styles; no shadcn.
+ * UserMenu — a compact editor-style dropdown for dashboard, account and sign-out.
  */
 export default function UserMenu() {
   const { user, signOut } = useAuth();
@@ -86,13 +84,6 @@ export default function UserMenu() {
               role="menuitem"
             >
               Account
-            </Link>
-            <Link
-              to="/archive"
-              className="block px-2 py-1.5 rounded-sm text-sm text-ink-muted hover:text-ink hover:bg-secondary/60"
-              role="menuitem"
-            >
-              Past Analyses
             </Link>
           </div>
           <div className="rule-line my-3" />

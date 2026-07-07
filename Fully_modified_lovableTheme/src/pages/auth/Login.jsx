@@ -15,7 +15,7 @@ export default function Login() {
   const { executePendingAction, clearPendingAction } = useAuthModal();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/upload";
+  const from = location.state?.from?.pathname || "/app/analyze";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

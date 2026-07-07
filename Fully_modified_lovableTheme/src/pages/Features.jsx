@@ -148,7 +148,7 @@ export default function Features() {
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
-              to="/upload"
+              to="/app/analyze"
               className="px-6 py-3.5 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
             >
               Begin an analysis

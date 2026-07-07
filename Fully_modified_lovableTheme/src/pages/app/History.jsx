@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import AtsScore, { bandFor } from "../../components/app/AtsScore.jsx";
+import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 
 /**
  * History — an archival cabinet of previously analyzed resumes.
@@ -41,14 +43,23 @@ function fmtTime(iso) {
 }
 
 export default function History() {
+  const navigate = useNavigate();
+  const { setCurrentReportId } = useReport();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [selected, setSelected] = useState(null);
-  const [detailLoading, setDetailLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const { user } = useAuth();
+  const loadGuard = useRef(false);
+
+  function handleViewReport(id) {
+    if (id) {
+      setCurrentReportId(id);
+    }
+    navigate("/app/report");
+  }
 
   async function load() {
     try {
@@ -64,19 +75,44 @@ export default function History() {
   }
 
   useEffect(() => {
-    load();
-  }, []);
-
-  async function openDetail(id) {
-    try {
-      setDetailLoading(true);
-      const res = await api.get(`/analyses/${id}`);
-      setSelected(res.data);
-    } catch (err) {
-      setSelected({ error: err?.response?.data?.error || err?.message || "Could not open this record." });
-    } finally {
-      setDetailLoading(false);
+    // Clear state when unauthenticated
+    if (!user) {
+      setItems([]);
+      setLoading(false);
+      setError(null);
+      setQuery("");
+      setPage(1);
+      setDeletingId(null);
+      loadGuard.current = false;
+      return;
     }
+
+    if (loadGuard.current) return;
+
+    loadGuard.current = true;
+    load();
+  }, [user]);
+
+
+  if (!user) {
+    return (
+      <div className="card">
+        <h3>📂 Analysis History</h3>
+        <p style={{ marginTop: 12 }}>
+          Your analysis history will appear here after you create an account and analyze your resume.
+        </p>
+        <ul style={{ paddingLeft: "1.25rem", marginTop: 12 }}>
+          <li>View previous ATS reports</li>
+          <li>Track resume improvements</li>
+          <li>Compare ATS scores</li>
+          <li>Delete old analyses</li>
+        </ul>
+        <div style={{ display: "flex", gap: "0.75rem", marginTop: 16, flexWrap: "wrap" }}>
+          <button type="button" onClick={() => navigate("/login")}>Login</button>
+          <button type="button" onClick={() => navigate("/signup")}>Sign Up</button>
+        </div>
+      </div>
+    );
   }
 
   async function deleteItem(id) {
@@ -85,7 +121,6 @@ export default function History() {
       setDeletingId(id);
       await api.delete(`/analyses/${id}`);
       setItems((cur) => cur.filter((x) => x._id !== id));
-      if (selected?._id === id) setSelected(null);
     } catch (err) {
       setError(err?.response?.data?.error || err?.message || "Could not delete this record.");
     } finally {
@@ -137,7 +172,7 @@ export default function History() {
           </p>
         </div>
         <Link
-          to="/upload"
+          to="/app/analyze"
           className="px-4 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
         >
           New analysis →
@@ -242,8 +277,8 @@ export default function History() {
                     <ArchiveRow
                       key={d._id}
                       item={d}
-                      active={selected?._id === d._id}
-                      onOpen={() => openDetail(d._id)}
+                      active={false}
+                      onOpen={() => handleViewReport(d._id)}
                       onDelete={() => deleteItem(d._id)}
                       deleting={deletingId === d._id}
                     />
@@ -311,15 +346,6 @@ export default function History() {
         </aside>
       </div>
 
-      {/* Detail sheet */}
-      {selected && (
-        <DetailModal
-          item={selected}
-          loading={detailLoading}
-          onClose={() => setSelected(null)}
-          onDelete={() => selected?._id && deleteItem(selected._id)}
-        />
-      )}
     </div>
   );
 }
@@ -446,7 +472,7 @@ function EmptyCabinet() {
         Your archive begins with the first analysis.
       </p>
       <Link
-        to="/upload"
+        to="/app/analyze"
         className="mt-6 inline-block px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
       >
         Read your first resume →
@@ -455,121 +481,6 @@ function EmptyCabinet() {
   );
 }
 
-/* ----------------------------- detail modal ----------------------------- */
-
-function DetailModal({ item, loading, onClose, onDelete }) {
-  const p = typeof item.matchPercent === "number" ? item.matchPercent : null;
-  const matched = item.matchedSkills ?? [];
-  const missing = item.missingSkills ?? [];
-  const suggestions = Array.isArray(item.suggestions)
-    ? item.suggestions.join("\n")
-    : (item.suggestions || "");
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 backdrop-blur-sm p-4 animate-fade-up"
-      onClick={onClose}
-    >
-      <div
-        className="bg-paper border border-rule rounded-sm shadow-paper-lift max-w-3xl w-full max-h-[85vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="p-6 md:p-8 border-b border-rule flex items-start justify-between gap-6">
-          <div className="min-w-0 flex-1">
-            <Eyebrow>Filed reading</Eyebrow>
-            {item.error ? (
-              <div className="mt-2 font-serif text-xl text-destructive">
-                {item.error}
-              </div>
-            ) : (
-              <>
-                <div className="mt-2 font-serif text-2xl truncate">
-                  {item.resumeFilename || "Untitled"}
-                </div>
-                <div className="mt-1 text-[12px] text-ink-muted font-mono">
-                  Filed {fmtDate(item.createdAt)} · {fmtTime(item.createdAt)}
-                </div>
-              </>
-            )}
-          </div>
-          <div className="text-right shrink-0">
-            <div className="eyebrow text-[10px]">{bandFor(p)}</div>
-            <div className="mt-1">
-              <AtsScore value={p} size="md" />
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6 md:p-8 overflow-y-auto space-y-6">
-          {loading ? (
-            <div className="text-sm text-ink-muted italic font-serif">Opening the folder…</div>
-          ) : item.error ? null : (
-            <>
-              <section>
-                <Eyebrow>Matched skills</Eyebrow>
-                <div className="rule-line mt-2 mb-3" />
-                {matched.length === 0 ? (
-                  <div className="text-sm text-ink-muted italic font-serif">None on the page.</div>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {matched.map((s, i) => (
-                      <span key={i} className="px-2.5 py-1 text-xs rounded-sm bg-accent/10 text-ink border border-accent/30">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </section>
-
-              <section>
-                <Eyebrow>Missing skills</Eyebrow>
-                <div className="rule-line mt-2 mb-3" />
-                {missing.length === 0 ? (
-                  <div className="text-sm text-ink-muted italic font-serif">Nothing missing.</div>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {missing.map((s, i) => (
-                      <span key={i} className="px-2.5 py-1 text-xs rounded-sm bg-destructive/10 text-destructive border border-destructive/30">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </section>
-
-              <section>
-                <Eyebrow>Suggestions</Eyebrow>
-                <div className="rule-line mt-2 mb-3" />
-                <pre className="font-serif text-[15px] leading-relaxed whitespace-pre-wrap text-ink">
-                  {suggestions || "—"}
-                </pre>
-              </section>
-            </>
-          )}
-        </div>
-
-        <div className="p-5 md:p-6 border-t border-rule flex items-center justify-between gap-3 flex-wrap">
-          <button
-            type="button"
-            onClick={onDelete}
-            className="text-sm px-3 py-1.5 text-destructive border border-destructive/30 hover:bg-destructive/5 rounded-sm transition-colors"
-          >
-            Delete this reading
-          </button>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="text-sm px-3 py-1.5 border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ------------------------------ atoms ------------------------------ */
 

@@ -1,6 +1,8 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext.jsx";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Eyebrow } from "../paper.jsx";
+import AppHeader from "../app/AppHeader.jsx";
+import MobileNav from "../app/MobileNav.jsx";
 
 const NAV = [
   { to: "/", label: "Home", end: true },
@@ -16,81 +18,6 @@ function Mark() {
       <div className="absolute inset-0 flex items-center justify-center font-serif text-[13px] font-semibold">R</div>
       <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-1.5 bg-accent/80 rounded-b-sm" />
     </div>
-  );
-}
-
-export function PublicHeader() {
-  const { user } = useAuth();
-  return (
-    <header className="border-b border-rule/60 bg-background/85 backdrop-blur-sm sticky top-0 z-40">
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2.5">
-          <Mark />
-          <div className="leading-tight">
-            <div className="font-serif text-[17px] tracking-tight">Resume Analyzer</div>
-            <div className="eyebrow text-[10px]">The Recruiter's Desk</div>
-          </div>
-        </Link>
-
-        <nav className="hidden md:flex items-center gap-7 text-sm text-ink-muted">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.end}
-              className={({ isActive }) =>
-                `story-link ${isActive ? "text-ink" : ""}`
-              }
-            >
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          {user ? (
-            <Link
-              to="/app"
-              className="text-sm px-4 py-2 bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
-            >
-              Open the desk
-            </Link>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="hidden sm:inline-flex text-sm px-3 py-2 text-ink-muted hover:text-ink transition-colors"
-              >
-                Sign in
-              </Link>
-              <Link
-                to="/upload"
-                className="text-sm px-4 py-2 bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
-              >
-                Begin an analysis
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-      {/* Mobile nav strip */}
-      <nav className="md:hidden border-t border-rule/60 bg-background/85">
-        <div className="mx-auto max-w-7xl px-6 py-2 flex items-center gap-5 text-sm text-ink-muted overflow-x-auto">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.end}
-              className={({ isActive }) =>
-                `py-1.5 whitespace-nowrap ${isActive ? "text-ink font-serif italic" : "hover:text-ink"}`
-              }
-            >
-              {n.label}
-            </NavLink>
-          ))}
-        </div>
-      </nav>
-    </header>
   );
 }
 
@@ -125,7 +52,7 @@ export function PublicFooter() {
           <ul className="mt-3 space-y-2 text-ink-muted">
             <li><Link to="/login" className="hover:text-ink transition-colors">Sign in</Link></li>
             <li><Link to="/signup" className="hover:text-ink transition-colors">Request a seat</Link></li>
-            <li><Link to="/upload" className="hover:text-ink transition-colors">Begin an analysis</Link></li>
+            <li><Link to="/app/analyze" className="hover:text-ink transition-colors">Begin an analysis</Link></li>
           </ul>
         </div>
       </div>
@@ -147,13 +74,12 @@ export function PublicFooter() {
  * Wraps children in a Desk background, sticky header, and rich footer.
  */
 export default function PublicSite({ children }) {
-  const { pathname } = useLocation();
-  // Reset scroll on route change would go here if we needed it; router keeps
-  // it simple for now.
-  void pathname;
+  const [navOpen, setNavOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-desk flex flex-col">
-      <PublicHeader />
+      <AppHeader onOpenMobileNav={() => setNavOpen(true)} />
+      <MobileNav open={navOpen} onClose={() => setNavOpen(false)} />
       <main className="flex-1 animate-page-in">{children}</main>
       <PublicFooter />
     </div>
@@ -184,4 +110,3 @@ export function PageIntro({ eyebrow, title, italic, lede }) {
     </section>
   );
 }
-// Eyebrow is imported from paper.jsx (single source of truth).

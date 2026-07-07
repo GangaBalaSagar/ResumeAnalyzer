@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Landing from "../pages/Landing.jsx";
 import Features from "../pages/Features.jsx";
 import FAQ from "../pages/FAQ.jsx";
@@ -29,20 +29,13 @@ export default function AppRoutes() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* Authenticated shell — pathless layout route.
-          Any path listed here mounts inside AppLayout via <Outlet />. */}
-      <Route
-        element={
-          <AuthGate>
-            <AppLayout />
-          </AuthGate>
-        }
-      >
-        <Route path="/app" element={<Dashboard />} />
-        <Route path="/upload" element={<Analyze />} />
-        <Route path="/analysis" element={<Report />} />
-        <Route path="/archive" element={<History />} />
-        <Route path="/account" element={<Account />} />
+      <Route element={<AppLayout />}>
+        <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
+        <Route path="/app/analyze" element={<Analyze />} />
+        <Route path="/app/report" element={<Report />} />
+        <Route path="/app/history" element={<History />} />
+        <Route path="/app/dashboard" element={<AuthGate><Dashboard /></AuthGate>} />
+        <Route path="/app/account" element={<AuthGate><Account /></AuthGate>} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
