@@ -1,15 +1,72 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import PublicSite from "../components/public/PublicSite.jsx";
 import { Sheet, StickyNote, Eyebrow, PaperClip } from "../components/paper.jsx";
 import AtsScore from "../components/app/AtsScore.jsx";
 
 export default function Landing() {
+  const heroStageRef = useRef(null);
+
+  useEffect(() => {
+    const stage = heroStageRef.current;
+    if (!stage || typeof window === "undefined") return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+    const setOffset = (x, y) => {
+      stage.style.setProperty("--hero-x", x.toFixed(3));
+      stage.style.setProperty("--hero-y", y.toFixed(3));
+    };
+
+    setOffset(0, 0);
+
+    if (reducedMotion.matches || !finePointer.matches) {
+      return undefined;
+    }
+
+    let frame = 0;
+    let rect = stage.getBoundingClientRect();
+
+    const clamp = (value) => Math.max(-1, Math.min(1, value));
+    const updateRect = () => {
+      rect = stage.getBoundingClientRect();
+    };
+    const handleEnter = () => {
+      updateRect();
+    };
+    const handleMove = (event) => {
+      const x = clamp(((event.clientX - rect.left) / rect.width) * 2 - 1);
+      const y = clamp(((event.clientY - rect.top) / rect.height) * 2 - 1);
+
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => setOffset(x, y));
+    };
+    const handleLeave = () => {
+      window.cancelAnimationFrame(frame);
+      setOffset(0, 0);
+    };
+
+    stage.addEventListener("pointerenter", handleEnter);
+    stage.addEventListener("pointermove", handleMove);
+    stage.addEventListener("pointerleave", handleLeave);
+    window.addEventListener("resize", updateRect);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      stage.removeEventListener("pointerenter", handleEnter);
+      stage.removeEventListener("pointermove", handleMove);
+      stage.removeEventListener("pointerleave", handleLeave);
+      window.removeEventListener("resize", updateRect);
+    };
+  }, []);
+
   return (
     <PublicSite>
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        <div className="lg:col-span-7 animate-fade-up">
-          <Eyebrow>Vol. I · Resume meets role</Eyebrow>
+        <div className="lg:col-span-7 motion-safe:animate-fade-up">
+          <Eyebrow>Vol. I Â· Resume meets role</Eyebrow>
           <h1 className="mt-6 font-serif text-[52px] md:text-[64px] leading-[1.02] tracking-tight">
             Your resume,
             <br />
@@ -17,7 +74,7 @@ export default function Landing() {
           </h1>
           <p className="mt-7 text-[17px] leading-relaxed text-ink-muted max-w-xl">
             Drop a resume on the desk, paste the job description, and receive an
-            AI-powered analysis — ATS match score, matched and missing skills,
+            AI-powered analysis â€” ATS match score, matched and missing skills,
             and targeted suggestions to improve your fit.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -50,33 +107,47 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="lg:col-span-5 relative h-[560px] hidden lg:block">
-          <div className="absolute right-12 top-8 w-[320px] h-[440px] sheet sheet-lift dog-ear p-7 rotate-[3deg]">
-            <PaperClip />
-            <div className="eyebrow">Resume · Analysis №412</div>
-            <div className="mt-3 font-serif text-xl leading-tight">Elena Marsh</div>
-            <div className="text-xs text-ink-muted">Senior Product Designer</div>
-            <div className="rule-line mt-4" />
-            <div className="mt-6 eyebrow">Skills</div>
-            <div className="mt-2 space-y-2">
-              <div className="h-1.5 w-full bg-secondary rounded" />
-              <div className="h-1.5 w-[80%] bg-secondary rounded" />
-              <div className="h-1.5 w-[60%] bg-secondary rounded" />
-              <div className="h-1.5 w-[90%] bg-secondary rounded" />
-            </div>
-            <div className="absolute bottom-6 right-7">
-              <AtsScore value={92} size="md" />
+        <div
+          ref={heroStageRef}
+          className="landing-hero-stage lg:col-span-5 relative h-[560px] hidden lg:block motion-safe:animate-fade-up"
+          style={{ animationDelay: "120ms" }}
+        >
+          <div
+            className="landing-hero-layer landing-hero-layer--sheet absolute right-12 top-8 w-[320px] h-[440px] motion-safe:animate-fade-up"
+            style={{ animationDelay: "160ms" }}
+          >
+            <div className="sheet sheet-lift dog-ear p-7 rotate-[3deg] h-full">
+              <PaperClip />
+              <div className="eyebrow">Resume Â· Analysis â„–412</div>
+              <div className="mt-3 font-serif text-xl leading-tight">Elena Marsh</div>
+              <div className="text-xs text-ink-muted">Senior Product Designer</div>
+              <div className="rule-line mt-4" />
+              <div className="mt-6 eyebrow">Skills</div>
+              <div className="mt-2 space-y-2">
+                <div className="h-1.5 w-full bg-secondary rounded" />
+                <div className="h-1.5 w-[80%] bg-secondary rounded" />
+                <div className="h-1.5 w-[60%] bg-secondary rounded" />
+                <div className="h-1.5 w-[90%] bg-secondary rounded" />
+              </div>
+              <div className="absolute bottom-6 right-7">
+                <AtsScore value={92} size="md" />
+              </div>
             </div>
           </div>
 
           <StickyNote className="absolute left-2 top-72 w-[200px]">
-            "Lead with outcomes — your impact line is buried under the role title."
+            "Lead with outcomes â€” your impact line is buried under the role title."
           </StickyNote>
 
-          <div className="absolute left-8 bottom-2 w-[220px] sheet p-4 rotate-[4deg]">
-            <Eyebrow>Match · Senior PM</Eyebrow>
-            <div className="mt-1"><AtsScore value={86} size="sm" /></div>
-            <div className="mt-1 text-xs text-ink-muted">Strong on craft, light on metrics.</div>
+          <div
+            className="landing-hero-layer landing-hero-layer--card absolute left-8 bottom-2 w-[220px] motion-safe:animate-fade-up"
+            style={{ animationDelay: "240ms" }}
+          >
+            <div className="sheet sheet-lift p-4 rotate-[4deg]">
+              <Eyebrow>Match Â· Senior PM</Eyebrow>
+              <div className="mt-1"><AtsScore value={86} size="sm" /></div>
+              <div className="mt-1 text-xs text-ink-muted">Strong on craft, light on metrics.</div>
+            </div>
           </div>
         </div>
       </section>
@@ -91,7 +162,7 @@ export default function Landing() {
                 Resume, job description,<br />one clear result.
               </h2>
               <p className="mt-5 text-ink-muted text-[15px] leading-relaxed">
-                Your resume is compared against the job description — skill by skill.
+                Your resume is compared against the job description â€” skill by skill.
                 Each analysis is laid out clearly, marked with insights, and filed
                 in your archive.
               </p>
@@ -99,7 +170,7 @@ export default function Landing() {
                 to="/features"
                 className="story-link inline-block mt-6 text-sm text-ink"
               >
-                Explore all features →
+                Explore all features â†’
               </Link>
             </div>
             <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -111,12 +182,12 @@ export default function Landing() {
               ].map((c, i) => (
                 <Sheet key={c.t} className="p-6" lift dogEar={i % 2 === 0}>
                   <div className="flex items-baseline justify-between">
-                    <Eyebrow>Sheet № {c.n}</Eyebrow>
+                    <Eyebrow>Sheet â„– {c.n}</Eyebrow>
                   </div>
                   <div className="mt-3 font-serif text-2xl">{c.t}</div>
                   <p className="mt-2 text-sm text-ink-muted">{c.d}</p>
                   <div className="rule-line mt-6" />
-                  <div className="mt-3 text-xs text-ink-muted">Filed under · Active analyses</div>
+                  <div className="mt-3 text-xs text-ink-muted">Filed under Â· Active analyses</div>
                 </Sheet>
               ))}
             </div>
@@ -124,7 +195,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Workflow — three-step reading */}
+      {/* Workflow â€” three-step reading */}
       <section className="py-20 md:py-24 border-t border-rule/60">
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
@@ -165,7 +236,7 @@ export default function Landing() {
             "Upload. Compare. Improve. The fastest way to know if your resume fits the role."
           </blockquote>
           <div className="mt-6 text-sm text-ink-muted">
-            — The Recruiter's Desk
+            â€” The Recruiter's Desk
           </div>
         </div>
       </section>

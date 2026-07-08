@@ -27,11 +27,11 @@ function validateFile(file) {
 
 
 const READING_STAGES = [
-  "Extracting text from the document…",
+  "Reading the resume…",
   "Parsing sections and headings…",
-  "Comparing to the job description…",
-  "Marking matched and missing keywords…",
-  "Composing insights and suggestions…",
+  "Comparing against the role brief…",
+  "Marking matched and missing requirements…",
+  "Drafting review notes…",
 ];
 
 function fmtSize(bytes) {
@@ -106,15 +106,15 @@ function onPickFile(e) {
   async function handleAnalyze() {
     setError(null);
     if (!file) {
-      setError("Please upload a resume before starting the analysis.");
+      setError("Please attach a resume before starting the review.");
       return;
     }
     if (file.size > MAX_MB * 1024 * 1024) {
-      setError(`The document is larger than ${MAX_MB} MB.`);
+      setError(`The resume is larger than ${MAX_MB} MB.`);
       return;
     }
     if (!jd.trim()) {
-      setError("Please paste the job description so the desk knows what to compare against.");
+      setError("Please paste the role brief so the desk knows what to compare against.");
       return;
     }
 
@@ -167,7 +167,7 @@ function onPickFile(e) {
       setError(
         err?.response?.data?.error ||
           err?.message ||
-          "The desk couldn't complete the analysis. Please try again."
+          "The desk couldn't complete the review. Please try again."
       );
     } finally {
       setLoading(false);
@@ -219,15 +219,15 @@ function onPickFile(e) {
     <div className="space-y-10">
       {/* Page header */}
       <header>
-        <Eyebrow>The workbench · Analyze</Eyebrow>
+        <Eyebrow>The workbench · Review</Eyebrow>
         <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
           Place a resume
           <br />
           <span className="italic font-normal">on the desk.</span>
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-          Drop a PDF or DOCX, paste the job description, and the desk will compare
-          what's on the page against what the role asks for.
+          Drop a PDF or DOCX, paste the role brief, and the desk will compare the
+          resume against the requirements.
         </p>
       </header>
 
@@ -235,17 +235,17 @@ function onPickFile(e) {
         {/* WORKBENCH — main sheet */}
         <div className="col-span-12 lg:col-span-8 space-y-6">
           {/* Document drop */}
-          <Sheet className="relative p-6 md:p-10" dogEar>
+          <Sheet className="relative p-6 md:p-10" dogEar lift>
             <PaperClip />
             <div className="flex items-baseline justify-between gap-4">
               <div>
-                <Eyebrow>Step 01 · The document</Eyebrow>
+                <Eyebrow>Step 01 · The resume</Eyebrow>
                 <div className="mt-2 font-serif text-2xl leading-tight">
-                  Attach the resume
+                  Attach the candidate resume
                 </div>
               </div>
               <span className="hidden md:block eyebrow text-[10px]">
-                PDF · DOCX · TXT · ≤ {MAX_MB} MB
+                PDF · DOCX · ≤ {MAX_MB} MB
               </span>
             </div>
             <div className="rule-line my-6" />
@@ -267,8 +267,8 @@ function onPickFile(e) {
                 onDrop={onDrop}
                 className={`group block relative border border-dashed rounded-sm py-14 md:py-16 px-6 md:px-8 text-center cursor-pointer transition-all ${
                   drag
-                    ? "border-accent bg-accent/5 scale-[1.005]"
-                    : "border-rule hover:border-ink/40 hover:bg-secondary/30"
+                    ? "border-accent bg-accent/5 scale-[1.003]"
+                    : "border-rule hover:border-ink/40 hover:bg-secondary/25"
                 }`}
               >
                 <input
@@ -280,23 +280,23 @@ function onPickFile(e) {
                 />
                 <PaperStack tilt={drag} />
                 <div className="mt-6 font-serif text-2xl md:text-[26px]">
-                  {drag ? "Set it down here." : "Drop the document on the desk"}
+                  {drag ? "Set it down here." : "Drop the resume on the desk"}
                 </div>
                 <div className="mt-2 text-sm text-ink-muted">
                   or <span className="underline underline-offset-4 decoration-rule group-hover:decoration-ink">click to choose</span>
-                  <span className="md:hidden"> · PDF, DOCX, TXT · ≤ {MAX_MB} MB</span>
+                  <span className="md:hidden"> · PDF, DOCX · ≤ {MAX_MB} MB</span>
                 </div>
               </label>
             )}
           </Sheet>
 
           {/* Job description — editorial writing sheet */}
-          <Sheet className="relative p-6 md:p-10">
+          <Sheet className="relative p-6 md:p-10" lift>
             <div className="flex items-baseline justify-between gap-4">
               <div>
-                <Eyebrow>Step 02 · The brief</Eyebrow>
+                <Eyebrow>Step 02 · The role brief</Eyebrow>
                 <div className="mt-2 font-serif text-2xl leading-tight">
-                  Paste the job description
+                  Paste the role brief
                 </div>
               </div>
               <span className="eyebrow text-[10px]">
@@ -312,13 +312,13 @@ function onPickFile(e) {
                 rows={10}
                 value={jd}
                 onChange={(e) => setJd(e.target.value)}
-                placeholder="Paste the job description here, exactly as posted…"
+                placeholder="Paste the role brief here, exactly as posted…"
                 className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-y min-h-[280px]"
               />
             </div>
 
             <div className="mt-3 text-[11px] text-ink-muted italic font-serif">
-              We save your draft as you type — it will still be here if you step away.
+              The desk keeps your draft as you type, so it will still be here if you step away.
             </div>
           </Sheet>
 
@@ -332,7 +332,7 @@ function onPickFile(e) {
           {/* Actions */}
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="text-xs text-ink-muted italic font-serif">
-              Your document is private. Filed under your archive only.
+              Your review is private. Filed under your archive only.
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -349,7 +349,7 @@ function onPickFile(e) {
                 disabled={!canSubmit}
                 className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {loading ? "Analyzing…" : "Begin the analysis →"}
+                {loading ? "Reviewing…" : "Begin review →"}
               </button>
             </div>
           </div>
@@ -364,20 +364,20 @@ function onPickFile(e) {
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              "Upload the version you'd actually send. The desk analyzes the document,
-              not the draft."
+              "Upload the version you'd actually review. The desk compares the resume
+              against the role, not the draft."
             </div>
           </StickyNote>
 
-          <Sheet className="relative p-6">
-            <Eyebrow>What the desk checks</Eyebrow>
+          <Sheet className="relative p-6" lift>
+            <Eyebrow>What the review checks</Eyebrow>
             <ul className="mt-4 space-y-3 text-sm">
               {[
-                "Match percentage to the role",
-                "Matched keywords on the page",
-                "Missing keywords to add",
-                "AI-written edit suggestions",
-                "A JD preview with keywords marked",
+                "Role match percentage",
+                "Matched evidence in the resume",
+                "Missing requirements to flag",
+                "Suggested edits for the candidate",
+                "Role preview with keywords marked",
               ].map((x) => (
                 <li key={x} className="flex gap-3">
                   <span className="text-accent font-serif shrink-0">§</span>
@@ -387,20 +387,20 @@ function onPickFile(e) {
             </ul>
           </Sheet>
 
-          <Sheet className="relative p-6">
-            <Eyebrow>House rules</Eyebrow>
+          <Sheet className="relative p-6" lift>
+            <Eyebrow>Review rules</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <dl className="space-y-3 text-sm">
               <div className="flex items-baseline justify-between gap-3">
                 <dt className="text-ink-muted">File types</dt>
-                <dd className="font-serif text-ink">PDF · DOCX · TXT</dd>
+                <dd className="font-serif text-ink">PDF · DOCX</dd>
               </div>
               <div className="flex items-baseline justify-between gap-3">
                 <dt className="text-ink-muted">Max size</dt>
                 <dd className="font-serif text-ink">{MAX_MB} MB</dd>
               </div>
               <div className="flex items-baseline justify-between gap-3">
-                <dt className="text-ink-muted">Turnaround</dt>
+                <dt className="text-ink-muted">Review time</dt>
                 <dd className="font-serif italic text-ink">~ 20 seconds</dd>
               </div>
             </dl>
@@ -410,19 +410,19 @@ function onPickFile(e) {
 
       {showGuestModal && (
         <div className="fixed inset-0 bg-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-up">
-          <Sheet className="!shadow-overlay relative p-8 md:p-10 max-w-md w-full" dogEar>
+          <Sheet className="!shadow-overlay relative p-8 md:p-10 max-w-md w-full" dogEar lift>
             <PaperClip />
-            <Eyebrow>🔒 Authentication Required</Eyebrow>
-            <h3 className="font-serif text-2xl mt-3 mb-4">Analyze Your Resume</h3>
+            <Eyebrow>Sign in required</Eyebrow>
+            <h3 className="font-serif text-2xl mt-3 mb-4">Start a review</h3>
             <p className="text-[15px] leading-relaxed text-ink-muted">
               Create a free account to:
             </p>
             <ul className="mt-4 mb-6 space-y-2.5 text-sm">
               {[
-                "Analyze your own resume",
-                "Generate ATS reports",
-                "Save analysis history",
-                "Track improvements",
+                "Review your own resume",
+                "Generate review reports",
+                "Save past reviews",
+                "Track revisions",
               ].map((item) => (
                 <li key={item} className="flex gap-2.5 items-baseline">
                   <span className="text-accent font-serif shrink-0">§</span>
@@ -437,14 +437,14 @@ function onPickFile(e) {
                 onClick={handleOpenLogin}
                 className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
               >
-                Login
+                Sign in
               </button>
               <button
                 type="button"
                 onClick={handleOpenSignup}
                 className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
               >
-                Sign Up
+                Create account
               </button>
               <button
                 type="button"
@@ -467,7 +467,7 @@ function PaperStack({ tilt }) {
   return (
     <div
       className={`mx-auto w-16 h-20 relative transition-transform duration-300 ${
-        tilt ? "scale-105 -rotate-2" : ""
+        tilt ? "scale-[1.01] -rotate-[1deg]" : ""
       }`}
     >
       <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-4deg]" />
@@ -483,7 +483,7 @@ function FileCard({ file, onReplace, onClear, children }) {
   return (
     <div className="relative">
       {children}
-      <div className="flex items-center gap-4 p-4 md:p-5 bg-secondary/40 border border-rule rounded-sm">
+      <div className="flex items-center gap-4 p-4 md:p-5 bg-secondary/40 border border-rule rounded-sm shadow-paper hover:shadow-paper-lift transition-all duration-200">
         {/* Mini document */}
         <div className="relative h-14 w-11 shrink-0">
           <div className="absolute inset-0 bg-paper border border-rule shadow-paper rounded-[2px]" />
@@ -531,12 +531,12 @@ function FileCard({ file, onReplace, onClear, children }) {
 
 function ReadingProgress({ progress, stageIdx, file }) {
   return (
-    <Sheet className="relative p-6 md:p-8 overflow-hidden">
+    <Sheet className="relative p-6 md:p-8 overflow-hidden" lift>
       <div className="flex items-baseline justify-between gap-4">
         <div>
-          <Eyebrow>The desk is analyzing</Eyebrow>
+          <Eyebrow>The desk is reviewing</Eyebrow>
           <div className="mt-2 font-serif text-xl leading-tight">
-            {file?.name || "Your document"}
+            {file?.name || "Your resume"}
           </div>
         </div>
         <span className="font-mono text-xs text-ink-muted">

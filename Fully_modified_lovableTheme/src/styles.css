@@ -329,3 +329,32 @@
   background-image: repeating-linear-gradient(transparent 0 27px, var(--color-rule) 27px 28px);
   background-position: 0 8px;
 }
+
+/* Landing hero depth */
+.landing-hero-stage {
+  --hero-x: 0;
+  --hero-y: 0;
+}
+
+.landing-hero-layer {
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.landing-hero-layer--sheet {
+  transform: translate3d(calc(var(--hero-x) * 1px), calc(var(--hero-y) * 1px), 0);
+}
+
+.landing-hero-layer--card {
+  transform: translate3d(calc(var(--hero-x) * -0.7px), calc(var(--hero-y) * -0.5px), 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero-stage,
+  .landing-hero-layer,
+  .landing-hero-stage .sheet-lift,
+  .landing-hero-stage.motion-safe\:animate-fade-up {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
