@@ -465,8 +465,8 @@ function PublicArchiveEmptyState() {
           <Sheet className="relative p-8 md:p-10 text-center" lift>
             <PaperClip />
             <div className="mx-auto w-20 h-24 relative opacity-80 mb-6">
-              <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[-6deg]" />
-              <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[2deg] translate-x-1 translate-y-1" />
+              <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-6deg]" />
+              <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[2deg] translate-x-1 translate-y-1" />
               <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[6deg] translate-x-2 translate-y-2" />
             </div>
             <Eyebrow>Open the cabinet</Eyebrow>
@@ -551,8 +551,8 @@ function EmptyCabinet() {
     <Sheet className="relative p-12 text-center" lift>
       <PaperClip />
       <div className="mx-auto w-20 h-24 relative opacity-80 mb-6">
-        <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[-6deg]" />
-        <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[2deg] translate-x-1 translate-y-1" />
+        <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-6deg]" />
+        <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[2deg] translate-x-1 translate-y-1" />
         <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[6deg] translate-x-2 translate-y-2" />
       </div>
       <Eyebrow>The cabinet is empty</Eyebrow>

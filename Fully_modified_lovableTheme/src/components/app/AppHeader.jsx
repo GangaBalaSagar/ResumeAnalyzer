@@ -5,8 +5,8 @@ import UserMenu from "./UserMenu.jsx";
 function Mark() {
   return (
     <div className="relative h-9 w-7 shrink-0">
-      <div className="absolute inset-0 bg-paper border border-rule rounded-[2px] rotate-[-4deg] shadow-paper" />
-      <div className="absolute inset-0 bg-paper border border-rule rounded-[2px] rotate-[2deg] translate-x-[2px] translate-y-[1px]" />
+      <div className="absolute inset-0 bg-paper border border-rule rounded-[2px] rotate-[-4deg] shadow-stack" />
+      <div className="absolute inset-0 bg-paper border border-rule rounded-[2px] rotate-[2deg] translate-x-[2px] translate-y-[1px] shadow-paper" />
       <div className="absolute inset-0 flex items-center justify-center font-serif text-[13px] font-semibold">
         R
       </div>

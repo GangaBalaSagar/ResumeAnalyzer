@@ -262,7 +262,7 @@ export default function Dashboard() {
             {!error && !loading && recent.length === 0 && (
               <div className="py-10 text-center">
                 <div className="mx-auto w-14 h-16 relative opacity-70">
-                  <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[-5deg]" />
+                  <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-5deg]" />
                   <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[3deg] translate-x-1" />
                 </div>
                 <div className="mt-4 font-serif text-[17px]">Nothing filed yet.</div>

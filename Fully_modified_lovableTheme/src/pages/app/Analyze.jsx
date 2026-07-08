@@ -410,7 +410,7 @@ function onPickFile(e) {
 
       {showGuestModal && (
         <div className="fixed inset-0 bg-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-up">
-          <Sheet className="relative p-8 md:p-10 max-w-md w-full" dogEar>
+          <Sheet className="!shadow-overlay relative p-8 md:p-10 max-w-md w-full" dogEar>
             <PaperClip />
             <Eyebrow>🔒 Authentication Required</Eyebrow>
             <h3 className="font-serif text-2xl mt-3 mb-4">Analyze Your Resume</h3>
@@ -470,7 +470,7 @@ function PaperStack({ tilt }) {
         tilt ? "scale-105 -rotate-2" : ""
       }`}
     >
-      <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[-4deg]" />
+      <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-4deg]" />
       <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[3deg] translate-x-1" />
       <div className="absolute inset-x-3 top-4 h-px bg-rule" />
       <div className="absolute inset-x-3 top-7 h-px bg-rule" />
