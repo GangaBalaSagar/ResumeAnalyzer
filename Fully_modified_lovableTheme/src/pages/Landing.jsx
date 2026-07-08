@@ -9,29 +9,29 @@ export default function Landing() {
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         <div className="lg:col-span-7 animate-fade-up">
-          <Eyebrow>Vol. I · An editorial workspace</Eyebrow>
+          <Eyebrow>Vol. I · Resume meets role</Eyebrow>
           <h1 className="mt-6 font-serif text-[52px] md:text-[64px] leading-[1.02] tracking-tight">
             Your resume,
             <br />
-            <span className="italic font-normal">read carefully.</span>
+            <span className="italic font-normal">matched to the role.</span>
           </h1>
           <p className="mt-7 text-[17px] leading-relaxed text-ink-muted max-w-xl">
-            Drop a resume on the desk, paste the job description, and receive a
-            quiet, considered analysis — match score, matched and missing skills,
-            and AI-written suggestions to send.
+            Drop a resume on the desk, paste the job description, and receive an
+            AI-powered analysis — ATS match score, matched and missing skills,
+            and targeted suggestions to improve your fit.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               to="/app/analyze"
               className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
             >
-              Place a resume on the desk
+              Start your analysis
             </Link>
             <Link
               to="/features"
               className="px-5 py-3 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
             >
-              Read the features
+              Explore the features
             </Link>
           </div>
 
@@ -39,7 +39,7 @@ export default function Landing() {
             {[
               { n: "01", t: "Match Score", d: "How closely the resume fits the role" },
               { n: "02", t: "Skills Gap", d: "Matched and missing keywords" },
-              { n: "03", t: "AI Notes", d: "Specific lines to revise" },
+              { n: "03", t: "AI Suggestions", d: "Targeted improvements for the role" },
             ].map((f) => (
               <div key={f.n}>
                 <div className="font-serif text-2xl text-accent">{f.n}</div>
@@ -86,25 +86,25 @@ export default function Landing() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-4">
-              <Eyebrow>The Desk</Eyebrow>
+              <Eyebrow>The Workspace</Eyebrow>
               <h2 className="mt-4 font-serif text-4xl leading-tight">
-                Three documents,<br />one quiet workspace.
+                Resume, job description,<br />one clear result.
               </h2>
               <p className="mt-5 text-ink-muted text-[15px] leading-relaxed">
-                Your resume is treated as a document — not data. Each analysis is
-                laid out on warm paper, marked with notes, and filed in your
-                archive.
+                Your resume is compared against the job description — skill by skill.
+                Each analysis is laid out clearly, marked with insights, and filed
+                in your archive.
               </p>
               <Link
                 to="/features"
                 className="story-link inline-block mt-6 text-sm text-ink"
               >
-                Read all features →
+                Explore all features →
               </Link>
             </div>
             <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
               {[
-                { t: "Match Score", d: "An editorial reading: how the resume meets the role.", n: "01" },
+                { t: "Match Score", d: "A clear percentage: how closely your resume fits the role.", n: "01" },
                 { t: "Skills Overview", d: "Matched and missing keywords, charted clearly.", n: "02" },
                 { t: "AI Suggestions", d: "Specific edits, copyable, in plain language.", n: "03" },
                 { t: "Archive", d: "Every analysis filed by date, ready to revisit.", n: "04" },
@@ -128,21 +128,21 @@ export default function Landing() {
       <section className="py-20 md:py-24 border-t border-rule/60">
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-2xl">
-            <Eyebrow>The reading</Eyebrow>
+            <Eyebrow>The workflow</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl leading-tight">
-              Three steps, unhurried.
+              Three steps. Clear results.
             </h2>
             <p className="mt-4 text-ink-muted text-[15px] leading-relaxed">
-              No dashboards, no charts you can't parse. Just a document, a brief,
-              and a considered response.
+              Upload a resume, paste the job description, and receive an ATS match
+              score with actionable insights.
             </p>
           </div>
 
           <ol className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { n: "01", t: "Place the document", d: "Drop a PDF or DOCX on the desk. It's treated like paper, not data." },
-              { n: "02", t: "Paste the brief", d: "The job description — the desk needs to know what to compare against." },
-              { n: "03", t: "Read the notes", d: "Match score, matched and missing skills, and specific line edits." },
+              { n: "01", t: "Upload the resume", d: "Drop a PDF or DOCX. Your document is parsed and prepared for analysis." },
+              { n: "02", t: "Add the job description", d: "The role details the desk needs to compare against." },
+              { n: "03", t: "Review your results", d: "ATS match score, matched and missing skills, and AI-powered suggestions." },
             ].map((s) => (
               <li key={s.n}>
                 <Sheet className="p-6 h-full" lift>
@@ -160,13 +160,12 @@ export default function Landing() {
       {/* Editorial testimonial */}
       <section className="py-20 md:py-24 border-t border-rule/60">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <Eyebrow>From the margins</Eyebrow>
+          <Eyebrow>From the desk</Eyebrow>
           <blockquote className="mt-6 font-serif text-3xl md:text-4xl italic leading-snug text-ink">
-            "Reads like a thoughtful editor rather than a scanner. I actually
-            revised things after."
+            "Upload. Compare. Improve. The fastest way to know if your resume fits the role."
           </blockquote>
           <div className="mt-6 text-sm text-ink-muted">
-            — <span className="font-serif italic">M. Osei</span>, Senior PM
+            — The Recruiter's Desk
           </div>
         </div>
       </section>
@@ -176,10 +175,10 @@ export default function Landing() {
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Begin</Eyebrow>
           <h2 className="mt-4 font-serif text-4xl md:text-5xl leading-tight">
-            Place a resume on the desk.
+            Compare your resume to the role.
           </h2>
           <p className="mt-5 text-ink-muted max-w-xl mx-auto">
-            One upload. A quiet analysis. A document you'll be glad to send.
+            One upload. One job description. An analysis you can act on.
           </p>
           <div className="mt-10 flex flex-wrap gap-3 justify-center">
             <Link

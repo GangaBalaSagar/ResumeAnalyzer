@@ -6,8 +6,8 @@ const FEATURES = [
   {
     n: "01",
     title: "Match Score",
-    lede: "An editorial reading of fit — expressed as a single, honest number.",
-    body: "The desk reads the resume alongside the job description and returns a match percentage grounded in what's actually on the page: the skills, the seniority signals, and the language of the role.",
+    lede: "How closely your resume fits the role — expressed as a single, clear number.",
+    body: "The AI compares your resume to the job description and returns a match percentage grounded in keyword relevance, skill alignment, and role fit.",
     marks: ["Percentage fit", "Confidence range", "Role alignment"],
   },
   {
@@ -21,28 +21,28 @@ const FEATURES = [
     n: "03",
     title: "Missing Skills",
     lede: "What the job asks for that the resume doesn't yet address.",
-    body: "The desk surfaces gaps without judgment: skills the role calls for that don't appear on the page. Add them if they're honestly yours, or use them to steer the next revision.",
+    body: "The analysis surfaces gaps without judgment: skills the role calls for that don't appear on the page. Add them if they're honestly yours, or use them to steer the next revision.",
     marks: ["Ranked by importance", "Grouped by theme", "Copyable list"],
   },
   {
     n: "04",
     title: "AI Suggestions",
     lede: "Specific line edits, in plain language, ready to paste.",
-    body: "Not generic advice. The desk proposes concrete edits to specific lines — reframed bullets, sharper impact statements, missing quantifiers — each one attributable to a reason.",
+    body: "Not generic advice. The AI proposes concrete edits to specific lines — reframed bullets, sharper impact statements, missing quantifiers — each one attributable to a reason.",
     marks: ["Line-level edits", "Reasoned rewrites", "Copyable"],
   },
   {
     n: "05",
     title: "JD Preview",
-    lede: "The job description, marked up like an editor did it.",
-    body: "See the job description with matched keywords underlined and missing ones flagged in the margin. It's the same view the desk uses when it reads.",
+    lede: "The job description, with matched and missing keywords highlighted.",
+    body: "See the job description with matched keywords underlined and missing ones flagged in the margin. It's a side-by-side view of what's present and what's missing.",
     marks: ["Inline highlights", "Margin flags", "Print-friendly"],
   },
   {
     n: "06",
     title: "Private Archive",
     lede: "Every analysis, filed by date, ready to revisit.",
-    body: "Nothing is public. Nothing is shared. Your past readings live in a private archive on the desk — searchable by role, sortable by date, kept between visits.",
+    body: "Nothing is public. Nothing is shared. Your past analyses live in a private archive on the desk — searchable by role, sortable by date, kept between visits.",
     marks: ["Sortable by date", "Searchable by role", "Yours only"],
   },
 ];
@@ -53,8 +53,8 @@ export default function Features() {
       <PageIntro
         eyebrow="Vol. II · Features"
         title="Everything the desk"
-        italic="reads, marks, and files."
-        lede="Six documents, one workspace. Each feature is a page on the desk — considered, quiet, and built for careful reading rather than quick scoring."
+        italic="compares, marks, and files."
+        lede="Six capabilities, one workspace. Each feature helps you compare your resume to a job description — clearly, precisely, and with actionable results."
       />
 
       {/* Feature sheets */}
@@ -98,18 +98,18 @@ export default function Features() {
           <div className="lg:col-span-5">
             <Eyebrow>How it fits together</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl leading-tight">
-              One reading,<br />many marks in the margin.
+              One analysis,<br />many insights in the margin.
             </h2>
             <p className="mt-5 text-ink-muted text-[15px] leading-relaxed">
-              Every feature draws from the same reading. Change the resume, and
+              Every feature draws from the same analysis. Change the resume, and
               the score, the matched skills, the missing skills, and the
               suggestions all update together — one document, one view.
             </p>
             <div className="mt-8">
               <StickyNote rotate={-2} className="max-w-sm">
                 <div className="text-[13.5px] leading-snug">
-                  "The best resume feedback I've had — and I've paid for a lot of it."
-                  <div className="mt-2 not-italic eyebrow text-[10px]">— A. Rivera, Staff Engineer</div>
+                  "Compare the same resume against two different roles. The skill gaps tell you where each application stands."
+                  <div className="mt-2 not-italic eyebrow text-[10px]">— A note from the desk</div>
                 </div>
               </StickyNote>
             </div>
@@ -119,14 +119,14 @@ export default function Features() {
             <Sheet className="relative p-8 md:p-10" dogEar>
               <PaperClip />
               <Eyebrow>House principles</Eyebrow>
-              <div className="mt-2 font-serif text-2xl">Careful reading, always.</div>
+              <div className="mt-2 font-serif text-2xl">Precise comparison, always.</div>
               <div className="rule-line my-5" />
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
                 {[
                   { t: "Private by default", d: "Your document never leaves your archive." },
-                  { t: "Editorial, not algorithmic", d: "Line-level reasoning, not opaque scores." },
+                  { t: "Insightful, not opaque", d: "Line-level reasoning with clear, visible scores." },
                   { t: "Quiet interface", d: "No dashboards; only what needs reading." },
-                  { t: "Reusable analyses", d: "Every reading filed and returnable." },
+                  { t: "Reusable analyses", d: "Every analysis filed and returnable." },
                 ].map((p) => (
                   <div key={p.t}>
                     <dt className="font-serif text-[17px]">{p.t}</dt>

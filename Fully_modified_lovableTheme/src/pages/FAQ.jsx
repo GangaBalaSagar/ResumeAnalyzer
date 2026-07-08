@@ -5,19 +5,19 @@ import { Sheet, Eyebrow, StickyNote } from "../components/paper.jsx";
 
 const SECTIONS = [
   {
-    title: "The reading",
+    title: "The analysis",
     items: [
       {
         q: "What does Resume Analyzer actually do?",
-        a: "It reads a resume alongside a job description and returns a match score, the matched and missing skills, and specific, line-level edit suggestions. Think of it as an editor for the résumé, not a scanner.",
+        a: "It compares a resume against a job description and returns a match score, the matched and missing skills, and specific, line-level edit suggestions. Think of it as a comparison tool — matching your resume to the role, not just scanning keywords.",
       },
       {
         q: "How is this different from a keyword scanner?",
-        a: "Keyword scanners tell you which words appear. The desk reasons about what's on the page — seniority signals, phrasing, structure — and proposes edits that a thoughtful editor might suggest.",
+        a: "Keyword scanners tell you which words appear. The AI reasons about context — seniority signals, phrasing, structure — and proposes edits that improve your alignment to the role.",
       },
       {
         q: "How long does an analysis take?",
-        a: "Typically around twenty seconds. The desk shows the stages of reading as it works so you can see where it is.",
+        a: "Typically around twenty seconds. The desk shows the stages of analysis as it works so you can see where it is.",
       },
     ],
   },
@@ -34,7 +34,7 @@ const SECTIONS = [
       },
       {
         q: "Can I analyze the same resume against several jobs?",
-        a: "Yes. Each analysis is a separate reading, filed independently in your archive. Compare them side by side later.",
+        a: "Yes. Each analysis is filed independently in your archive. Compare them side by side later.",
       },
     ],
   },
@@ -43,7 +43,7 @@ const SECTIONS = [
     items: [
       {
         q: "Where does my resume go?",
-        a: "It stays with you. Documents are stored in your private archive and used only to produce your reading. They aren't shared, sold, or used to train public models.",
+        a: "It stays with you. Documents are stored in your private archive and used only to produce your analysis. They aren't shared, sold, or used to train public models.",
       },
       {
         q: "Can I delete past analyses?",
@@ -56,11 +56,11 @@ const SECTIONS = [
     ],
   },
   {
-    title: "Getting the most from the desk",
+    title: "Getting the most from your analysis",
     items: [
       {
-        q: "What makes for a better reading?",
-        a: "Paste the job description exactly as posted, and use the version of your resume you'd actually send. The desk reads the document, not the draft.",
+        q: "What makes for a better analysis?",
+        a: "Paste the job description exactly as posted, and use the version of your resume you'd actually send. The desk analyzes the document you'd actually send, not the draft.",
       },
       {
         q: "Should I edit my resume based on every suggestion?",
@@ -114,7 +114,7 @@ export default function FAQ() {
         eyebrow="Vol. III · Frequently asked"
         title="Questions from"
         italic="the margins."
-        lede="Short, honest answers about how the desk reads, what it stores, and what to expect from a reading."
+        lede="Short, honest answers about how the desk analyzes resumes, what it stores, and what to expect from a comparison."
       />
 
       <section className="mx-auto max-w-7xl px-6 pb-16">
@@ -143,16 +143,16 @@ export default function FAQ() {
                 </ol>
                 <div className="rule-line my-5" />
                 <p className="text-xs text-ink-muted italic font-serif leading-relaxed">
-                  Can't find your question? Send a note — we read every one.
+                  Can't find your question? We're always improving.
                 </p>
               </Sheet>
 
               <div className="mt-6">
                 <StickyNote rotate={-2}>
                   <div className="text-[13px] leading-snug">
-                    <div className="not-italic eyebrow text-[10px]">Reader tip</div>
+                    <div className="not-italic eyebrow text-[10px]">Analysis tip</div>
                     <div className="mt-1">
-                      Bring the job description. It sharpens every reading.
+                      Paste the full job description. It sharpens every comparison.
                     </div>
                   </div>
                 </StickyNote>
@@ -196,7 +196,7 @@ export default function FAQ() {
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Still curious?</Eyebrow>
           <h2 className="mt-4 font-serif text-4xl md:text-5xl leading-tight">
-            The desk reads best <span className="italic font-normal">with a resume in hand.</span>
+            The desk works best <span className="italic font-normal">with a resume and a job description.</span>
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link

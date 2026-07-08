@@ -186,7 +186,7 @@ export default function Report() {
         <Sheet className="relative p-10">
           <PaperClip />
           <Eyebrow>One moment</Eyebrow>
-          <div className="mt-2 font-serif text-2xl">Reading the report…</div>
+          <div className="mt-2 font-serif text-2xl">Loading the report…</div>
           <div className="rule-line my-5" />
           <p className="text-sm text-ink-muted">
             We are fetching the analysis details from the archives.
@@ -233,7 +233,7 @@ export default function Report() {
         <Sheet className="relative p-10">
           <PaperClip />
           <Eyebrow>Nothing on the desk</Eyebrow>
-          <h1 className="mt-3 font-serif text-4xl">No reading to open yet.</h1>
+          <h1 className="mt-3 font-serif text-4xl">No analysis to open yet.</h1>
           <p className="mt-4 text-ink-muted">
             Place a resume and paste a job description to begin a new analysis.
           </p>
@@ -303,7 +303,7 @@ export default function Report() {
         <div>
           <Eyebrow>Evaluation report · Prepared by the desk</Eyebrow>
           <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
-            A close, <span className="italic font-normal">considered</span> reading.
+            A close, <span className="italic font-normal">considered</span> analysis.
           </h1>
           <p className="mt-4 text-[14.5px] text-ink-muted font-mono">
             <span className="text-ink">{filename}</span>
@@ -388,7 +388,7 @@ export default function Report() {
       {/* 2 — Executive Summary */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
         <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10">
-          <Eyebrow>Executive summary · The desk's reading</Eyebrow>
+          <Eyebrow>Executive summary · The desk's analysis</Eyebrow>
           <div className="rule-line mt-3 mb-5" />
           <p className="font-serif text-[19px] leading-[1.6] text-ink">
             <span className="float-left font-serif text-[52px] leading-[0.85] mr-2 mt-1 text-accent">
@@ -635,7 +635,7 @@ export default function Report() {
           />
         ) : (
           <p className="text-sm text-ink-muted italic font-serif">
-            No job description was saved with this reading.
+            No job description was saved with this analysis.
           </p>
         )}
       </Sheet>

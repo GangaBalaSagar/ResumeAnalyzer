@@ -34,7 +34,7 @@ export function PublicFooter() {
             </div>
           </div>
           <p className="mt-4 text-ink-muted text-[13px] max-w-xs leading-relaxed">
-            A quiet workspace for careful reading. Your resume, matched to the role — carefully, considerately.
+            A quiet workspace for resume analysis. Your resume, compared to the role — clearly, precisely.
           </p>
         </div>
         <div>
@@ -51,7 +51,7 @@ export function PublicFooter() {
           <div className="eyebrow text-[10px]">Members</div>
           <ul className="mt-3 space-y-2 text-ink-muted">
             <li><Link to="/login" className="hover:text-ink transition-colors">Sign in</Link></li>
-            <li><Link to="/signup" className="hover:text-ink transition-colors">Request a seat</Link></li>
+            <li><Link to="/signup" className="hover:text-ink transition-colors">Create an account</Link></li>
             <li><Link to="/app/analyze" className="hover:text-ink transition-colors">Begin an analysis</Link></li>
           </ul>
         </div>

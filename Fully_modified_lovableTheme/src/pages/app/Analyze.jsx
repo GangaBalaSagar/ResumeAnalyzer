@@ -28,10 +28,10 @@ function validateFile(file) {
 
 const READING_STAGES = [
   "Extracting text from the document…",
-  "Reading sections and headings…",
+  "Parsing sections and headings…",
   "Comparing to the job description…",
   "Marking matched and missing keywords…",
-  "Composing the desk's notes…",
+  "Composing insights and suggestions…",
 ];
 
 function fmtSize(bytes) {
@@ -106,7 +106,7 @@ function onPickFile(e) {
   async function handleAnalyze() {
     setError(null);
     if (!file) {
-      setError("Please place a resume on the desk before we can read.");
+      setError("Please upload a resume before starting the analysis.");
       return;
     }
     if (file.size > MAX_MB * 1024 * 1024) {
@@ -167,7 +167,7 @@ function onPickFile(e) {
       setError(
         err?.response?.data?.error ||
           err?.message ||
-          "The desk couldn't complete the reading. Please try again."
+          "The desk couldn't complete the analysis. Please try again."
       );
     } finally {
       setLoading(false);
@@ -226,8 +226,8 @@ function onPickFile(e) {
           <span className="italic font-normal">on the desk.</span>
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-          Drop a PDF or DOCX, paste the job description, and the desk will read
-          carefully — matching what's on the page against what the role asks for.
+          Drop a PDF or DOCX, paste the job description, and the desk will compare
+          what's on the page against what the role asks for.
         </p>
       </header>
 
@@ -349,7 +349,7 @@ function onPickFile(e) {
                 disabled={!canSubmit}
                 className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {loading ? "Reading…" : "Begin the analysis →"}
+                {loading ? "Analyzing…" : "Begin the analysis →"}
               </button>
             </div>
           </div>
@@ -364,7 +364,7 @@ function onPickFile(e) {
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              "Send the version you'd actually email. The desk reads the document,
+              "Upload the version you'd actually send. The desk analyzes the document,
               not the draft."
             </div>
           </StickyNote>
@@ -534,7 +534,7 @@ function ReadingProgress({ progress, stageIdx, file }) {
     <Sheet className="relative p-6 md:p-8 overflow-hidden">
       <div className="flex items-baseline justify-between gap-4">
         <div>
-          <Eyebrow>The desk is reading</Eyebrow>
+          <Eyebrow>The desk is analyzing</Eyebrow>
           <div className="mt-2 font-serif text-xl leading-tight">
             {file?.name || "Your document"}
           </div>

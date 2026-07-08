@@ -239,7 +239,7 @@ export default function Account() {
 
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              <div className="eyebrow text-[10px]">Editor's note</div>
+              <div className="eyebrow text-[10px]">Desk Note</div>
               <div className="mt-1 font-serif">
                 Your email is the only key we keep. Rotate it whenever you like —
                 the archive travels with the account, not the browser.

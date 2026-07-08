@@ -46,9 +46,9 @@ export default function AuthLayout({
         {/* Editorial aside */}
         <aside className="lg:col-span-5 relative min-h-[420px] hidden lg:block">
           <div className="absolute right-8 top-4 w-[300px] h-[380px] sheet sheet-stack dog-ear p-7 rotate-[3deg]">
-            <Eyebrow>Editor's note</Eyebrow>
+            <Eyebrow>Desk Note</Eyebrow>
             <div className="mt-3 font-serif text-xl leading-snug">
-              A quiet workspace for careful reading.
+              A quiet workspace for resume analysis.
             </div>
             <div className="rule-line my-4" />
             <p className="text-sm text-ink-muted leading-relaxed">
@@ -62,7 +62,7 @@ export default function AuthLayout({
               <div className="text-[13px] leading-snug">
                 <div className="eyebrow text-[10px]">Reminder</div>
                 <div className="mt-1 font-serif">
-                  Bring the job description. It sharpens the read.
+                  Bring the job description. It sharpens the analysis.
                 </div>
               </div>
             )}

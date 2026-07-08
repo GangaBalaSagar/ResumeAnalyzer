@@ -148,7 +148,7 @@ export default function Dashboard() {
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
           Your desk is tidy. Pick up where you left off, or open a new folder and
-          have the desk read a fresh document.
+          run a fresh analysis.
         </p>
       </header>
 
@@ -175,7 +175,7 @@ export default function Dashboard() {
               <div className="grid md:grid-cols-2 gap-6">
                 {draft.lastResult && (
                   <div>
-                    <div className="eyebrow text-[10px]">Last reading</div>
+                    <div className="eyebrow text-[10px]">Last analysis</div>
                     <div className="mt-1 font-serif text-[18px] leading-tight truncate">
                       {draft.lastResult.resumeFilename || draft.lastResult.filename || "Untitled document"}
                     </div>
@@ -217,7 +217,7 @@ export default function Dashboard() {
             ) : (
               <div className="flex items-center justify-between gap-6 flex-wrap">
                 <p className="text-[14.5px] text-ink-muted max-w-md leading-relaxed font-serif italic">
-                  No open folders. Place a resume on the desk to begin a fresh reading.
+                  No open folders. Upload a resume and a job description to begin a fresh analysis.
                 </p>
                 <Link
                   to="/app/analyze"
@@ -233,7 +233,7 @@ export default function Dashboard() {
           <Sheet className="relative p-6 md:p-8">
             <div className="flex items-baseline justify-between gap-4">
               <div>
-                <Eyebrow>The ledger · recent readings</Eyebrow>
+                <Eyebrow>The ledger · recent analyses</Eyebrow>
                 <div className="mt-2 font-serif text-2xl leading-tight">
                   Filed this week
                 </div>
@@ -255,7 +255,7 @@ export default function Dashboard() {
 
             {!error && loading && (
               <div className="py-10 text-center text-sm text-ink-muted italic font-serif">
-                Reading the cabinet…
+                Loading the cabinet…
               </div>
             )}
 
@@ -273,7 +273,7 @@ export default function Dashboard() {
                   to="/app/analyze"
                   className="mt-5 inline-block text-sm px-4 py-2 border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
                 >
-                  Read a resume
+                  Analyze a resume
                 </Link>
               </div>
             )}
@@ -323,7 +323,7 @@ export default function Dashboard() {
 
             <dl className="grid grid-cols-2 gap-x-4 gap-y-5">
               <StatCell label="Analyses filed" value={stats.total} />
-              <StatCell label="Read this week" value={stats.last7} />
+              <StatCell label="Analyzed this week" value={stats.last7} />
               <StatCell
                 label="Average match"
                 value={stats.avg === null ? "—" : `${stats.avg}%`}
@@ -344,9 +344,9 @@ export default function Dashboard() {
           {/* Editor's note — reuses StickyNote as the workflow signpost */}
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              <div className="eyebrow text-[10px]">Editor's note</div>
+              <div className="eyebrow text-[10px]">Desk note</div>
               <div className="mt-1 font-serif">
-                Two documents beat one guess. Read the same resume against two
+                Two job descriptions beat one guess. Compare the same resume against two
                 roles to see where it truly fits.
               </div>
             </div>
@@ -367,20 +367,20 @@ export default function Dashboard() {
                 to="/app/history"
                 num="02"
                 title="Past analyses"
-                hint="Every reading, filed and dated"
+                hint="Every analysis, filed and dated"
               />
               <ShortcutRow
                 onClick={() => handleOpenReport(draft.lastResult?.id)}
                 num="03"
                 title="Latest report"
-                hint="Reopen the most recent reading"
+                hint="Reopen the most recent analysis"
                 muted={!draft.lastResult}
               />
               <ShortcutRow
                 to="/faq"
                 num="04"
-                title="How the desk reads"
-                hint="Frequently asked notes"
+                title="How the desk works"
+                hint="Frequently asked questions"
               />
             </ul>
           </Sheet>

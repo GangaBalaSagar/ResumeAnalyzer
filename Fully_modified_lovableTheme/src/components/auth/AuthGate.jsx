@@ -20,7 +20,7 @@ export default function AuthGate({ children }) {
           <div className="mt-3 font-serif text-2xl">Checking your credentials…</div>
           <div className="rule-line my-5" />
           <p className="text-sm text-ink-muted">
-            We&apos;re consulting the ledger. This should only take a breath.
+            We&apos;re checking your session. This should only take a moment.
           </p>
         </Sheet>
       </div>

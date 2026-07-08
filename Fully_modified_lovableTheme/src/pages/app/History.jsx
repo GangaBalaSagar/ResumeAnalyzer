@@ -99,7 +99,7 @@ export default function History() {
   }
 
   async function deleteItem(id) {
-    if (!window.confirm("Remove this reading from the archive?")) return;
+    if (!window.confirm("Remove this analysis from the archive?")) return;
     try {
       setDeletingId(id);
       await api.delete(`/analyses/${id}`);
@@ -150,8 +150,8 @@ export default function History() {
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-            Every resume the desk has read, stored in the cabinet. Open a folder to
-            revisit the reading, or clear a card you no longer need.
+            Every resume the desk has analyzed, stored in the cabinet. Open a folder to
+            revisit the analysis, or clear a card you no longer need.
           </p>
         </div>
         <Link
@@ -217,7 +217,7 @@ export default function History() {
             <Sheet className="relative p-10">
               <PaperClip />
               <Eyebrow>One moment</Eyebrow>
-              <div className="mt-2 font-serif text-2xl">Reading the cabinet…</div>
+              <div className="mt-2 font-serif text-2xl">Loading the cabinet…</div>
               <div className="rule-line my-5" />
               <div className="space-y-3">
                 {[0, 1, 2].map((i) => (
@@ -449,7 +449,7 @@ function PublicArchiveEmptyState() {
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-            A private cabinet for your resume readings, ATS scores, and the reports you want to revisit later.
+            A private cabinet for your resume analyses, ATS scores, and the reports you want to revisit later.
           </p>
         </div>
         <Link
@@ -491,7 +491,7 @@ function PublicArchiveEmptyState() {
 
             <div className="mt-8 grid gap-4 md:grid-cols-3 text-left">
               <div className="rounded-sm border border-rule bg-secondary/40 p-4">
-                <div className="eyebrow text-[10px]">Save each reading</div>
+                <div className="eyebrow text-[10px]">Save each analysis</div>
                 <div className="mt-2 text-sm text-ink-muted">
                   Keep every analysis in a private archive for later review.
                 </div>
@@ -517,7 +517,7 @@ function PublicArchiveEmptyState() {
             <div className="text-[13.5px] leading-snug">
               <div className="eyebrow text-[10px]">Cabinet note</div>
               <div className="mt-1 font-serif">
-                The desk remembers what matters. A signed-in account keeps each reading close at hand.
+                The desk remembers what matters. A signed-in account keeps each analysis close at hand.
               </div>
             </div>
           </StickyNote>
@@ -558,14 +558,14 @@ function EmptyCabinet() {
       <Eyebrow>The cabinet is empty</Eyebrow>
       <div className="mt-3 font-serif text-3xl">Nothing filed yet.</div>
       <p className="mt-3 text-sm text-ink-muted max-w-md mx-auto">
-        Every resume you have the desk read will be dated, scored, and kept here.
+        Every resume you have the desk analyze will be dated, scored, and kept here.
         Your archive begins with the first analysis.
       </p>
       <Link
         to="/app/analyze"
         className="mt-6 inline-block px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
       >
-        Read your first resume →
+        Analyze your first resume →
       </Link>
     </Sheet>
   );
