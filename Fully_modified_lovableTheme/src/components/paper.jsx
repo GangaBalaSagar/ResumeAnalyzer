@@ -7,7 +7,7 @@ export function Sheet({
 }) {
   return (
     <div
-      className={`sheet ${lift ? "sheet-lift" : ""} ${stack ? "sheet-stack" : ""} ${
+      className={`relative sheet ${lift ? "sheet-lift" : ""} ${stack ? "sheet-stack" : ""} ${
         dogEar ? "dog-ear" : ""
       } ${className}`}
     >

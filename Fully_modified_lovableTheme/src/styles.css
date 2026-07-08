@@ -121,29 +121,57 @@
 .bg-desk {
   background-color: var(--color-background);
   background-image:
-    radial-gradient(circle at 12% 18%, rgba(26,26,26,0.025) 0, transparent 40%),
-    radial-gradient(circle at 88% 82%, rgba(139,92,246,0.04) 0, transparent 45%);
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.012'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 30%, oklch(0.98 0.008 85) 0%, oklch(0.96 0.012 85) 55%, oklch(0.94 0.015 85) 100%);
 }
 
 .paper-grain {
   background-color: var(--color-paper);
   background-image:
-    repeating-linear-gradient(0deg, rgba(26,26,26,0.012) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(90deg, rgba(26,26,26,0.012) 0 1px, transparent 1px 3px);
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.012'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(252, 251, 248, 0.95));
 }
 
 /* Sheet of paper */
 .sheet {
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.008'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(252, 251, 248, 0.95)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0) 20%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 14%);
   border: 1px solid var(--color-rule);
-  box-shadow: var(--shadow-paper);
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.8), 
+    inset -1px -1px 0 rgba(26, 26, 26, 0.03), 
+    var(--shadow-paper);
   border-radius: 2px;
-  position: relative;
   transition: transform 250ms cubic-bezier(.2,.7,.2,1), box-shadow 250ms;
+}
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0) 20%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 22%);
+  opacity: 0.9;
+}
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.018) 0%, rgba(26, 26, 26, 0) 35%);
 }
 .sheet-lift:hover {
   transform: translateY(-2px) rotate(-0.15deg);
-  box-shadow: var(--shadow-paper-lift);
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.85), 
+    inset -1px -1px 0 rgba(26, 26, 26, 0.03), 
+    var(--shadow-paper-lift);
 }
 
 /* Stack of papers — pseudo elements behind */
@@ -155,11 +183,19 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.008'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(252, 251, 248, 0.95)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 18%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 12%);
   border: 1px solid var(--color-rule);
   border-radius: 2px;
   z-index: -1;
-  box-shadow: var(--shadow-paper);
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.8), 
+    inset -1px -1px 0 rgba(26, 26, 26, 0.03), 
+    var(--shadow-stack);
 }
 .sheet-stack::before { transform: translate(4px, 4px) rotate(0.6deg); }
 .sheet-stack::after  { transform: translate(8px, 8px) rotate(-0.4deg); opacity: 0.85; }
@@ -174,8 +210,10 @@
   position: absolute;
   top: 0; right: 0;
   width: 28px; height: 28px;
-  background: linear-gradient(225deg, transparent 48%, var(--color-rule) 49%, var(--color-background) 52%);
-  box-shadow: var(--shadow-fold);
+  background-image:
+    linear-gradient(225deg, transparent 0 48%, rgba(255, 255, 255, 0.18) 48% 50%, transparent 50% 100%),
+    linear-gradient(225deg, rgba(26, 26, 26, 0.03) 0 15%, transparent 15% 100%),
+    linear-gradient(225deg, var(--color-background) 47%, var(--color-rule) 48%, var(--color-paper) 50%, rgba(252, 251, 248, 0.96) 55%, var(--color-paper) 60%);
 }
 
 /* Bookmark / tab */

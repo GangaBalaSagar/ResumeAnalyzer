@@ -17,11 +17,11 @@ function Mark() {
 
 const sharedLinks = [
   { to: "/", label: "Home", end: true },
-  { to: "/app/analyze", label: "Analyze" },
-  { to: "/app/report", label: "Report" },
-  { to: "/app/history", label: "Past Analyses" },
-  { to: "/features", label: "Features" },
-  { to: "/faq", label: "FAQ" },
+  { to: "/app/analyze", label: "Analyze", end: true },
+  { to: "/app/report", label: "Report", end: true },
+  { to: "/app/history", label: "Past Analyses", end: true },
+  { to: "/features", label: "Features", end: true },
+  { to: "/faq", label: "FAQ", end: true },
 ];
 
 /**
@@ -33,14 +33,14 @@ export default function AppHeader({ onOpenMobileNav }) {
   const navLinks = user
     ? [
         sharedLinks[0],
-        { to: "/app", label: "Dashboard" },
+        { to: "/app/dashboard", label: "Dashboard", end: true },
         ...sharedLinks.slice(1),
       ]
     : sharedLinks;
 
   return (
-    <header className="border-b border-rule/60 bg-background/85 backdrop-blur-sm sticky top-0 z-40">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 py-3.5 flex items-center justify-between gap-4">
+    <header className="border-b border-rule/60 bg-background/85 backdrop-blur-sm sticky top-0 z-40 overflow-visible">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-3.5 flex items-center justify-between gap-4 overflow-visible">
         <div className="flex items-center gap-6 lg:gap-8">
           <button
             type="button"

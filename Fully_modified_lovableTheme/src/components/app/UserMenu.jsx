@@ -72,7 +72,7 @@ export default function UserMenu() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-64 sheet p-4 z-50 animate-fade-up !shadow-overlay"
+          className="absolute right-0 top-full mt-2 w-64 sheet p-4 z-[60] animate-fade-up !shadow-overlay"
         >
           <div className="eyebrow text-[10px]">Signed in as</div>
           <div className="mt-1 font-serif text-[15px] truncate">{user?.email}</div>

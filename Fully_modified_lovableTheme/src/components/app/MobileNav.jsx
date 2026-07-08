@@ -115,7 +115,7 @@ export default function MobileNav({ open, onClose }) {
         {user ? (
           <div className="px-4 pb-4">
             <div className="rule-line mb-4" />
-            <div className="sheet p-4">
+            <div className="relative sheet p-4">
               <div className="flex items-center gap-3">
                 <span className="relative flex items-center justify-center h-9 w-9 shrink-0 bg-paper border border-rule rounded-[2px] shadow-paper font-serif text-[13px] font-semibold">
                   {initials(primary)}
