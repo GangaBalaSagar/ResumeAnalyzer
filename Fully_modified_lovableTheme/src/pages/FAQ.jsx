@@ -117,7 +117,7 @@ export default function FAQ() {
         lede="Short, honest answers about how the desk analyzes resumes, what it stores, and what to expect from a comparison."
       />
 
-      <section className="mx-auto max-w-7xl px-6 pb-16">
+      <section className="mx-auto max-w-7xl px-6 py-20 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Sticky table of contents */}
           <aside className="lg:col-span-4 hidden lg:block">

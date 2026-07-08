@@ -1,20 +1,28 @@
-export function Sheet({
-  children,
-  className = "",
-  lift = false,
-  stack = false,
-  dogEar = false,
-}) {
+import { forwardRef } from "react";
+
+export const Sheet = forwardRef(function Sheet(
+  {
+    children,
+    className = "",
+    lift = false,
+    stack = false,
+    dogEar = false,
+    ...props
+  },
+  ref
+) {
   return (
     <div
+      ref={ref}
       className={`relative sheet ${lift ? "sheet-lift" : ""} ${stack ? "sheet-stack" : ""} ${
         dogEar ? "dog-ear" : ""
       } ${className}`}
+      {...props}
     >
       {children}
     </div>
   );
-}
+});
 
 export function Bookmark({ children, color }) {
   return (

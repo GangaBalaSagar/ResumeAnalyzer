@@ -58,7 +58,7 @@ export default function Features() {
       />
 
       {/* Feature sheets */}
-      <section className="mx-auto max-w-7xl px-6 pb-16">
+      <section className="mx-auto max-w-7xl px-6 py-20 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {FEATURES.map((f, i) => (
             <Sheet key={f.n} className="relative p-7 md:p-8" lift dogEar={i % 3 === 0}>

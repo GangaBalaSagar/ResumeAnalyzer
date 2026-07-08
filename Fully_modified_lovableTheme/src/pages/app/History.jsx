@@ -51,8 +51,10 @@ export default function History() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [deletingId, setDeletingId] = useState(null);
+  const [deleteDialogItem, setDeleteDialogItem] = useState(null);
   const { user } = useAuth();
   const loadGuard = useRef(false);
+  const deleteTriggerRef = useRef(null);
 
   function handleViewReport(id) {
     if (id) {
@@ -83,6 +85,7 @@ export default function History() {
       setQuery("");
       setPage(1);
       setDeletingId(null);
+      setDeleteDialogItem(null);
       loadGuard.current = false;
       return;
     }
@@ -98,17 +101,32 @@ export default function History() {
     return <PublicArchiveEmptyState />;
   }
 
-  async function deleteItem(id) {
-    if (!window.confirm("Remove this analysis from the archive?")) return;
+  function requestDelete(item, triggerRef) {
+    deleteTriggerRef.current = triggerRef?.current || null;
+    setDeleteDialogItem(item);
+  }
+
+  async function confirmDelete() {
+    const item = deleteDialogItem;
+    if (!item?._id) return;
     try {
-      setDeletingId(id);
-      await api.delete(`/analyses/${id}`);
-      setItems((cur) => cur.filter((x) => x._id !== id));
+      setDeletingId(item._id);
+      setDeleteDialogItem(null);
+      await api.delete(`/analyses/${item._id}`);
+      setItems((cur) => cur.filter((x) => x._id !== item._id));
     } catch (err) {
       setError(err?.response?.data?.error || err?.message || "Could not delete this record.");
     } finally {
       setDeletingId(null);
+      deleteTriggerRef.current?.focus?.();
+      deleteTriggerRef.current = null;
     }
+  }
+
+  function cancelDelete() {
+    setDeleteDialogItem(null);
+    deleteTriggerRef.current?.focus?.();
+    deleteTriggerRef.current = null;
   }
 
   const filtered = useMemo(() => {
@@ -262,7 +280,7 @@ export default function History() {
                       item={d}
                       active={false}
                       onOpen={() => handleViewReport(d._id)}
-                      onDelete={() => deleteItem(d._id)}
+                      onDelete={(triggerRef) => requestDelete(d, triggerRef)}
                       deleting={deletingId === d._id}
                     />
                   ))}
@@ -329,6 +347,13 @@ export default function History() {
         </aside>
       </div>
 
+      <DeleteArchiveDialog
+        open={Boolean(deleteDialogItem)}
+        item={deleteDialogItem}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
+      />
+
     </div>
   );
 }
@@ -337,6 +362,7 @@ export default function History() {
 
 function ArchiveRow({ item, active, onOpen, onDelete, deleting }) {
   const p = typeof item.matchPercent === "number" ? item.matchPercent : null;
+  const deleteButtonRef = useRef(null);
   return (
     <li
       className={`group flex items-center gap-4 md:gap-5 px-3 md:px-4 py-4 transition-colors ${
@@ -381,9 +407,10 @@ function ArchiveRow({ item, active, onOpen, onDelete, deleting }) {
         </button>
         <button
           type="button"
-          onClick={onDelete}
+          onClick={() => onDelete(deleteButtonRef)}
           disabled={deleting}
           aria-label="Delete this analysis"
+          ref={deleteButtonRef}
           className="h-8 w-8 inline-flex items-center justify-center text-ink-muted hover:text-destructive border border-transparent hover:border-destructive/30 rounded-sm transition-colors disabled:opacity-50"
         >
           <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true">
@@ -398,6 +425,115 @@ function ArchiveRow({ item, active, onOpen, onDelete, deleting }) {
         </button>
       </div>
     </li>
+  );
+}
+
+function DeleteArchiveDialog({ open, item, onCancel, onConfirm }) {
+  const dialogRef = useRef(null);
+  const primaryRef = useRef(null);
+  const secondaryRef = useRef(null);
+  const focusablesRef = useRef([]);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusables = [secondaryRef.current, primaryRef.current].filter(Boolean);
+    focusablesRef.current = focusables;
+    (primaryRef.current || dialogRef.current)?.focus?.();
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onCancel();
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const nodes = focusablesRef.current.filter(Boolean);
+      if (!nodes.length) return;
+
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey) {
+        if (active === first || !dialogRef.current?.contains(active)) {
+          e.preventDefault();
+          last.focus();
+        }
+        return;
+      }
+
+      if (active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, onCancel]);
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <button
+        type="button"
+        aria-label="Close delete dialog"
+        onClick={onCancel}
+        className="absolute inset-0 bg-ink/20 backdrop-blur-[1px]"
+      />
+
+      <Sheet
+        ref={dialogRef}
+        className="relative z-10 w-full max-w-md p-8 md:p-10"
+        lift
+        dogEar
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="remove-archive-title"
+        aria-describedby="remove-archive-description"
+        tabIndex={-1}
+      >
+        <div className="absolute right-0 top-0 h-3 w-20 bg-tape/70" aria-hidden="true" />
+        <Eyebrow>Archive confirmation</Eyebrow>
+        <h2 id="remove-archive-title" className="mt-3 font-serif text-[28px] leading-tight tracking-tight">
+          Remove from Archive
+        </h2>
+        <p id="remove-archive-description" className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-sm">
+          This analysis will be permanently removed from your archive.
+          <br />
+          This action cannot be undone.
+        </p>
+
+        <div className="rule-line my-6" />
+
+        <div className="flex flex-col sm:flex-row sm:justify-end gap-3">
+          <button
+            ref={secondaryRef}
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
+          >
+            Keep in Archive
+          </button>
+          <button
+            ref={primaryRef}
+            type="button"
+            onClick={onConfirm}
+            className="px-5 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
+          >
+            Remove File
+          </button>
+        </div>
+      </Sheet>
+    </div>
   );
 }
 

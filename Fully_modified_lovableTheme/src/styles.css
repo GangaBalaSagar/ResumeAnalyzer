@@ -115,6 +115,31 @@
     font-feature-settings: "ss01";
     letter-spacing: -0.01em;
   }
+
+  :where(a[href], button, [role="button"]) {
+    transform-origin: center;
+    transition:
+      transform 180ms cubic-bezier(.2,.7,.2,1),
+      background-color 180ms cubic-bezier(.2,.7,.2,1),
+      border-color 180ms cubic-bezier(.2,.7,.2,1),
+      color 180ms cubic-bezier(.2,.7,.2,1),
+      opacity 180ms cubic-bezier(.2,.7,.2,1),
+      box-shadow 180ms cubic-bezier(.2,.7,.2,1) !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    :where(a[href], button, [role="button"]):not(:disabled):not([aria-disabled="true"]):hover {
+      transform: translate3d(0, -1px, 0);
+    }
+  }
+
+  :where(a[href], button, [role="button"]):not(:disabled):not([aria-disabled="true"]):active {
+    transform: translate3d(0, 1px, 0) scale(0.996);
+  }
+
+  :where(a[href], button, [role="button"]):disabled {
+    transform: none;
+  }
 }
 
 /* Paper grain — very subtle noise via gradients */
@@ -172,6 +197,10 @@
     inset 1px 1px 0 rgba(255, 255, 255, 0.85), 
     inset -1px -1px 0 rgba(26, 26, 26, 0.03), 
     var(--shadow-paper-lift);
+}
+
+.sheet-lift:active {
+  transform: translateY(1px) rotate(0deg);
 }
 
 /* Stack of papers — pseudo elements behind */
