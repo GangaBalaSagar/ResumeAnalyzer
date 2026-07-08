@@ -570,7 +570,7 @@ export default function Report() {
               {suggestions.map((s, i) => (
                 <li key={i} className="flex gap-4">
                   <span className="font-serif text-accent text-[15px] w-6 shrink-0 mt-1">
-                    §{i + 1}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="font-serif text-[16px] leading-[1.65] text-ink flex-1">
                     {s}
@@ -643,7 +643,7 @@ export default function Report() {
       {/* Footer — closes the document like a signature line */}
       <footer className="pt-6 border-t border-rule/60 flex items-baseline justify-between text-xs text-ink-muted">
         <span className="font-serif italic">
-          Prepared by the Recruiter's Desk · Edition № 01
+        Prepared by the Recruiter's Desk · Review 01
         </span>
         <span className="font-mono">
           Report · {filedAt.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}

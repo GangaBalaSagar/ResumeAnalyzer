@@ -252,19 +252,19 @@ export default function Account() {
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">01</span>
                 <span className="text-ink-muted">
                   Password links are single-use and expire quickly.
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">02</span>
                 <span className="text-ink-muted">
                   Signing out clears only this device's session.
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">03</span>
                 <span className="text-ink-muted">
                   We never share the contents of your archive.
                 </span>

@@ -39,7 +39,7 @@ export default function Login() {
 
   return (
     <AuthLayout
-      eyebrow="Members' entrance"
+      eyebrow="Review access"
       title={
         <>
           Welcome back to{" "}

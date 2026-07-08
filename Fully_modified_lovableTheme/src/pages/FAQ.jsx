@@ -111,7 +111,7 @@ export default function FAQ() {
   return (
     <PublicSite>
       <PageIntro
-        eyebrow="Vol. III · Frequently asked"
+        eyebrow="Review 03 · Questions"
         title="Questions from"
         italic="the margins."
         lede="Short, honest answers about how the desk analyzes resumes, what it stores, and what to expect from a comparison."

@@ -163,7 +163,7 @@ export default function History() {
       {/* Header */}
       <header className="flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <Eyebrow>The archive · Filed readings</Eyebrow>
+          <Eyebrow>Archive · Saved analyses</Eyebrow>
           <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
@@ -306,7 +306,7 @@ export default function History() {
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           <Sheet className="relative p-6">
             <Eyebrow>Cabinet totals</Eyebrow>
-            <div className="mt-2 font-serif text-xl leading-tight">The archive, in numbers</div>
+            <div className="mt-2 font-serif text-xl leading-tight">Archive summary</div>
             <div className="rule-line my-4" />
             <dl className="grid grid-cols-2 gap-x-4 gap-y-5">
               <StatCell label="Total filed" value={stats.total} />
@@ -331,15 +331,15 @@ export default function History() {
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
-                <span className="text-ink-muted">Filed in reverse order — newest first.</span>
+                <span className="font-serif text-accent shrink-0">01</span>
+                <span className="text-ink-muted">Filed in reverse order - newest first.</span>
               </li>
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">02</span>
                 <span className="text-ink-muted">Search filters by document name only.</span>
               </li>
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">03</span>
                 <span className="text-ink-muted">Deletes cannot be undone.</span>
               </li>
             </ul>
@@ -580,7 +580,7 @@ function PublicArchiveEmptyState() {
     <div className="space-y-10">
       <header className="flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <Eyebrow>The archive · Filed readings</Eyebrow>
+          <Eyebrow>Archive · Saved analyses</Eyebrow>
           <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
@@ -663,15 +663,15 @@ function PublicArchiveEmptyState() {
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">01</span>
                 <span className="text-ink-muted">Access all your past analyses in one private archive.</span>
               </li>
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">02</span>
                 <span className="text-ink-muted">Compare ATS scores and track your resume improvements.</span>
               </li>
               <li className="flex gap-3">
-                <span className="font-serif text-accent shrink-0">§</span>
+                <span className="font-serif text-accent shrink-0">03</span>
                 <span className="text-ink-muted">Pick up where you left off without re-uploading files.</span>
               </li>
             </ul>

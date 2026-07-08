@@ -30,7 +30,7 @@ export function PublicFooter() {
             <Mark />
             <div className="leading-tight">
               <div className="font-serif text-[15px]">Resume Analyzer</div>
-              <div className="eyebrow text-[9px]">Est. 2026</div>
+              <div className="eyebrow text-[9px]">Workspace</div>
             </div>
           </div>
           <p className="mt-4 text-ink-muted text-[13px] max-w-xs leading-relaxed">
@@ -38,7 +38,7 @@ export function PublicFooter() {
           </p>
         </div>
         <div>
-          <div className="eyebrow text-[10px]">The Site</div>
+          <div className="eyebrow text-[10px]">Workspace</div>
           <ul className="mt-3 space-y-2 text-ink-muted">
             {NAV.map((n) => (
               <li key={n.to}>
@@ -48,7 +48,7 @@ export function PublicFooter() {
           </ul>
         </div>
         <div>
-          <div className="eyebrow text-[10px]">Members</div>
+          <div className="eyebrow text-[10px]">Access</div>
           <ul className="mt-3 space-y-2 text-ink-muted">
             <li><Link to="/login" className="hover:text-ink transition-colors">Sign in</Link></li>
             <li><Link to="/signup" className="hover:text-ink transition-colors">Create an account</Link></li>
@@ -58,10 +58,10 @@ export function PublicFooter() {
       </div>
       <div className="border-t border-rule/60">
         <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between text-xs text-ink-muted">
-          <div>© Resume Analyzer · Est. 2026</div>
+          <div>© Resume Analyzer · 2026</div>
           <div className="flex gap-6">
-            <span>Edition № 01</span>
-            <span>Printed on warm paper</span>
+            <span>Review 01</span>
+            <span>Filed for recruiter review</span>
           </div>
         </div>
       </div>

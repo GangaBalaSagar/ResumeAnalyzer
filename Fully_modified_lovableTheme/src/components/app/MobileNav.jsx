@@ -138,16 +138,16 @@ export default function MobileNav({ open, onClose }) {
               </div>
             </div>
             <div className="mt-3 flex items-center justify-between text-[10px] text-ink-muted/80">
-              <span className="eyebrow text-[9px]">Edition № 01</span>
-              <span className="font-serif italic">Printed on warm paper</span>
+              <span className="eyebrow text-[9px]">Review 01</span>
+              <span className="font-serif italic">Filed for recruiter review</span>
             </div>
           </div>
         ) : (
           <div className="px-5 pb-6">
             <div className="rule-line mb-4" />
             <div className="flex items-center justify-between text-[10px] text-ink-muted/80">
-              <span className="eyebrow text-[9px]">Edition № 01</span>
-              <span className="font-serif italic">Printed on warm paper</span>
+              <span className="eyebrow text-[9px]">Review 01</span>
+              <span className="font-serif italic">Filed for recruiter review</span>
             </div>
           </div>
         )}

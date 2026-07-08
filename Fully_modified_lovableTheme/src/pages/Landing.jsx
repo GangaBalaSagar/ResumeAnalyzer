@@ -66,7 +66,7 @@ export default function Landing() {
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         <div className="lg:col-span-7 motion-safe:animate-fade-up">
-          <Eyebrow>Vol. I Â· Resume meets role</Eyebrow>
+          <Eyebrow>Review 01 · Resume meets role</Eyebrow>
           <h1 className="mt-6 font-serif text-[52px] md:text-[64px] leading-[1.02] tracking-tight">
             Your resume,
             <br />

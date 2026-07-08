@@ -51,7 +51,7 @@ export default function Features() {
   return (
     <PublicSite>
       <PageIntro
-        eyebrow="Vol. II · Features"
+        eyebrow="Review 02 · Features"
         title="Everything the desk"
         italic="compares, marks, and files."
         lede="Six capabilities, one workspace. Each feature helps you compare your resume to a job description — clearly, precisely, and with actionable results."
@@ -64,7 +64,7 @@ export default function Features() {
             <Sheet key={f.n} className="relative p-7 md:p-8" lift dogEar={i % 3 === 0}>
               {i % 4 === 0 && <PaperClip />}
               <div className="flex items-baseline justify-between gap-4">
-                <Eyebrow>Sheet № {f.n}</Eyebrow>
+                <Eyebrow>Feature {f.n}</Eyebrow>
                 <span className="font-serif italic text-[13px] text-ink-muted">
                   Feature
                 </span>

@@ -55,7 +55,7 @@ export default function AuthLayout({
               Your sessions, saved analyses and drafts remain on the desk between
               visits — filed, indexed and ready to reopen.
             </p>
-            <div className="mt-6 eyebrow text-[10px]">Vol. I · Members' entrance</div>
+            <div className="mt-6 eyebrow text-[10px]">Review 01 · Sign in</div>
           </div>
           <StickyNote className="absolute left-2 bottom-4 w-[220px]" rotate={-3}>
             {note || (

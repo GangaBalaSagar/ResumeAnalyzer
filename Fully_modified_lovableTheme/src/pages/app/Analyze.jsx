@@ -378,9 +378,11 @@ function onPickFile(e) {
                 "Missing requirements to flag",
                 "Suggested edits for the candidate",
                 "Role preview with keywords marked",
-              ].map((x) => (
+              ].map((x, i) => (
                 <li key={x} className="flex gap-3">
-                  <span className="text-accent font-serif shrink-0">§</span>
+                  <span className="text-accent font-serif shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <span className="text-ink-muted">{x}</span>
                 </li>
               ))}
@@ -423,9 +425,11 @@ function onPickFile(e) {
                 "Generate review reports",
                 "Save past reviews",
                 "Track revisions",
-              ].map((item) => (
+              ].map((item, i) => (
                 <li key={item} className="flex gap-2.5 items-baseline">
-                  <span className="text-accent font-serif shrink-0">§</span>
+                  <span className="text-accent font-serif shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <span className="text-ink-muted">{item}</span>
                 </li>
               ))}
