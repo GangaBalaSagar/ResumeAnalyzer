@@ -324,6 +324,139 @@
 }
 .animate-fade-up { animation: fade-up 500ms cubic-bezier(.2,.7,.2,1) both; }
 
+/* Feature interaction animations */
+
+/* Confidence bar grow */
+.confidence-bar {
+  width: 0%;
+  height: 4px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transition: width 600ms ease-out;
+}
+
+/* Staggered fade for chips and list items */
+@keyframes stagger-fade {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.anim-stagger {
+  opacity: 1;
+  transform: none;
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), filter 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+/* Missing skill chips separate */
+@keyframes missing-chip-move {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.anim-missing {
+  opacity: 1;
+  transform: none;
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), filter 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.feature-chip {
+  transition:
+    transform 220ms cubic-bezier(.2,.7,.2,1),
+    border-color 220ms cubic-bezier(.2,.7,.2,1),
+    box-shadow 220ms cubic-bezier(.2,.7,.2,1),
+    filter 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+/* Suggestions reveal line by line */
+@keyframes suggestion-reveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.anim-suggestion {
+  opacity: 0;
+  animation: suggestion-reveal 400ms ease-out forwards;
+}
+
+/* JD preview keyword sweep */
+@keyframes keyword-sweep {
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
+}
+.highlight {
+  background: var(--color-highlight);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  animation: keyword-sweep 800ms ease-out forwards;
+}
+
+/* Private archive paper fan */
+@keyframes fan-in {
+  from { opacity: 0; transform: rotate(-15deg) translateY(8px); }
+  to { opacity: 1; transform: rotate(var(--rot, 0deg)) translateY(0); }
+}
+    .paper-fan {
+      opacity: 0;
+      animation: fan-in 500ms ease-out forwards;
+    }
+
+    /* Looping skill chips (matched skills) */
+    /* Hover emphasis for various elements */
+    .landing-feature-card:hover .feature-chip {
+      transform: translateY(-2px);
+      border-color: rgba(26, 26, 26, 0.32);
+      box-shadow: 0 4px 10px -6px rgba(26, 26, 26, 0.2);
+      filter: brightness(1.02);
+    }
+
+    .landing-feature-card:hover .confidence-bar,
+    .landing-feature-card:hover .highlight,
+    .landing-feature-card:hover .anim-suggestion {
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px -8px rgba(26, 26, 26, 0.24);
+    }
+
+    .landing-feature-card:hover .paper-fan,
+    .landing-feature-card:hover .mini-sheet {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px -8px rgba(26, 26, 26, 0.24);
+      background: inherit;
+      opacity: 1;
+      filter: none;
+      color: inherit;
+    }
+
+
+.landing-feature-card:hover .rule-line {
+  filter: brightness(1.2);
+}
+.landing-feature-card:hover .sticky-note {
+  filter: brightness(1.2);
+  transform: translateY(-2px) !important;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-score-ring,
+  .confidence-bar,
+  .anim-stagger,
+  .anim-missing,
+  .anim-suggestion,
+  .highlight,
+  .paper-fan {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* Feature demo utilities */
+.highlight {
+  background-color: var(--color-highlight);
+  color: var(--color-ink);
+}
+.feature-demo {
+  margin-top: 0.5rem;
+}
 /* Ruled paper background (for notes) */
 .ruled {
   background-image: repeating-linear-gradient(transparent 0 27px, var(--color-rule) 27px 28px);
