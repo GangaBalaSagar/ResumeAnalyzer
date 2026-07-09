@@ -454,6 +454,331 @@
   transform: translate3d(calc(var(--hero-x) * -0.7px), calc(var(--hero-y) * -0.5px), 0);
 }
 
+.landing-section-bridge {
+  height: 1px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(26, 26, 26, 0.14), rgba(77, 166, 255, 0.18), rgba(26, 26, 26, 0.14), rgba(255, 255, 255, 0));
+  opacity: 0.8;
+}
+
+.landing-feature-grid,
+.landing-workflow-grid {
+  position: relative;
+}
+
+.landing-feature-grid {
+  --feature-spot-opacity: 0.35;
+}
+
+.landing-feature-grid::after {
+  content: "";
+  position: absolute;
+  inset: -1rem;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 36% 28%, rgba(77, 166, 255, 0.10) 0%, rgba(77, 166, 255, 0) 48%),
+    radial-gradient(circle at 76% 62%, rgba(230, 180, 62, 0.08) 0%, rgba(230, 180, 62, 0) 52%);
+  opacity: var(--feature-spot-opacity);
+  transition: opacity 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.landing-feature-grid[data-focus-state="active"] {
+  --feature-spot-opacity: 0.62;
+}
+
+.landing-feature-grid::before,
+.landing-workflow-grid::before {
+  display: none;
+  content: "";
+  position: absolute;
+  inset: 1rem auto 1rem 1.25rem;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0), rgba(26, 26, 26, 0.18), rgba(26, 26, 26, 0));
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .landing-feature-grid::before,
+  .landing-workflow-grid::before {
+    display: block;
+  }
+}
+
+.landing-workflow-stage {
+  --workflow-rail-opacity: 0.7;
+}
+
+.landing-workflow-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0.85rem 1.25rem auto 1.25rem;
+  height: 2.8rem;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.12) 18%, rgba(77, 166, 255, 0.14) 50%, rgba(26, 26, 26, 0.12) 82%, rgba(26, 26, 26, 0) 100%);
+  opacity: var(--workflow-rail-opacity);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+}
+
+.landing-workflow-stage[data-focus-state="active"] {
+  --workflow-rail-opacity: 0.92;
+}
+
+.landing-workflow-rail {
+  position: absolute;
+  inset: 1rem 1.25rem auto 1.25rem;
+  height: 3rem;
+  pointer-events: none;
+  display: none;
+  z-index: 0;
+}
+
+.landing-workflow-rail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(26, 26, 26, 0), rgba(26, 26, 26, 0.18), rgba(77, 166, 255, 0.22), rgba(26, 26, 26, 0.18), rgba(26, 26, 26, 0));
+  transform: translateY(-50%);
+}
+
+.landing-workflow-rail span {
+  position: absolute;
+  top: 50%;
+  width: .72rem;
+  height: .72rem;
+  border-radius: 999px;
+  transform: translate(-50%, -50%) scale(.95);
+  background: var(--color-paper);
+  border: 1px solid rgba(26, 26, 26, 0.2);
+  box-shadow: 0 0 0 0 rgba(77, 166, 255, 0);
+  transition:
+    transform 220ms cubic-bezier(.2,.7,.2,1),
+    background-color 220ms cubic-bezier(.2,.7,.2,1),
+    border-color 220ms cubic-bezier(.2,.7,.2,1),
+    box-shadow 220ms cubic-bezier(.2,.7,.2,1),
+    opacity 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.landing-workflow-rail span:nth-child(1) { left: 12%; }
+.landing-workflow-rail span:nth-child(2) { left: 50%; }
+.landing-workflow-rail span:nth-child(3) { left: 88%; }
+
+.landing-workflow-rail span.active {
+  transform: translate(-50%, -50%) scale(1.35);
+  background: var(--color-accent);
+  border-color: rgba(77, 166, 255, 0.48);
+  box-shadow: 0 0 0 8px rgba(77, 166, 255, 0.08), 0 0 18px rgba(77, 166, 255, 0.22);
+}
+
+.landing-workflow-rail span.adjacent {
+  transform: translate(-50%, -50%) scale(1.1);
+  border-color: rgba(26, 26, 26, 0.28);
+}
+
+.landing-workflow-stage[data-focus-state="active"] .landing-workflow-rail span.distant {
+  opacity: .78;
+}
+
+@media (min-width: 768px) {
+  .landing-workflow-rail {
+    display: block;
+  }
+}
+
+.landing-feature-card,
+.landing-workflow-card,
+.landing-testimonial-card,
+.landing-cta-panel {
+  --card-offset: 0px;
+  --card-scale: 1;
+  --card-lift: 0px;
+  --card-translate-x: 0px;
+  --card-tilt: 0deg;
+  transform: translate3d(var(--card-translate-x, 0), calc(var(--card-offset) + var(--card-lift)), 0) scale(var(--card-scale)) rotateZ(var(--card-tilt, 0deg));
+  transform-origin: center top;
+  transition:
+    transform 220ms cubic-bezier(.2,.7,.2,1),
+    box-shadow 220ms cubic-bezier(.2,.7,.2,1),
+    border-color 220ms cubic-bezier(.2,.7,.2,1),
+    opacity 220ms cubic-bezier(.2,.7,.2,1),
+    filter 220ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+.landing-feature-card:hover,
+.landing-feature-card:focus-within,
+.landing-workflow-card:hover,
+.landing-workflow-card:focus-within,
+.landing-testimonial-card:hover,
+.landing-testimonial-card:focus-within,
+.landing-cta-panel:hover,
+.landing-cta-panel:focus-within {
+  --card-lift: -0.4rem;
+}
+
+.landing-feature-card[data-focus="active"],
+.landing-workflow-card[data-focus="active"] {
+  --card-scale: 1.03;
+  z-index: 2;
+}
+
+.landing-feature-card[data-focus="adjacent"],
+.landing-workflow-card[data-focus="adjacent"] {
+  --card-scale: 1.01;
+  filter: saturate(0.99);
+}
+
+.landing-feature-card[data-focus="distant"],
+.landing-workflow-card[data-focus="distant"] {
+  --card-scale: 0.985;
+  opacity: 0.92;
+  filter: saturate(0.975);
+}
+
+.landing-feature-grid[data-focus-state="active"] .landing-feature-card[data-focus="distant"] {
+  opacity: 0.86;
+}
+
+.landing-feature-card__inner,
+.landing-workflow-card__inner,
+.landing-end-panel__quote,
+.landing-end-panel__cta {
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), opacity 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+/* small micro interactions */
+.sheet svg[width="22"][height="44"] {
+  transition: transform 260ms cubic-bezier(.2,.7,.2,1), opacity 220ms;
+  transform-origin: left center;
+}
+.sheet:hover svg[width="22"][height="44"] {
+  transform: rotate(6deg) translate3d(2px, -2px, 0);
+  opacity: 0.95;
+}
+
+.sticky-note {
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms;
+}
+.sticky-note:hover {
+  transform: translate3d(0, -6px, 0) rotate(-1deg) !important;
+  box-shadow: 0 8px 18px -6px rgba(26,26,26,0.18);
+}
+
+/* make end panel keyboard-focusable interactions mirror hover */
+.landing-end-panel:focus-within .landing-end-panel__quote,
+.landing-end-panel:focus-within .landing-end-panel__cta {
+  transform: translate3d(-3px, -1.5px, 0);
+}
+
+/* allow workflow/feature per-card translate variable to influence inner rule */
+.landing-feature-card[data-focus="active"] .landing-feature-card__inner,
+.landing-workflow-card[data-focus="active"] .landing-workflow-card__inner {
+  transform: translate3d(0, -4px, 0);
+}
+
+.landing-feature-card[data-focus="active"] .landing-feature-card__inner,
+.landing-workflow-card[data-focus="active"] .landing-workflow-card__inner {
+  transform: translate3d(0, -4px, 0);
+}
+
+.landing-feature-card[data-focus="adjacent"] .landing-feature-card__inner,
+.landing-workflow-card[data-focus="adjacent"] .landing-workflow-card__inner {
+  transform: translate3d(0, -1px, 0);
+}
+
+.landing-feature-card__rule,
+.landing-workflow-card__rule {
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), opacity 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.landing-feature-card[data-focus="active"] .landing-feature-card__rule,
+.landing-workflow-card[data-focus="active"] .landing-workflow-card__rule {
+  transform: scaleX(1.02);
+  opacity: 1;
+}
+
+.landing-feature-card__meta,
+.landing-feature-card__copy,
+.landing-workflow-card__copy {
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), opacity 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.landing-feature-card[data-focus="active"] .landing-feature-card__copy,
+.landing-feature-card[data-focus="active"] .landing-feature-card__meta,
+.landing-workflow-card[data-focus="active"] .landing-workflow-card__copy {
+  transform: translate3d(0, 1px, 0);
+}
+
+.landing-end-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-end-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 24%),
+    radial-gradient(circle at 18% 20%, rgba(77, 166, 255, 0.08) 0%, rgba(77, 166, 255, 0) 45%);
+  opacity: 0.85;
+}
+
+.landing-end-panel:hover .landing-end-panel__quote {
+  transform: translate3d(-5px, -2px, 0);
+}
+
+.landing-end-panel:hover .landing-end-panel__cta {
+  transform: translate3d(5px, 2px, 0);
+}
+
+.landing-action {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  transition: transform 180ms cubic-bezier(.2,.7,.2,1), box-shadow 180ms cubic-bezier(.2,.7,.2,1), border-color 180ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+.landing-action::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0) 18%, rgba(255, 255, 255, 0.14) 36%, rgba(255, 255, 255, 0) 58%);
+  transform: translateX(-120%);
+  transition: transform 360ms cubic-bezier(.2,.7,.2,1);
+  pointer-events: none;
+}
+
+.landing-action:hover,
+.landing-action:focus-visible {
+  transform: translate3d(0, -2px, 0);
+}
+
+.landing-action:hover::after,
+.landing-action:focus-visible::after {
+  transform: translateX(120%);
+}
+
+.landing-feature-grid .sheet,
+.landing-workflow-grid .sheet,
+.landing-testimonial-card,
+.landing-cta-panel,
+.landing-end-panel {
+  position: relative;
+}
+
+.landing-feature-grid .sheet:hover,
+.landing-workflow-grid .sheet:hover {
+  box-shadow: var(--shadow-paper-lift);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .landing-shell,
   .landing-ambient,
@@ -463,9 +788,27 @@
   .landing-field,
   .landing-hero-stage,
   .landing-hero-layer,
-  .landing-hero-stage .sheet-lift {
+  .landing-hero-stage .sheet-lift,
+  .landing-feature-card,
+  .landing-workflow-card,
+  .landing-testimonial-card,
+  .landing-cta-panel,
+  .landing-end-panel::before,
+  .landing-feature-grid::after,
+  .landing-workflow-stage::after,
+  .landing-workflow-rail,
+  .landing-section-bridge {
     transform: none !important;
     transition: none !important;
     animation: none !important;
+  }
+
+  .landing-feature-grid::before,
+  .landing-workflow-grid::before {
+    opacity: 0 !important;
+  }
+
+  .landing-action::after {
+    display: none !important;
   }
 }

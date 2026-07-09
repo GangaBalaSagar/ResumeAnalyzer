@@ -1,11 +1,29 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PublicSite from "../components/public/PublicSite.jsx";
 import { Sheet, StickyNote, Eyebrow, PaperClip } from "../components/paper.jsx";
 import AtsScore from "../components/app/AtsScore.jsx";
 
+const FEATURE_CARDS = [
+  { t: "Match Score", d: "A clear percentage: how closely your resume fits the role.", n: "01" },
+  { t: "Skills Overview", d: "Matched and missing keywords, charted clearly.", n: "02" },
+  { t: "AI Suggestions", d: "Specific edits, copyable, in plain language.", n: "03" },
+  { t: "Archive", d: "Every analysis filed by date, ready to revisit.", n: "04" },
+];
+
+const WORKFLOW_STEPS = [
+  { n: "01", t: "Upload the resume", d: "Drop a PDF or DOCX. Your document is parsed and prepared for analysis." },
+  { n: "02", t: "Add the job description", d: "The role details the desk needs to compare against." },
+  { n: "03", t: "Review your results", d: "ATS match score, matched and missing skills, and AI-powered suggestions." },
+];
+
+const DEFAULT_FEATURE_INDEX = 1;
+const DEFAULT_WORKFLOW_INDEX = 1;
+
 export default function Landing() {
   const landingRootRef = useRef(null);
+  const [activeFeatureIndex, setActiveFeatureIndex] = useState(DEFAULT_FEATURE_INDEX);
+  const [activeWorkflowIndex, setActiveWorkflowIndex] = useState(DEFAULT_WORKFLOW_INDEX);
 
   useEffect(() => {
     const root = landingRootRef.current;
@@ -92,6 +110,23 @@ export default function Landing() {
     };
   }, []);
 
+  const getFocusState = (activeIndex, index) => {
+    const distance = Math.abs(activeIndex - index);
+    if (distance === 0) return "active";
+    if (distance === 1) return "adjacent";
+    return "distant";
+  };
+
+  const getFeatureOffset = (index) => {
+    const offsets = ["0px", "1.1rem", "0.45rem", "1.55rem"];
+    return offsets[index] ?? "0px";
+  };
+
+  const getWorkflowOffset = (index) => {
+    const offsets = ["0px", "1rem", "0.35rem"];
+    return offsets[index] ?? "0px";
+  };
+
   return (
     <PublicSite>
       <div ref={landingRootRef} className="landing-shell relative isolate">
@@ -103,10 +138,9 @@ export default function Landing() {
         </div>
 
         <div className="relative z-10">
-          {/* Hero */}
-          <section className="landing-scene landing-scene--hero mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-20 md:pb-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <section className="landing-scene landing-scene--hero mx-auto max-w-7xl px-6 pt-16 pb-18 md:pt-20 md:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-7">
-              <Eyebrow>Review 01 Â· Resume meets role</Eyebrow>
+              <Eyebrow>Review 01 - Resume meets role</Eyebrow>
               <h1 className="mt-6 font-serif text-[52px] md:text-[64px] leading-[1.02] tracking-tight">
                 Your resume,
                 <br />
@@ -114,19 +148,19 @@ export default function Landing() {
               </h1>
               <p className="mt-7 text-[17px] leading-relaxed text-ink-muted max-w-xl">
                 Drop a resume on the desk, paste the job description, and receive an
-                AI-powered analysis Ã¢â‚¬â€ ATS match score, matched and missing skills,
+                AI-powered analysis - ATS match score, matched and missing skills,
                 and targeted suggestions to improve your fit.
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Link
                   to="/app/analyze"
-                  className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
+                  className="landing-action landing-action--primary px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
                 >
                   Start your analysis
                 </Link>
                 <Link
                   to="/features"
-                  className="px-5 py-3 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
+                  className="landing-action landing-action--secondary px-5 py-3 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
                 >
                   Explore the features
                 </Link>
@@ -151,7 +185,7 @@ export default function Landing() {
               <div className="landing-hero-layer landing-hero-layer--sheet absolute right-12 top-8 w-[320px] h-[440px]">
                 <div className="sheet sheet-lift dog-ear p-7 rotate-[3deg] h-full">
                   <PaperClip />
-                  <div className="eyebrow">Resume Â· Analysis â„–412</div>
+                  <div className="eyebrow">Resume - Analysis - 412</div>
                   <div className="mt-3 font-serif text-xl leading-tight">Elena Marsh</div>
                   <div className="text-xs text-ink-muted">Senior Product Designer</div>
                   <div className="rule-line mt-4" />
@@ -169,132 +203,210 @@ export default function Landing() {
               </div>
 
               <StickyNote className="absolute left-2 top-72 w-[200px]">
-                "Lead with outcomes â€” your impact line is buried under the role title."
+                "Lead with outcomes - your impact line is buried under the role title."
               </StickyNote>
 
               <div className="landing-hero-layer landing-hero-layer--card absolute left-8 bottom-2 w-[220px]">
                 <div className="sheet sheet-lift p-4 rotate-[4deg]">
-                  <Eyebrow>Match Â· Senior PM</Eyebrow>
-                  <div className="mt-1"><AtsScore value={86} size="sm" /></div>
+                  <Eyebrow>Match - Senior PM</Eyebrow>
+                  <div className="mt-1">
+                    <AtsScore value={86} size="sm" />
+                  </div>
                   <div className="mt-1 text-xs text-ink-muted">Strong on craft, light on metrics.</div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Value cards */}
-          <section id="how" className="landing-scene landing-scene--features border-t border-rule/60 py-20 md:py-24">
+          <section id="how" className="landing-scene landing-scene--features relative -mt-2 pt-10 pb-18 md:-mt-4 md:pt-14 md:pb-24">
             <div className="mx-auto max-w-7xl px-6">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <div className="lg:col-span-4">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+                <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
                   <Eyebrow>The Workspace</Eyebrow>
                   <h2 className="mt-4 font-serif text-4xl leading-tight">
-                    Resume, job description,<br />one clear result.
+                    Resume, job description,
+                    <br />
+                    one clear result.
                   </h2>
-                  <p className="mt-5 text-ink-muted text-[15px] leading-relaxed">
-                    Your resume is compared against the job description â€” skill by skill.
+                  <p className="mt-5 text-ink-muted text-[15px] leading-relaxed max-w-md">
+                    Your resume is compared against the job description - skill by skill.
                     Each analysis is laid out clearly, marked with insights, and filed
                     in your archive.
                   </p>
-                  <Link
-                    to="/features"
-                    className="story-link inline-block mt-6 text-sm text-ink"
-                  >
-                    Explore all features â†’
+                  <div className="mt-8 hidden lg:flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-ink-muted">
+                    <span className="h-px flex-1 bg-rule/60" />
+                    <span>Four sheets on one desk</span>
+                  </div>
+                  <Link to="/features" className="story-link inline-block mt-6 text-sm text-ink">
+                    Explore all features {"->"}
                   </Link>
                 </div>
-                <div className="landing-field landing-field--cards lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {[
-                    { t: "Match Score", d: "A clear percentage: how closely your resume fits the role.", n: "01" },
-                    { t: "Skills Overview", d: "Matched and missing keywords, charted clearly.", n: "02" },
-                    { t: "AI Suggestions", d: "Specific edits, copyable, in plain language.", n: "03" },
-                    { t: "Archive", d: "Every analysis filed by date, ready to revisit.", n: "04" },
-                  ].map((c, i) => (
-                    <Sheet key={c.t} className="p-6" lift dogEar={i % 2 === 0}>
-                      <div className="flex items-baseline justify-between">
-                        <Eyebrow>Sheet â€” {c.n}</Eyebrow>
-                      </div>
-                      <div className="mt-3 font-serif text-2xl">{c.t}</div>
-                      <p className="mt-2 text-sm text-ink-muted">{c.d}</p>
-                      <div className="rule-line mt-6" />
-                      <div className="mt-3 text-xs text-ink-muted">Filed under Â· Active analyses</div>
-                    </Sheet>
-                  ))}
+
+                <div className="lg:col-span-8">
+                  <div
+                    className="landing-field landing-field--cards landing-feature-grid grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6"
+                    data-focus-state={activeFeatureIndex !== null ? "active" : "idle"}
+                    onMouseLeave={() => setActiveFeatureIndex(DEFAULT_FEATURE_INDEX)}
+                  >
+                    {FEATURE_CARDS.map((card, index) => {
+                      const spanClasses =
+                        index === 0
+                          ? "md:col-span-7"
+                          : index === 1
+                            ? "md:col-span-5 md:mt-10"
+                            : index === 2
+                              ? "md:col-span-5"
+                              : "md:col-span-7 md:mt-8";
+
+                      // subtle shared-system offsets: nearby cards shift and tilt
+                      const dx = index - activeFeatureIndex;
+                      const distance = Math.abs(dx) || 1;
+                      const translateX = `${Math.sign(dx) * Math.min(10, 6 * distance)}px`;
+                      const tilt = `${dx * 0.45}deg`;
+
+                      return (
+                        <Sheet
+                          key={card.t}
+                          className={`landing-feature-card ${spanClasses} p-6`}
+                          dogEar={index % 2 === 0}
+                          data-focus={getFocusState(activeFeatureIndex, index)}
+                          onMouseEnter={() => setActiveFeatureIndex(index)}
+                          style={{
+                            "--card-offset": getFeatureOffset(index),
+                            "--card-translate-x": translateX,
+                            "--card-tilt": tilt,
+                          }}
+                        >
+                          <div className="landing-feature-card__inner">
+                            <div className="flex items-baseline justify-between">
+                              <Eyebrow>Sheet - {card.n}</Eyebrow>
+                            </div>
+                            <div className="landing-feature-card__title mt-3 font-serif text-2xl">{card.t}</div>
+                            <p className="landing-feature-card__copy mt-2 text-sm text-ink-muted">{card.d}</p>
+                            <div className="rule-line landing-feature-card__rule mt-6" />
+                            <div className="landing-feature-card__meta mt-3 text-xs text-ink-muted">
+                              Filed under - Active analyses
+                            </div>
+                          </div>
+                        </Sheet>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Workflow â€” three-step reading */}
-          <section className="landing-scene landing-scene--workflow py-20 md:py-24 border-t border-rule/60">
+          <section className="landing-scene landing-scene--workflow relative -mt-2 pt-10 pb-16 md:-mt-4 md:pt-14 md:pb-20 border-t border-rule/60">
             <div className="mx-auto max-w-7xl px-6">
-              <div className="max-w-2xl">
-                <Eyebrow>The workflow</Eyebrow>
-                <h2 className="mt-4 font-serif text-4xl leading-tight">
-                  Three steps. Clear results.
-                </h2>
-                <p className="mt-4 text-ink-muted text-[15px] leading-relaxed">
-                  Upload a resume, paste the job description, and receive an ATS match
-                  score with actionable insights.
-                </p>
-              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+                <div className="lg:col-span-4">
+                  <Eyebrow>The workflow</Eyebrow>
+                  <h2 className="mt-4 font-serif text-4xl leading-tight">
+                    Three steps. Clear results.
+                  </h2>
+                  <p className="mt-4 text-ink-muted text-[15px] leading-relaxed max-w-md">
+                    Upload a resume, paste the job description, and receive an ATS match
+                    score with actionable insights.
+                  </p>
+                </div>
 
-              <ol className="landing-field landing-field--workflow mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                  { n: "01", t: "Upload the resume", d: "Drop a PDF or DOCX. Your document is parsed and prepared for analysis." },
-                  { n: "02", t: "Add the job description", d: "The role details the desk needs to compare against." },
-                  { n: "03", t: "Review your results", d: "ATS match score, matched and missing skills, and AI-powered suggestions." },
-                ].map((s) => (
-                  <li key={s.n}>
-                    <Sheet className="p-6 h-full" lift>
-                      <div className="font-serif text-3xl text-accent">{s.n}</div>
-                      <div className="rule-line my-4" />
-                      <div className="font-serif text-xl">{s.t}</div>
-                      <p className="mt-2 text-sm text-ink-muted">{s.d}</p>
-                    </Sheet>
-                  </li>
-                ))}
-              </ol>
+                <div className="lg:col-span-8">
+                  <div
+                    className="landing-workflow-stage relative"
+                    data-focus-state={activeWorkflowIndex !== null ? "active" : "idle"}
+                    onMouseLeave={() => setActiveWorkflowIndex(DEFAULT_WORKFLOW_INDEX)}
+                  >
+                    <div aria-hidden="true" className="landing-workflow-rail">
+                      {WORKFLOW_STEPS.map((s, i) => (
+                        <span key={s.n} className={getFocusState(activeWorkflowIndex, i)} />
+                      ))}
+                    </div>
+                    <ol className="landing-field landing-field--workflow landing-workflow-grid grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+                      {WORKFLOW_STEPS.map((step, index) => {
+                        const spanClasses =
+                          index === 0
+                            ? "md:col-span-7"
+                            : index === 1
+                              ? "md:col-span-5 md:mt-10"
+                              : "md:col-span-8 md:ml-auto md:-mt-1";
+                        const dx = index - activeWorkflowIndex;
+                        const translateX = `${Math.sign(dx) * Math.min(8, 5 * Math.abs(dx))}px`;
+
+                        return (
+                          <li
+                            key={step.n}
+                            className={spanClasses}
+                            onMouseEnter={() => setActiveWorkflowIndex(index)}
+                          >
+                            <Sheet
+                              className="landing-workflow-card p-6 h-full"
+                              dogEar={index !== 1}
+                              data-focus={getFocusState(activeWorkflowIndex, index)}
+                              style={{
+                                "--card-offset": getWorkflowOffset(index),
+                                "--card-translate-x": translateX,
+                              }}
+                            >
+                              <div className="landing-workflow-card__inner">
+                                <div className="landing-workflow-card__number font-serif text-3xl text-accent">
+                                  {step.n}
+                                </div>
+                                <div className="rule-line landing-workflow-card__rule my-4" />
+                                <div className="landing-workflow-card__title font-serif text-xl">{step.t}</div>
+                                <p className="landing-workflow-card__copy mt-2 text-sm text-ink-muted">{step.d}</p>
+                              </div>
+                            </Sheet>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* Editorial testimonial */}
-          <section className="landing-scene landing-scene--testimonial py-20 md:py-24 border-t border-rule/60">
-            <div className="landing-field landing-field--testimonial mx-auto max-w-4xl px-6 text-center">
-              <Eyebrow>From the desk</Eyebrow>
-              <blockquote className="mt-6 font-serif text-3xl md:text-4xl italic leading-snug text-ink">
-                "Upload. Compare. Improve. The fastest way to know if your resume fits the role."
-              </blockquote>
-              <div className="mt-6 text-sm text-ink-muted">
-                â€” The Recruiter&apos;s Desk
-              </div>
-            </div>
-          </section>
+          <section className="landing-scene landing-scene--testimonial relative -mt-8 pb-20 md:-mt-12 md:pb-24 border-t border-rule/60">
+            <div className="mx-auto max-w-7xl px-6">
+              <Sheet className="landing-end-panel mx-auto max-w-6xl p-6 md:p-8" stack tabIndex={0}>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                  <div className="landing-end-panel__quote landing-field landing-field--testimonial lg:col-span-5 text-left lg:pr-6">
+                    <Eyebrow>From the desk</Eyebrow>
+                    <blockquote className="mt-6 font-serif text-3xl md:text-4xl italic leading-snug text-ink">
+                      "Upload. Compare. Improve. The fastest way to know if your resume fits the role."
+                    </blockquote>
+                    <div className="mt-6 text-sm text-ink-muted">- The Recruiter's Desk</div>
+                  </div>
 
-          {/* CTA */}
-          <section className="landing-scene landing-scene--cta py-20 md:py-24 border-t border-rule/60">
-            <div className="landing-field landing-field--cta mx-auto max-w-4xl px-6 text-center">
-              <Eyebrow>Begin</Eyebrow>
-              <h2 className="mt-4 font-serif text-4xl md:text-5xl leading-tight">
-                Compare your resume to the role.
-              </h2>
-              <p className="mt-5 text-ink-muted max-w-xl mx-auto">
-                One upload. One job description. An analysis you can act on.
-              </p>
-              <div className="mt-10 flex flex-wrap gap-3 justify-center">
-                <Link
-                  to="/app/analyze"
-                  className="px-6 py-3.5 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
-                >
-                  Begin an analysis
-                </Link>
-                <Link
-                  to="/faq"
-                  className="px-6 py-3.5 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
-                >
-                  Read the FAQ
-                </Link>
-              </div>
+                  <div className="lg:col-span-7">
+                    <div className="landing-section-bridge hidden lg:block mb-8" />
+                    <div className="landing-end-panel__cta landing-field landing-field--cta">
+                      <Eyebrow>Begin</Eyebrow>
+                      <h2 className="mt-4 font-serif text-4xl md:text-5xl leading-tight max-w-2xl">
+                        Compare your resume to the role.
+                      </h2>
+                      <p className="mt-5 text-ink-muted max-w-xl">
+                        One upload. One job description. An analysis you can act on.
+                      </p>
+                      <div className="mt-10 flex flex-wrap gap-3">
+                        <Link
+                          to="/app/analyze"
+                          className="landing-action landing-action--primary px-6 py-3.5 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
+                        >
+                          Begin an analysis
+                        </Link>
+                        <Link
+                          to="/faq"
+                          className="landing-action landing-action--secondary px-6 py-3.5 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
+                        >
+                          Read the FAQ
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Sheet>
             </div>
           </section>
         </div>
