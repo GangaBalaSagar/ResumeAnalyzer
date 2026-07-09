@@ -331,9 +331,115 @@
 }
 
 /* Landing hero depth */
+.landing-shell {
+  --pointer-x: 0;
+  --pointer-y: 0;
+  --hero-x: 0;
+  --hero-y: 0;
+  --scroll-progress: 0;
+  --scene-hero: 1;
+  --scene-features: 1;
+  --scene-workflow: 1;
+  --scene-testimonial: 1;
+  --scene-cta: 1;
+  position: relative;
+  isolation: isolate;
+  perspective: 1600px;
+}
+
+.landing-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.landing-ambient__glow,
+.landing-ambient__sheen {
+  position: absolute;
+  will-change: transform, opacity;
+  transition:
+    transform 220ms cubic-bezier(.2,.7,.2,1),
+    opacity 220ms cubic-bezier(.2,.7,.2,1);
+}
+
+.landing-ambient__glow {
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  filter: blur(42px);
+  transform: translate3d(calc(var(--pointer-x) * 22px), calc(var(--pointer-y) * 18px), 0);
+}
+
+.landing-ambient__glow--a {
+  top: -9rem;
+  left: -10rem;
+  width: clamp(18rem, 36vw, 34rem);
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.20) 0%, rgba(139, 92, 246, 0) 68%);
+  opacity: calc(0.42 + var(--scene-hero) * 0.12);
+}
+
+.landing-ambient__glow--b {
+  top: 24rem;
+  right: -10rem;
+  width: clamp(16rem, 28vw, 28rem);
+  background: radial-gradient(circle, rgba(26, 26, 26, 0.08) 0%, rgba(26, 26, 26, 0) 70%);
+  opacity: calc(0.22 + var(--scene-workflow) * 0.18);
+  transform: translate3d(calc(var(--pointer-x) * -18px), calc(var(--pointer-y) * 12px), 0);
+}
+
+.landing-ambient__glow--c {
+  bottom: -10rem;
+  left: 30%;
+  width: clamp(14rem, 24vw, 24rem);
+  background: radial-gradient(circle, rgba(230, 180, 62, 0.16) 0%, rgba(230, 180, 62, 0) 70%);
+  opacity: calc(0.18 + var(--scene-cta) * 0.18);
+  transform: translate3d(calc(var(--pointer-x) * 12px), calc(var(--pointer-y) * -10px), 0);
+}
+
+.landing-ambient__sheen {
+  inset: -12%;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 24%),
+    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 55%);
+  mix-blend-mode: multiply;
+  opacity: calc(0.30 + var(--scene-features) * 0.10);
+  transform: translate3d(calc(var(--pointer-x) * -12px), calc(var(--pointer-y) * -10px), 0);
+}
+
+.landing-scene {
+  position: relative;
+  z-index: 1;
+  transform: translate3d(0, calc((0.5 - var(--scroll-progress)) * var(--scene-depth, 12px)), 0);
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+.landing-scene--hero { --scene-depth: 18px; }
+.landing-scene--features { --scene-depth: 14px; }
+.landing-scene--workflow { --scene-depth: 12px; }
+.landing-scene--testimonial { --scene-depth: 10px; }
+.landing-scene--cta { --scene-depth: 8px; }
+
+.landing-field {
+  transform: translate3d(calc(var(--pointer-x) * 10px), calc(var(--pointer-y) * 8px), 0);
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+.landing-field--hero,
+.landing-field--cards,
+.landing-field--workflow,
+.landing-field--testimonial,
+.landing-field--cta {
+  transform-style: preserve-3d;
+}
+
 .landing-hero-stage {
   --hero-x: 0;
   --hero-y: 0;
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
 .landing-hero-layer {
@@ -349,10 +455,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .landing-shell,
+  .landing-ambient,
+  .landing-ambient__glow,
+  .landing-ambient__sheen,
+  .landing-scene,
+  .landing-field,
   .landing-hero-stage,
   .landing-hero-layer,
-  .landing-hero-stage .sheet-lift,
-  .landing-hero-stage.motion-safe\:animate-fade-up {
+  .landing-hero-stage .sheet-lift {
     transform: none !important;
     transition: none !important;
     animation: none !important;
