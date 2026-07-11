@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setAuthNotice } from "./utils/authSession.js";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
@@ -45,14 +46,9 @@ export function setupApiInterceptor(session, signOut, openLoginModal, setPending
               const retryAction = () => api.request(error.config);
               setPendingAction(retryAction);
             }
+            setAuthNotice("Your session has expired. Please sign in again.");
             await signOut();
-            openLoginModal();
-            try {
-              sessionStorage.setItem(
-                "authMessage",
-                "Your session has expired. Please log in again."
-              );
-            } catch {}
+            openLoginModal("Your session has expired. Please sign in again.");
           }
         } catch (signOutError) {
           console.error("API interceptor error:", signOutError);

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useAuthModal } from "../../contexts/AuthModalContext.jsx";
+import { consumeAuthNotice } from "../../utils/authSession.js";
 import AuthLayout, {
   AuthField,
   AuthInput,
@@ -21,6 +22,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    const message = location.state?.message || consumeAuthNotice();
+    if (message) setNotice(message);
+  }, [location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +44,7 @@ export default function Login() {
     navigate(from, { replace: true });
   };
 
-  return (
+    return (
     <AuthLayout
       eyebrow="Review access"
       title="Welcome back."
@@ -78,6 +85,7 @@ export default function Login() {
         </AuthField>
 
         <AuthMessage kind="error">{error}</AuthMessage>
+        <AuthMessage>{notice}</AuthMessage>
 
         <div className="flex items-center justify-between pt-2">
           <AuthPrimaryButton type="submit" disabled={submitting}>

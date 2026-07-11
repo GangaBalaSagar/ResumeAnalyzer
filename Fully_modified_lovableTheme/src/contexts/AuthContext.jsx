@@ -1,5 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "../services/supabase/client.js";
+import {
+  clearAuthSessionArtifacts,
+  ensureSessionStartTimestamp,
+  isAbsoluteSessionExpired,
+  isSessionExpired,
+  setAuthNotice,
+} from "../utils/authSession.js";
 
 const AuthContext = createContext(undefined);
 
@@ -7,30 +14,78 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const mountedRef = useRef(false);
+  const validationInFlightRef = useRef(false);
+
+  const clearSessionState = () => {
+    setUser(null);
+    setSession(null);
+  };
+
+  const performLocalLogout = async ({ notice } = {}) => {
+    if (validationInFlightRef.current) return;
+    validationInFlightRef.current = true;
+    try {
+      if (notice) setAuthNotice(notice);
+      await supabase.auth.signOut({ scope: "local" });
+    } catch (error) {
+      console.error("Error signing out:", error);
+    } finally {
+      clearAuthSessionArtifacts();
+      if (mountedRef.current) {
+        clearSessionState();
+        setLoading(false);
+      }
+      validationInFlightRef.current = false;
+    }
+  };
 
   useEffect(() => {
-    let mounted = true;
+    mountedRef.current = true;
 
     (async () => {
       setLoading(true);
       const { data, error } = await supabase.auth.getSession();
-      if (!mounted) return;
+      if (!mountedRef.current) return;
       if (error) console.error("Error loading Supabase session:", error);
-      setSession(data?.session ?? null);
-      setUser(data?.session?.user ?? null);
+      const currentSession = data?.session ?? null;
+      if (currentSession) {
+        ensureSessionStartTimestamp(currentSession);
+      }
+      if (
+        currentSession &&
+        (isSessionExpired(currentSession) || isAbsoluteSessionExpired())
+      ) {
+        await performLocalLogout({
+          notice: "Your session has expired. Please sign in again.",
+        });
+        return;
+      }
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
       setLoading(false);
     })();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, newSession) => {
-        if (!mounted) return;
+        if (!mountedRef.current) return;
+        if (newSession) {
+          ensureSessionStartTimestamp(newSession);
+        }
+        if (newSession && (isSessionExpired(newSession) || isAbsoluteSessionExpired())) {
+          performLocalLogout({
+            notice: "Your session has expired. Please sign in again.",
+          });
+          return;
+        }
         setSession(newSession);
         setUser(newSession?.user ?? null);
+        setLoading(false);
       }
     );
 
     return () => {
-      mounted = false;
+      mountedRef.current = false;
       authListener?.subscription?.unsubscribe?.();
     };
   }, []);
@@ -59,11 +114,9 @@ export function AuthProvider({ children }) {
 
   const signOut = async () => {
     setLoading(true);
-    const res = await supabase.auth.signOut();
-    if (!res.error) {
-      setUser(null);
-      setSession(null);
-    }
+    const res = await supabase.auth.signOut({ scope: "local" });
+    clearAuthSessionArtifacts();
+    clearSessionState();
     setLoading(false);
     return res;
   };

@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { setAuthNotice } from "../utils/authSession.js";
 
 const AuthModalContext = createContext(undefined);
 
@@ -8,9 +9,14 @@ export function AuthModalProvider({ children }) {
   const location = useLocation();
   const [pendingAction, setPendingAction] = useState(null);
 
-  const openLoginModal = useCallback(() => {
+  const openLoginModal = useCallback((message) => {
+    if (message) setAuthNotice(message);
     navigate("/login", {
-      state: { from: { pathname: location.pathname, search: location.search } },
+      replace: true,
+      state: {
+        from: { pathname: location.pathname, search: location.search },
+        message,
+      },
     });
   }, [navigate, location.pathname, location.search]);
 

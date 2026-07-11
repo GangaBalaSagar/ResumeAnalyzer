@@ -32,7 +32,9 @@ export default function AuthGate({ children }) {
       <Navigate
         to="/login"
         replace
-        state={{ from: { pathname: location.pathname, search: location.search } }}
+        state={{
+          from: { pathname: location.pathname, search: location.search },
+        }}
       />
     );
   }

@@ -23,6 +23,22 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+function decodeJwtPayload(token) {
+  if (!token || typeof token !== "string") return null;
+  const parts = token.split(".");
+  if (parts.length < 2) return null;
+  try {
+    const payload = parts[1]
+      .replace(/-/g, "+")
+      .replace(/_/g, "/")
+      .padEnd(Math.ceil(parts[1].length / 4) * 4, "=");
+    const json = Buffer.from(payload, "base64").toString("utf8");
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Middleware to verify Supabase JWT token
  * 
@@ -56,6 +72,11 @@ async function authMiddleware(req, res, next) {
     }
 
     const token = parts[1];
+
+    const payload = decodeJwtPayload(token);
+    if (!payload?.exp || Date.now() >= payload.exp * 1000) {
+      return res.status(401).json({ error: "Invalid or expired token" });
+    }
 
     // Verify token using Supabase
     const { data, error } = await supabase.auth.getUser(token);

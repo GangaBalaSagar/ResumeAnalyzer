@@ -29,13 +29,13 @@ export default function AppRoutes() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route element={<AppLayout />}>
+      <Route element={<AuthGate><AppLayout /></AuthGate>}>
         <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
         <Route path="/app/analyze" element={<Analyze />} />
         <Route path="/app/report" element={<Report />} />
         <Route path="/app/history" element={<History />} />
-        <Route path="/app/dashboard" element={<AuthGate><Dashboard /></AuthGate>} />
-        <Route path="/app/account" element={<AuthGate><Account /></AuthGate>} />
+        <Route path="/app/dashboard" element={<Dashboard />} />
+        <Route path="/app/account" element={<Account />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
