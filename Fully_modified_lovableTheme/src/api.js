@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAuthNotice } from "./utils/authSession.js";
+import { isProtectedAppRoute, setAuthNotice } from "./utils/authSession.js";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
@@ -14,7 +14,13 @@ let isLoggingOut = false;
  * Mirrors the uploaded Resume Analyzer Pro axios setup so the same
  * pendingAction retry pattern keeps working.
  */
-export function setupApiInterceptor(session, signOut, openLoginModal, setPendingAction) {
+export function setupApiInterceptor(
+  session,
+  signOut,
+  openLoginModal,
+  setPendingAction,
+  pathname = ""
+) {
   if (requestInterceptorId !== null) {
     api.interceptors.request.eject(requestInterceptorId);
     requestInterceptorId = null;
@@ -42,13 +48,21 @@ export function setupApiInterceptor(session, signOut, openLoginModal, setPending
         isLoggingOut = true;
         try {
           if (signOut && openLoginModal) {
-            if (setPendingAction && error.config?.headers?.Authorization) {
+            const hasAuthHeader = Boolean(error.config?.headers?.Authorization);
+            const shouldPrompt =
+              hasAuthHeader || isProtectedAppRoute(pathname);
+
+            if (shouldPrompt && setPendingAction && hasAuthHeader) {
               const retryAction = () => api.request(error.config);
               setPendingAction(retryAction);
             }
-            setAuthNotice("Your session has expired. Please sign in again.");
+            if (shouldPrompt) {
+              setAuthNotice("Your session has expired. Please sign in again.");
+            }
             await signOut();
-            openLoginModal("Your session has expired. Please sign in again.");
+            if (shouldPrompt) {
+              openLoginModal("Your session has expired. Please sign in again.");
+            }
           }
         } catch (signOutError) {
           console.error("API interceptor error:", signOutError);

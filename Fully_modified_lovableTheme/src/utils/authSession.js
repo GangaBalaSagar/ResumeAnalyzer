@@ -2,6 +2,11 @@ const AUTH_NOTICE_KEY = "ra_auth_notice_v1";
 const AUTH_SESSION_STARTED_AT_KEY = "ra_session_started_at_v1";
 const MAX_SESSION_LIFETIME_MS = 24 * 60 * 60 * 1000;
 
+export function isProtectedAppRoute(pathname = "") {
+  const path = String(pathname || "");
+  return path === "/app" || path.startsWith("/app/");
+}
+
 function base64UrlToBase64(input) {
   const normalized = String(input || "").replace(/-/g, "+").replace(/_/g, "/");
   const padLength = (4 - (normalized.length % 4)) % 4;

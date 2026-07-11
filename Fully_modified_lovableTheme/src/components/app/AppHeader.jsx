@@ -17,11 +17,25 @@ function Mark() {
 
 const sharedLinks = [
   { to: "/", label: "Home", end: true },
+  { to: "/features", label: "Features", end: true },
+  { to: "/faq", label: "FAQ", end: true },
+];
+
+const publicLinks = [
+  sharedLinks[0],
+  { to: "/analyze", label: "Analyze", end: true },
+  { to: "/report", label: "Report", end: true },
+  { to: "/history", label: "Past Analyses", end: true },
+  ...sharedLinks.slice(1),
+];
+
+const privateLinks = [
+  sharedLinks[0],
+  { to: "/app/dashboard", label: "Dashboard", end: true },
   { to: "/app/analyze", label: "Analyze", end: true },
   { to: "/app/report", label: "Report", end: true },
   { to: "/app/history", label: "Past Analyses", end: true },
-  { to: "/features", label: "Features", end: true },
-  { to: "/faq", label: "FAQ", end: true },
+  ...sharedLinks.slice(1),
 ];
 
 /**
@@ -30,13 +44,7 @@ const sharedLinks = [
  */
 export default function AppHeader({ onOpenMobileNav }) {
   const { user } = useAuth();
-  const navLinks = user
-    ? [
-        sharedLinks[0],
-        { to: "/app/dashboard", label: "Dashboard", end: true },
-        ...sharedLinks.slice(1),
-      ]
-    : sharedLinks;
+  const navLinks = user ? privateLinks : publicLinks;
 
   return (
     <header className="border-b border-rule/60 bg-background/85 backdrop-blur-sm sticky top-0 z-40 overflow-visible">
@@ -97,7 +105,7 @@ export default function AppHeader({ onOpenMobileNav }) {
                 Sign in
               </Link>
               <Link
-                to="/app/analyze"
+                to="/analyze"
                 className="text-sm px-4 py-2 bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
               >
                 Begin an analysis

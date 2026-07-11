@@ -1,16 +1,19 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { supabase } from "../services/supabase/client.js";
 import {
   clearAuthSessionArtifacts,
   ensureSessionStartTimestamp,
   isAbsoluteSessionExpired,
   isSessionExpired,
+  isProtectedAppRoute,
   setAuthNotice,
 } from "../utils/authSession.js";
 
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +60,9 @@ export function AuthProvider({ children }) {
         (isSessionExpired(currentSession) || isAbsoluteSessionExpired())
       ) {
         await performLocalLogout({
-          notice: "Your session has expired. Please sign in again.",
+          notice: isProtectedAppRoute(location.pathname)
+            ? "Your session has expired. Please sign in again."
+            : undefined,
         });
         return;
       }
@@ -74,7 +79,9 @@ export function AuthProvider({ children }) {
         }
         if (newSession && (isSessionExpired(newSession) || isAbsoluteSessionExpired())) {
           performLocalLogout({
-            notice: "Your session has expired. Please sign in again.",
+            notice: isProtectedAppRoute(location.pathname)
+              ? "Your session has expired. Please sign in again."
+              : undefined,
           });
           return;
         }
@@ -88,7 +95,7 @@ export function AuthProvider({ children }) {
       mountedRef.current = false;
       authListener?.subscription?.unsubscribe?.();
     };
-  }, []);
+  }, [location.pathname]);
 
   const signUp = async (email, password, metadata = {}) => {
     setLoading(true);

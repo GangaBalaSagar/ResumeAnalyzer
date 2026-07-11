@@ -14,9 +14,9 @@ function initials(nameOrEmail = "") {
 
 const navLinks = [
   { to: "/", label: "Home", num: "01", end: true },
-  { to: "/app/analyze", label: "Analyze", num: "02" },
-  { to: "/app/report", label: "Report", num: "03" },
-  { to: "/app/history", label: "Past Analyses", num: "04" },
+  { to: "/analyze", label: "Analyze", num: "02" },
+  { to: "/report", label: "Report", num: "03" },
+  { to: "/history", label: "Past Analyses", num: "04" },
   { to: "/features", label: "Features", num: "05" },
   { to: "/faq", label: "FAQ", num: "06" },
 ];
@@ -102,7 +102,7 @@ export default function MobileNav({ open, onClose }) {
 
         <div className="px-5 pb-5">
           <Link
-            to="/app/analyze"
+            to={user ? "/app/analyze" : "/analyze"}
             onClick={onClose}
             className="block text-center text-sm px-3.5 py-2 bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
           >

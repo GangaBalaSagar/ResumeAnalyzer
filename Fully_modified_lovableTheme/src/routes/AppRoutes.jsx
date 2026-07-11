@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Landing from "../pages/Landing.jsx";
 import Features from "../pages/Features.jsx";
 import FAQ from "../pages/FAQ.jsx";
+import PublicSite from "../components/public/PublicSite.jsx";
+import PublicAppLayout from "../components/public/PublicAppLayout.jsx";
 
 import NotFound from "../pages/NotFound.jsx";
 import Login from "../pages/auth/Login.jsx";
@@ -22,6 +24,36 @@ export default function AppRoutes() {
       <Route path="/" element={<Landing />} />
       <Route path="/features" element={<Features />} />
       <Route path="/faq" element={<FAQ />} />
+      <Route
+        path="/analyze"
+        element={
+          <PublicSite>
+            <PublicAppLayout>
+              <Analyze />
+            </PublicAppLayout>
+          </PublicSite>
+        }
+      />
+      <Route
+        path="/report"
+        element={
+          <PublicSite>
+            <PublicAppLayout>
+              <Report />
+            </PublicAppLayout>
+          </PublicSite>
+        }
+      />
+      <Route
+        path="/history"
+        element={
+          <PublicSite>
+            <PublicAppLayout>
+              <History />
+            </PublicAppLayout>
+          </PublicSite>
+        }
+      />
 
       {/* Auth (public) */}
       <Route path="/login" element={<Login />} />

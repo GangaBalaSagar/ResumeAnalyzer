@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useAuthModal } from "../contexts/AuthModalContext.jsx";
 import { setupApiInterceptor } from "../api.js";
@@ -8,6 +9,7 @@ import {
   getSessionExpiryMs,
   isAbsoluteSessionExpired,
   isSessionExpired,
+  isProtectedAppRoute,
   setAuthNotice,
 } from "../utils/authSession.js";
 
@@ -27,6 +29,7 @@ const IDLE_EVENTS = [
  * Direct port of the uploaded useApiAuth hook.
  */
 export default function useApiAuth() {
+  const location = useLocation();
   const { session, signOut } = useAuth();
   const {
     openLoginModal,
@@ -74,7 +77,13 @@ export default function useApiAuth() {
   );
 
   useEffect(() => {
-    setupApiInterceptor(session, signOut, openLoginModal, setPendingAction);
+    setupApiInterceptor(
+      session,
+      signOut,
+      openLoginModal,
+      setPendingAction,
+      location.pathname
+    );
     if (session?.access_token && pendingAction) {
       executePendingAction();
       clearPendingAction();
@@ -87,6 +96,7 @@ export default function useApiAuth() {
     pendingAction,
     executePendingAction,
     clearPendingAction,
+    location.pathname,
   ]);
 
   useEffect(() => {
@@ -96,7 +106,14 @@ export default function useApiAuth() {
     }
 
     if (isSessionExpired(session) || isAbsoluteSessionExpired()) {
-      logoutToLogin("Your session has expired. Please sign in again.");
+      if (isProtectedAppRoute(location.pathname)) {
+        logoutToLogin("Your session has expired. Please sign in again.");
+      } else {
+        clearTimers();
+        clearPendingAction();
+        signOut();
+        clearSessionStartTimestamp();
+      }
       return undefined;
     }
 
@@ -105,11 +122,25 @@ export default function useApiAuth() {
       typeof absoluteExpiryMs === "number" ? absoluteExpiryMs - Date.now() : null;
     if (typeof absoluteRemainingMs === "number") {
       if (absoluteRemainingMs <= 0) {
-        logoutToLogin("Your session has expired. Please sign in again.");
+        if (isProtectedAppRoute(location.pathname)) {
+          logoutToLogin("Your session has expired. Please sign in again.");
+        } else {
+          clearTimers();
+          clearPendingAction();
+          signOut();
+          clearSessionStartTimestamp();
+        }
         return undefined;
       }
       absoluteTimerRef.current = setTimeout(() => {
-        logoutToLogin("Your session has expired. Please sign in again.");
+        if (isProtectedAppRoute(location.pathname)) {
+          logoutToLogin("Your session has expired. Please sign in again.");
+        } else {
+          clearTimers();
+          clearPendingAction();
+          signOut();
+          clearSessionStartTimestamp();
+        }
       }, absoluteRemainingMs);
     }
 
@@ -117,18 +148,39 @@ export default function useApiAuth() {
     const remainingMs = typeof expiryMs === "number" ? expiryMs - Date.now() : null;
     if (typeof remainingMs === "number") {
       if (remainingMs <= 0) {
-        logoutToLogin("Your session has expired. Please sign in again.");
+        if (isProtectedAppRoute(location.pathname)) {
+          logoutToLogin("Your session has expired. Please sign in again.");
+        } else {
+          clearTimers();
+          clearPendingAction();
+          signOut();
+          clearSessionStartTimestamp();
+        }
         return undefined;
       }
       expiryTimerRef.current = setTimeout(() => {
-        logoutToLogin("Your session has expired. Please sign in again.");
+        if (isProtectedAppRoute(location.pathname)) {
+          logoutToLogin("Your session has expired. Please sign in again.");
+        } else {
+          clearTimers();
+          clearPendingAction();
+          signOut();
+          clearSessionStartTimestamp();
+        }
       }, remainingMs);
     }
 
     const scheduleIdleLogout = () => {
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       idleTimerRef.current = setTimeout(() => {
-        logoutToLogin("Signed out due to inactivity.");
+        if (isProtectedAppRoute(location.pathname)) {
+          logoutToLogin("Signed out due to inactivity.");
+        } else {
+          clearTimers();
+          clearPendingAction();
+          signOut();
+          clearSessionStartTimestamp();
+        }
       }, IDLE_TIMEOUT_MS);
     };
 
@@ -152,5 +204,8 @@ export default function useApiAuth() {
     session,
     logoutToLogin,
     clearTimers,
+    clearPendingAction,
+    signOut,
+    location.pathname,
   ]);
 }
