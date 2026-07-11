@@ -8,16 +8,16 @@ const SECTIONS = [
     title: "The analysis",
     items: [
       {
-        q: "What does Resume Analyzer actually do?",
-        a: "It compares a resume against a job description and returns a match score, the matched and missing skills, and specific, line-level edit suggestions. Think of it as a comparison tool - matching your resume to the role, not just scanning keywords.",
+        q: "What does Resume Analyzer do?",
+        a: "It compares a resume against a job description and returns a match score, the matched and missing skills, and specific, line-level edit suggestions. Think of it as a comparison tool — matching your resume to the role, not just scanning keywords.",
       },
       {
         q: "How is this different from a keyword scanner?",
-        a: "Keyword scanners tell you which words appear. The AI reasons about context - seniority signals, phrasing, structure - and proposes edits that improve your alignment to the role.",
+        a: "Keyword scanners tell you which words appear. The AI reasons about context — seniority signals, phrasing, structure — and proposes edits that improve your alignment to the role.",
       },
       {
         q: "How long does an analysis take?",
-        a: "Typically around twenty seconds. The desk shows the stages of analysis as it works so you can see where it is.",
+        a: "Typically around twenty seconds. The app shows the stages of analysis as it works so you can see where it is.",
       },
     ],
   },
@@ -47,11 +47,11 @@ const SECTIONS = [
       },
       {
         q: "Can I delete past analyses?",
-        a: "Yes. Anything you file can be removed from the archive at any time - the underlying document goes with it.",
+        a: "Yes. Anything you file can be removed from the archive at any time — the underlying document goes with it.",
       },
       {
         q: "Do I need an account?",
-        a: "You'll need one to begin an analysis and to keep your archive between visits. It's an email and a password - no lengthy forms.",
+        a: "You'll need one to begin an analysis and to keep your archive between visits. It's an email and a password — no lengthy forms.",
       },
     ],
   },
@@ -59,16 +59,16 @@ const SECTIONS = [
     title: "Getting the most from your analysis",
     items: [
       {
-        q: "What makes for a better analysis?",
-        a: "Paste the job description exactly as posted, and use the version of your resume you'd actually send. The desk analyzes the document you'd actually send, not the draft.",
+        q: "What makes a better analysis?",
+        a: "Paste the job description exactly as posted, and use the version of your resume you'd actually send. It analyzes the document you'd actually send, not the draft.",
       },
       {
         q: "Should I edit my resume based on every suggestion?",
-        a: "Only if the suggestion is honestly yours. The desk proposes; you decide. Some notes will be perfect; others are prompts for your own edit.",
+        a: "Only if the suggestion is honestly yours. The AI proposes; you decide. Some notes will be perfect; others are prompts for your own edit.",
       },
       {
         q: "Can I export the analysis?",
-        a: "Yes - analyses are print-friendly and copyable. Skills lists and suggestions can be copied to the clipboard in one click.",
+        a: "Yes — analyses are print-friendly and copyable. Skills lists and suggestions can be copied to the clipboard in one click.",
       },
     ],
   },
@@ -328,7 +328,7 @@ export default function FAQ() {
                 <span className="italic font-normal">the margins.</span>
               </h1>
               <p className="mt-6 text-[17px] leading-relaxed text-ink-muted max-w-2xl">
-                Short, honest answers about how the desk analyzes resumes, what it stores, and what to expect from a comparison.
+                Short, honest answers about how the analysis works, what it stores, and what to expect from a comparison.
               </p>
             </div>
 
@@ -404,7 +404,7 @@ export default function FAQ() {
 
                   <div className="rule-line my-5" />
                   <p className="text-xs text-ink-muted italic font-serif leading-relaxed">
-                    Can't find your question? We're always improving.
+                    Can't find your question? We're always improving
                   </p>
                 </Sheet>
 
@@ -447,7 +447,7 @@ export default function FAQ() {
                   <div className="lg:col-span-5">
                     <Eyebrow>Still curious?</Eyebrow>
                     <h2 className="mt-4 font-serif text-3xl md:text-4xl leading-tight">
-                      The desk works best <span className="italic font-normal">with a resume and a job description.</span>
+                      It works best <span className="italic font-normal">with your resume and a job description.</span>
                     </h2>
                     <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">
                       If you're ready, start an analysis and see the comparison in context.
@@ -467,7 +467,7 @@ export default function FAQ() {
                         to="/features"
                         className="landing-action landing-action--secondary px-6 py-3.5 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
                       >
-                        Back to features
+                        View features
                       </Link>
                     </div>
                   </div>

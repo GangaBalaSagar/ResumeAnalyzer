@@ -61,7 +61,7 @@ export function PublicFooter() {
           <div>© Resume Analyzer · 2026</div>
           <div className="flex gap-6">
             <span>Review 01</span>
-            <span>Filed for recruiter review</span>
+            <span>Filed for later review</span>
           </div>
         </div>
       </div>

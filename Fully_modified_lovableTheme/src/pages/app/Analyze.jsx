@@ -114,7 +114,7 @@ function onPickFile(e) {
       return;
     }
     if (!jd.trim()) {
-      setError("Please paste the role brief so the desk knows what to compare against.");
+      setError("Please paste the job description so we can compare it against your resume.");
       return;
     }
 
@@ -167,7 +167,7 @@ function onPickFile(e) {
       setError(
         err?.response?.data?.error ||
           err?.message ||
-          "The desk couldn't complete the review. Please try again."
+        "We couldn't complete the review. Please try again."
       );
     } finally {
       setLoading(false);
@@ -219,14 +219,14 @@ function onPickFile(e) {
     <div className="space-y-10">
       {/* Page header */}
       <header>
-        <Eyebrow>The workbench · Review</Eyebrow>
+        <Eyebrow>Review</Eyebrow>
         <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
-          Place a resume
+          Upload your resume
           <br />
-          <span className="italic font-normal">on the desk.</span>
+          <span className="italic font-normal">to begin.</span>
         </h1>
-        <p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-          Drop a PDF or DOCX, paste the role brief, and the desk will compare the
+<p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
+          Drop a PDF or DOCX, paste the job description, and we'll compare your
           resume against the requirements.
         </p>
       </header>
@@ -241,7 +241,7 @@ function onPickFile(e) {
               <div>
                 <Eyebrow>Step 01 · The resume</Eyebrow>
                 <div className="mt-2 font-serif text-2xl leading-tight">
-                  Attach the candidate resume
+                  Upload your resume
                 </div>
               </div>
               <span className="hidden md:block eyebrow text-[10px]">
@@ -279,8 +279,8 @@ function onPickFile(e) {
                   onChange={onPickFile}
                 />
                 <PaperStack tilt={drag} />
-                <div className="mt-6 font-serif text-2xl md:text-[26px]">
-                  {drag ? "Set it down here." : "Drop the resume on the desk"}
+<div className="mt-6 font-serif text-2xl md:text-[26px]">
+                  {drag ? "Drop it here." : "Drop your resume here"}
                 </div>
                 <div className="mt-2 text-sm text-ink-muted">
                   or <span className="underline underline-offset-4 decoration-rule group-hover:decoration-ink">click to choose</span>
@@ -318,7 +318,7 @@ function onPickFile(e) {
             </div>
 
             <div className="mt-3 text-[11px] text-ink-muted italic font-serif">
-              The desk keeps your draft as you type, so it will still be here if you step away.
+              Your draft stays saved as you type, so it will still be here if you step away.
             </div>
           </Sheet>
 
@@ -341,7 +341,7 @@ function onPickFile(e) {
                 disabled={loading}
                 className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm disabled:opacity-50 transition-colors"
               >
-                Reset the desk
+                Reset
               </button>
               <button
                 type="button"
@@ -349,7 +349,7 @@ function onPickFile(e) {
                 disabled={!canSubmit}
                 className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {loading ? "Reviewing…" : "Begin review →"}
+              {loading ? "Reviewing…" : "Begin review →"}
               </button>
             </div>
           </div>
@@ -364,8 +364,7 @@ function onPickFile(e) {
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              "Upload the version you'd actually review. The desk compares the resume
-              against the role, not the draft."
+              "Upload the version you'd actually send. We compare the resume against the role, not the draft."
             </div>
           </StickyNote>
 
@@ -376,8 +375,8 @@ function onPickFile(e) {
                 "Role match percentage",
                 "Matched evidence in the resume",
                 "Missing requirements to flag",
-                "Suggested edits for the candidate",
-                "Role preview with keywords marked",
+                "Suggested improvements for your resume",
+                "Role keywords highlighted",
               ].map((x, i) => (
                 <li key={x} className="flex gap-3">
                   <span className="text-accent font-serif shrink-0">
@@ -538,7 +537,7 @@ function ReadingProgress({ progress, stageIdx, file }) {
     <Sheet className="relative p-6 md:p-8 overflow-hidden" lift>
       <div className="flex items-baseline justify-between gap-4">
         <div>
-          <Eyebrow>The desk is reviewing</Eyebrow>
+          <Eyebrow>Review in progress</Eyebrow>
           <div className="mt-2 font-serif text-xl leading-tight">
             {file?.name || "Your resume"}
           </div>

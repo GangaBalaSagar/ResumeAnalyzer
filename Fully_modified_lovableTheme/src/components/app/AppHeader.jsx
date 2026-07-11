@@ -57,7 +57,7 @@ export default function AppHeader({ onOpenMobileNav }) {
             <Mark />
             <div className="leading-tight hidden sm:block">
               <div className="font-serif text-[16px] tracking-tight">Resume Analyzer</div>
-              <div className="eyebrow text-[9px]">The Recruiter&apos;s Desk</div>
+              <div className="eyebrow text-[9px]">Resume Analyzer Pro</div>
             </div>
           </Link>
 

@@ -7,13 +7,13 @@ import AtsScore from "../components/app/AtsScore.jsx";
 const FEATURE_CARDS = [
   { t: "Match Score", d: "A clear percentage: how closely your resume fits the role.", n: "01" },
   { t: "Skills Overview", d: "Matched and missing keywords, charted clearly.", n: "02" },
-  { t: "AI Suggestions", d: "Specific edits, copyable, in plain language.", n: "03" },
+  { t: "Suggestions", d: "Specific edits, copyable, in plain language.", n: "03" },
   { t: "Archive", d: "Every analysis filed by date, ready to revisit.", n: "04" },
 ];
 
 const WORKFLOW_STEPS = [
-  { n: "01", t: "Upload the resume", d: "Drop a PDF or DOCX. Your document is parsed and prepared for analysis." },
-  { n: "02", t: "Add the job description", d: "The role details the desk needs to compare against." },
+  { n: "01", t: "Upload your resume", d: "Drop a PDF or DOCX. Your document is parsed and prepared for analysis." },
+  { n: "02", t: "Add the job description", d: "The role details what we need to compare against." },
   { n: "03", t: "Review your results", d: "ATS match score, matched and missing skills, and AI-powered suggestions." },
 ];
 
@@ -147,9 +147,9 @@ export default function Landing() {
                 <span className="italic font-normal">matched to the role.</span>
               </h1>
               <p className="mt-7 text-[17px] leading-relaxed text-ink-muted max-w-xl">
-                Drop a resume on the desk, paste the job description, and receive an
-                AI-powered analysis - ATS match score, matched and missing skills,
-                and targeted suggestions to improve your fit.
+                Upload your resume, paste the job description, and receive an
+                analysis — ATS match score, matched and missing skills, and targeted
+                suggestions to improve your fit.
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Link
@@ -162,15 +162,15 @@ export default function Landing() {
                   to="/features"
                   className="landing-action landing-action--secondary px-5 py-3 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
                 >
-                  Explore the features
+                  Explore features
                 </Link>
               </div>
 
               <div className="mt-14 grid grid-cols-3 gap-8 max-w-xl">
                 {[
                   { n: "01", t: "Match Score", d: "How closely the resume fits the role" },
-                  { n: "02", t: "Skills Gap", d: "Matched and missing keywords" },
-                  { n: "03", t: "AI Suggestions", d: "Targeted improvements for the role" },
+                  { n: "02", t: "Skills Overview", d: "Matched and missing keywords" },
+                  { n: "03", t: "Suggestions", d: "Targeted improvements for the role" },
                 ].map((f) => (
                   <div key={f.n}>
                     <div className="font-serif text-2xl text-accent">{f.n}</div>
@@ -229,13 +229,13 @@ export default function Landing() {
                     one clear result.
                   </h2>
                   <p className="mt-5 text-ink-muted text-[15px] leading-relaxed max-w-md">
-                    Your resume is compared against the job description - skill by skill.
+                    Your resume is compared against the job description — skill by skill.
                     Each analysis is laid out clearly, marked with insights, and filed
                     in your archive.
                   </p>
                   <div className="mt-8 hidden lg:flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-ink-muted">
                     <span className="h-px flex-1 bg-rule/60" />
-                    <span>Four sheets on one desk</span>
+                    <span>Four sheets in one workspace</span>
                   </div>
                   <Link to="/features" className="story-link inline-block mt-6 text-sm text-ink">
                     Explore all features {"->"}
@@ -372,11 +372,11 @@ export default function Landing() {
               <Sheet className="landing-end-panel mx-auto max-w-6xl p-6 md:p-8" stack tabIndex={0}>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                   <div className="landing-end-panel__quote landing-field landing-field--testimonial lg:col-span-5 text-left lg:pr-6">
-                    <Eyebrow>From the desk</Eyebrow>
+                    <Eyebrow>A note</Eyebrow>
                     <blockquote className="mt-6 font-serif text-3xl md:text-4xl italic leading-snug text-ink">
                       "Upload. Compare. Improve. The fastest way to know if your resume fits the role."
                     </blockquote>
-                    <div className="mt-6 text-sm text-ink-muted">- The Recruiter's Desk</div>
+                    <div className="mt-6 text-sm text-ink-muted">- Resume Analyzer Pro</div>
                   </div>
 
                   <div className="lg:col-span-7">

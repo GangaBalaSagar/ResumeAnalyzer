@@ -40,18 +40,13 @@ export default function Login() {
   return (
     <AuthLayout
       eyebrow="Review access"
-      title={
-        <>
-          Welcome back to{" "}
-          <span className="italic font-normal">the desk.</span>
-        </>
-      }
+      title="Welcome back."
       lede="Sign in to reopen your analyses, drafts and archived reports."
       footer={
         <span>
-          New to the desk?{" "}
+          New here?{" "}
           <Link to="/signup" className="text-ink hover:underline underline-offset-4">
-            Request a seat
+            Create an account
           </Link>
           .
         </span>

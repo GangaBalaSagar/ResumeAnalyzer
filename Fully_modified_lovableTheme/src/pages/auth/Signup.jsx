@@ -52,13 +52,8 @@ export default function Signup() {
 
   return (
     <AuthLayout
-      eyebrow="Request a seat"
-      title={
-        <>
-          Reserve a place at{" "}
-          <span className="italic font-normal">the desk.</span>
-        </>
-      }
+      eyebrow="Create account"
+      title="Create your account."
       lede="Create an account to save analyses, keep a private archive and pick up where you left off."
       footer={
         <span>
@@ -132,7 +127,7 @@ export default function Signup() {
 
         <div className="pt-2">
           <AuthPrimaryButton type="submit" disabled={submitting}>
-            {submitting ? "Preparing your desk…" : "Create account"}
+          {submitting ? "Creating account…" : "Create account"}
           </AuthPrimaryButton>
         </div>
       </form>

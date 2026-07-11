@@ -168,8 +168,8 @@ export default function History() {
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-            Every resume the desk has analyzed, stored in the cabinet. Open a folder to
-            revisit the analysis, or clear a card you no longer need.
+            Every resume you've analyzed is stored in your archive. Open any analysis
+            to review it again, or remove entries you no longer need.
           </p>
         </div>
         <Link
@@ -187,7 +187,7 @@ export default function History() {
           <Sheet className="relative p-5 md:p-6" lift>
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex-1 min-w-[220px]">
-                <label className="block eyebrow text-[10px]">Search the cabinet</label>
+                <label className="block eyebrow text-[10px]">Search your archive</label>
                 <div className="mt-2 flex items-center gap-3 border-b border-rule focus-within:border-ink transition-colors">
                   <SearchGlyph />
                   <input
@@ -235,7 +235,7 @@ export default function History() {
             <Sheet className="relative p-10" lift>
               <PaperClip />
               <Eyebrow>One moment</Eyebrow>
-              <div className="mt-2 font-serif text-2xl">Loading the cabinet…</div>
+              <div className="mt-2 font-serif text-2xl">Loading your archive…</div>
               <div className="rule-line my-5" />
               <div className="space-y-3">
                 {[0, 1, 2].map((i) => (
@@ -256,7 +256,7 @@ export default function History() {
           {/* Empty (filtered) */}
           {!loading && !error && items.length > 0 && filtered.length === 0 && (
             <Sheet className="relative p-10 text-center" lift>
-              <Eyebrow>No matching folder</Eyebrow>
+              <Eyebrow>No matching results</Eyebrow>
               <div className="mt-2 font-serif text-xl">
                 Nothing on file matches "{query}".
               </div>
@@ -305,7 +305,7 @@ export default function History() {
         {/* RIGHT RAIL */}
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           <Sheet className="relative p-6" lift>
-            <Eyebrow>Cabinet totals</Eyebrow>
+            <Eyebrow>Archive totals</Eyebrow>
             <div className="mt-2 font-serif text-xl leading-tight">Archive summary</div>
             <div className="rule-line my-4" />
             <dl className="grid grid-cols-2 gap-x-4 gap-y-5">
@@ -318,16 +318,16 @@ export default function History() {
 
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              <div className="eyebrow text-[10px]">Cabinet note</div>
+              <div className="eyebrow text-[10px]">Note</div>
               <div className="mt-1 font-serif">
-                Delete freely. The desk keeps only what's useful. A reading you no
-                longer need is a folder you'll never re-open.
+                Delete freely. Your archive keeps only what's useful. Keep only the
+                analyses you want to revisit.
               </div>
             </div>
           </StickyNote>
 
           <Sheet className="relative p-6" lift>
-            <Eyebrow>How the archive is kept</Eyebrow>
+            <Eyebrow>How your archive is kept</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
@@ -336,7 +336,7 @@ export default function History() {
               </li>
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">02</span>
-                <span className="text-ink-muted">Search filters by document name only.</span>
+                <span className="text-ink-muted">Search by document name.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">03</span>
@@ -585,7 +585,7 @@ function PublicArchiveEmptyState() {
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-            A private cabinet for your resume analyses, ATS scores, and the reports you want to revisit later.
+            A private archive for your resume analyses, ATS scores, and the reports you want to revisit later.
           </p>
         </div>
         <Link
@@ -605,7 +605,7 @@ function PublicArchiveEmptyState() {
               <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[2deg] translate-x-1 translate-y-1" />
               <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[6deg] translate-x-2 translate-y-2" />
             </div>
-            <Eyebrow>Open the cabinet</Eyebrow>
+            <Eyebrow>Open the archive</Eyebrow>
             <div className="mt-3 font-serif text-3xl">Your archive is ready to fill.</div>
             <p className="mt-3 text-sm text-ink-muted max-w-xl mx-auto">
               Create an account to keep every reading filed by date, compare ATS scores, and return to reports whenever you need them.
@@ -653,7 +653,7 @@ function PublicArchiveEmptyState() {
             <div className="text-[13.5px] leading-snug">
               <div className="eyebrow text-[10px]">Cabinet note</div>
               <div className="mt-1 font-serif">
-                The desk remembers what matters. A signed-in account keeps each analysis close at hand.
+                Your archive remembers what matters. A signed-in account keeps each analysis close at hand.
               </div>
             </div>
           </StickyNote>
@@ -691,10 +691,10 @@ function EmptyCabinet() {
         <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[2deg] translate-x-1 translate-y-1" />
         <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[6deg] translate-x-2 translate-y-2" />
       </div>
-      <Eyebrow>The cabinet is empty</Eyebrow>
+      <Eyebrow>The archive is empty</Eyebrow>
       <div className="mt-3 font-serif text-3xl">Nothing filed yet.</div>
       <p className="mt-3 text-sm text-ink-muted max-w-md mx-auto">
-        Every resume you have the desk analyze will be dated, scored, and kept here.
+        Every resume you analyze will be dated, scored, and kept here.
         Your archive begins with the first analysis.
       </p>
       <Link

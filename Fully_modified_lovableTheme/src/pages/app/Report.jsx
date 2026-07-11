@@ -232,10 +232,10 @@ export default function Report() {
       <div className="max-w-3xl mx-auto text-center py-16">
         <Sheet className="relative p-10" lift>
           <PaperClip />
-          <Eyebrow>Nothing on the desk</Eyebrow>
+          <Eyebrow>No analysis yet</Eyebrow>
           <h1 className="mt-3 font-serif text-4xl">No analysis to open yet.</h1>
           <p className="mt-4 text-ink-muted">
-            Place a resume and paste a job description to begin a new analysis.
+            Upload a resume and paste a job description to begin a new analysis.
           </p>
           <Link
             to="/app/analyze"
@@ -301,7 +301,7 @@ export default function Report() {
       {/* Masthead — treat the page like a document cover */}
       <header className="flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <Eyebrow>Evaluation report · Prepared by the desk</Eyebrow>
+          <Eyebrow>Evaluation report · Ready for review</Eyebrow>
           <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
             A close, <span className="italic font-normal">considered</span> analysis.
           </h1>
@@ -388,7 +388,7 @@ export default function Report() {
       {/* 2 — Executive Summary */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
         <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" lift>
-          <Eyebrow>Executive summary · The desk's analysis</Eyebrow>
+          <Eyebrow>Executive summary · AI summary</Eyebrow>
           <div className="rule-line mt-3 mb-5" />
           <p className="font-serif text-[19px] leading-[1.6] text-ink">
             <span className="float-left font-serif text-[52px] leading-[0.85] mr-2 mt-1 text-accent">
@@ -584,11 +584,11 @@ export default function Report() {
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              <div className="eyebrow text-[10px]">A note in the margin</div>
-              <div className="mt-1 font-serif">
-                Read these as edits, not orders. Keep your voice — the desk suggests,
+                <div className="eyebrow text-[10px]">A note in the margin</div>
+                <div className="mt-1 font-serif">
+                Read these as edits, not orders. Keep your voice — the AI suggests,
                 you decide.
-              </div>
+                </div>
             </div>
           </StickyNote>
           <Sheet className="relative p-6" lift>
@@ -643,7 +643,7 @@ export default function Report() {
       {/* Footer — closes the document like a signature line */}
       <footer className="pt-6 border-t border-rule/60 flex items-baseline justify-between text-xs text-ink-muted">
         <span className="font-serif italic">
-        Prepared by the Recruiter's Desk · Review 01
+        Prepared for review · Review 01
         </span>
         <span className="font-mono">
           Report · {filedAt.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}

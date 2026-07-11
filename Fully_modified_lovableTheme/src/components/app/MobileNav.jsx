@@ -57,7 +57,7 @@ export default function MobileNav({ open, onClose }) {
       <div className="absolute inset-y-0 left-0 w-[86%] max-w-[320px] bg-desk border-r border-rule shadow-overlay animate-fade-up flex flex-col">
         <div className="px-5 pt-5 pb-4 border-b border-rule/60 flex items-start justify-between gap-3">
           <div>
-            <div className="eyebrow text-[10px]">The Desk</div>
+            <div className="eyebrow text-[10px]">Menu</div>
             <div className="mt-1 font-serif text-[17px] leading-tight">Resume Analyzer</div>
           </div>
           <button
@@ -139,7 +139,7 @@ export default function MobileNav({ open, onClose }) {
             </div>
             <div className="mt-3 flex items-center justify-between text-[10px] text-ink-muted/80">
               <span className="eyebrow text-[9px]">Review 01</span>
-              <span className="font-serif italic">Filed for recruiter review</span>
+              <span className="font-serif italic">Filed for later review</span>
             </div>
           </div>
         ) : (
@@ -147,7 +147,7 @@ export default function MobileNav({ open, onClose }) {
             <div className="rule-line mb-4" />
             <div className="flex items-center justify-between text-[10px] text-ink-muted/80">
               <span className="eyebrow text-[9px]">Review 01</span>
-              <span className="font-serif italic">Filed for recruiter review</span>
+              <span className="font-serif italic">Filed for later review</span>
             </div>
           </div>
         )}

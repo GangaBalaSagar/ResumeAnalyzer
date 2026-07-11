@@ -38,12 +38,7 @@ export default function ForgotPassword() {
   return (
     <AuthLayout
       eyebrow="Forgotten password"
-      title={
-        <>
-          Slip us your email,{" "}
-          <span className="italic font-normal">we'll send a key.</span>
-        </>
-      }
+      title="Enter your email, and we'll send a reset link."
       lede="We'll email you a single-use link to set a new password."
       footer={
         <span>

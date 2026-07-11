@@ -8,7 +8,7 @@ const FEATURES = [
     n: "01",
     title: "Match Score",
     lede: "How closely your resume fits the role — expressed as a single, clear number.",
-    body: "The AI compares your resume to the job description and returns a match percentage grounded in keyword relevance, skill alignment, and role fit.",
+    body: "The analysis compares your resume with the job description and returns a match percentage based on keyword relevance, skill alignment, and role fit.",
     marks: ["Percentage fit", "Confidence range", "Role alignment"],
   },
   {
@@ -27,23 +27,23 @@ const FEATURES = [
   },
   {
     n: "04",
-    title: "AI Suggestions",
+    title: "Suggestions",
     lede: "Specific line edits, in plain language, ready to paste.",
-    body: "Not generic advice. The AI proposes concrete edits to specific lines — reframed bullets, sharper impact statements, missing quantifiers — each one attributable to a reason.",
+    body: "Not generic advice. The analysis provides concrete edits to specific lines — reframed bullets, sharper impact statements, missing quantifiers — each one attributable to a reason.",
     marks: ["Line-level edits", "Reasoned rewrites", "Copyable"],
   },
   {
     n: "05",
-    title: "JD Preview",
-    lede: "The job description, with matched and missing keywords highlighted.",
-    body: "See the job description with matched keywords underlined and missing ones flagged in the margin. It's a side-by-side view of what's present and what's missing.",
+    title: "Role Preview",
+    lede: "The Role Brief, with matched and missing keywords highlighted.",
+    body: "See the Role Brief with matched keywords underlined and missing ones flagged in the margin. It's a side-by-side view of what's present and what's missing.",
     marks: ["Inline highlights", "Margin flags", "Print-friendly"],
   },
   {
     n: "06",
     title: "Private Archive",
     lede: "Every analysis, filed by date, ready to revisit.",
-    body: "Nothing is public. Nothing is shared. Your past analyses live in a private archive on the desk — searchable by role, sortable by date, kept between visits.",
+    body: "Nothing is public. Nothing is shared. Your past analyses live in a private archive — searchable by role, sortable by date, and available whenever you return.",
     marks: ["Sortable by date", "Searchable by role", "Yours only"],
   },
 ];
@@ -199,7 +199,7 @@ function FeatureDemo({ title, active }) {
       return <MissingSkillsDemo />;
     case "AI Suggestions":
       return <SuggestionsDemo />;
-    case "JD Preview":
+    case "Role Preview":
       return <JDPreviewDemo />;
     case "Private Archive":
       return <ArchiveDemo />;
@@ -224,9 +224,9 @@ export default function Features() {
     <PublicSite>
       <PageIntro
         eyebrow="Review 02 · Features"
-        title="Everything the desk"
+        title="Everything it"
         italic="compares, marks, and files."
-        lede="Six capabilities, one workspace. Each feature helps you compare your resume to a job description — clearly, precisely, and with actionable results."
+        lede="Six sheets, one workspace. Each feature helps you compare your resume with a job description — clearly, precisely, and with actionable results."
       />
 
       {/* Feature sheets */}
@@ -300,10 +300,10 @@ export default function Features() {
               <div className="flex items-center gap-2">
                 <span className="font-serif text-ink-muted">Resume</span>
                 <span className="text-ink-muted">↓</span>
-                <span className="font-serif text-ink-muted">Job Description</span>
+                <span className="font-serif text-ink-muted">Role Brief</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-serif text-ink-muted">AI Analysis</span>
+                <span className="font-serif text-ink-muted">Analysis</span>
                 <span className="text-ink-muted">↓</span>
                 <span className="font-serif text-ink-muted">Results</span>
               </div>
@@ -314,8 +314,8 @@ export default function Features() {
             <div className="mt-8">
               <StickyNote rotate={-2} className="max-w-sm">
                 <div className="text-[13.5px] leading-snug">
-                  "Compare the same resume against two different roles. The skill gaps tell you where each application stands."
-                  <div className="mt-2 not-italic eyebrow text-[10px]">— A note from the desk</div>
+                  "Compare the same resume with two different roles. The skill gaps tell you where each application stands."
+                  <div className="mt-2 not-italic eyebrow text-[10px]">— A note</div>
                 </div>
               </StickyNote>
             </div>
@@ -350,7 +350,7 @@ export default function Features() {
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Begin</Eyebrow>
           <h2 className="mt-4 font-serif text-4xl md:text-5xl leading-tight">
-            See it on a resume of your own.
+            See it on your resume.
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
@@ -363,7 +363,7 @@ export default function Features() {
               to="/faq"
               className="px-6 py-3.5 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm"
             >
-              Questions? Read the FAQ
+              Questions? View the FAQ
             </Link>
           </div>
         </div>

@@ -104,7 +104,7 @@ export default function Account() {
             On file, <span className="italic font-normal">in your name.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-            A quiet record of who's signed in, when the desk last saw you, and
+            A quiet record of who's signed in, when you last visited, and
             the tools that keep the ledger yours.
           </p>
         </div>
@@ -150,8 +150,7 @@ export default function Account() {
             </div>
             <div className="rule-line my-5" />
             <p className="text-[14.5px] leading-relaxed text-ink-muted max-w-lg">
-              We'll email you a private link. Follow it to set a new password on
-              this account. The link opens the desk's password page and expires
+              We'll email you a secure link to reset your password. The link expires
               shortly after it's sent.
             </p>
 
@@ -183,15 +182,15 @@ export default function Account() {
 
           {/* Sign out */}
           <Sheet className="relative p-6 md:p-8">
-            <Eyebrow>Leave the desk</Eyebrow>
+            <Eyebrow>Sign out</Eyebrow>
             <div className="mt-2 font-serif text-[22px] leading-tight">
               Sign out of this browser.
             </div>
             <div className="rule-line my-5" />
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <p className="text-[14px] text-ink-muted max-w-md">
-                Ends this session on this device. Your archive stays intact and
-                is waiting when you return.
+                Ends this session on this device. Your archive will be here when
+                you return.
               </p>
               <button
                 type="button"
@@ -239,10 +238,10 @@ export default function Account() {
 
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              <div className="eyebrow text-[10px]">Desk Note</div>
+              <div className="eyebrow text-[10px]">Note</div>
               <div className="mt-1 font-serif">
-                Your email is the only key we keep. Rotate it whenever you like —
-                the archive travels with the account, not the browser.
+                Your email is the only key we keep.
+                Your archive stays with your account, not this browser.
               </div>
             </div>
           </StickyNote>
@@ -259,9 +258,7 @@ export default function Account() {
               </li>
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">02</span>
-                <span className="text-ink-muted">
-                  Signing out clears only this device's session.
-                </span>
+                <span className="text-ink-muted">Signing out only ends this device's session.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">03</span>

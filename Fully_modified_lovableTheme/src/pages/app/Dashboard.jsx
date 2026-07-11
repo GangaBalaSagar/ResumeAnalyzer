@@ -27,7 +27,7 @@ const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
 
 function greetingFor(hour) {
-  if (hour < 5) return "Still at the desk";
+  if (hour < 5) return "Still working";
   if (hour < 12) return "Good morning";
   if (hour < 18) return "Good afternoon";
   return "Good evening";
@@ -142,12 +142,12 @@ export default function Dashboard() {
     <div className="space-y-10">
       {/* 1 — Welcome / Continue working */}
       <header>
-        <Eyebrow>The desk · {new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}</Eyebrow>
+        <Eyebrow>Dashboard · {new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}</Eyebrow>
         <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
           {hello}, <span className="italic font-normal">{name}.</span>
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-          Your desk is tidy. Pick up where you left off, or open a new folder and
+          Your archive is tidy. Pick up where you left off, or open a new folder and
           run a fresh analysis.
         </p>
       </header>
@@ -162,7 +162,7 @@ export default function Dashboard() {
               <div>
                 <Eyebrow>Continue working</Eyebrow>
                 <div className="mt-2 font-serif text-2xl leading-tight">
-                  {hasDraft ? "A draft is still on the desk" : "The desk is clear"}
+                  {hasDraft ? "A draft is still in progress" : "Nothing in progress"}
                 </div>
               </div>
               <span className="hidden md:block eyebrow text-[10px]">
@@ -233,7 +233,7 @@ export default function Dashboard() {
           <Sheet className="relative p-6 md:p-8" lift>
             <div className="flex items-baseline justify-between gap-4">
               <div>
-                <Eyebrow>The ledger · recent analyses</Eyebrow>
+                <Eyebrow>Recent activity</Eyebrow>
                 <div className="mt-2 font-serif text-2xl leading-tight">
                   Filed this week
                 </div>
@@ -255,7 +255,7 @@ export default function Dashboard() {
 
             {!error && loading && (
               <div className="py-10 text-center text-sm text-ink-muted italic font-serif">
-                Loading the cabinet…
+                Loading your archive…
               </div>
             )}
 
@@ -318,7 +318,7 @@ export default function Dashboard() {
           {/* 3 — Statistics */}
           <Sheet className="relative p-6" lift>
             <Eyebrow>Running totals</Eyebrow>
-            <div className="mt-2 font-serif text-xl leading-tight">The desk, in numbers</div>
+            <div className="mt-2 font-serif text-xl leading-tight">Analysis at a glance</div>
             <div className="rule-line my-4" />
 
             <dl className="grid grid-cols-2 gap-x-4 gap-y-5">
@@ -337,14 +337,14 @@ export default function Dashboard() {
 
             <div className="rule-line mt-6" />
             <div className="mt-3 text-[11px] text-ink-muted italic font-serif">
-              Totals refresh each time you open the desk.
+              Totals update automatically as new analyses are added.
             </div>
           </Sheet>
 
           {/* Editor's note — reuses StickyNote as the workflow signpost */}
           <StickyNote rotate={-2}>
             <div className="text-[13.5px] leading-snug">
-              <div className="eyebrow text-[10px]">Desk note</div>
+              <div className="eyebrow text-[10px]">Note</div>
               <div className="mt-1 font-serif">
                 Two job descriptions beat one guess. Compare the same resume against two
                 roles to see where it truly fits.
@@ -361,7 +361,7 @@ export default function Dashboard() {
                 to="/app/analyze"
                 num="01"
                 title="New analysis"
-                hint="Drop a resume, paste a JD"
+                hint="Upload a resume and paste a job description"
               />
               <ShortcutRow
                 to="/app/history"
@@ -379,7 +379,7 @@ export default function Dashboard() {
               <ShortcutRow
                 to="/faq"
                 num="04"
-                title="How the desk works"
+                title="How it works"
                 hint="Frequently asked questions"
               />
             </ul>

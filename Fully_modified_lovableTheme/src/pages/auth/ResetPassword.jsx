@@ -51,19 +51,14 @@ export default function ResetPassword() {
       setError(error.message || "We couldn't update your password.");
       return;
     }
-    setNotice("Password updated. Redirecting you to the desk…");
+    setNotice("Password updated. Redirecting you back to your account…");
     setTimeout(() => navigate("/app/analyze", { replace: true }), 1200);
   };
 
   return (
     <AuthLayout
       eyebrow="Set a new password"
-      title={
-        <>
-          A fresh key for{" "}
-          <span className="italic font-normal">your desk.</span>
-        </>
-      }
+      title="A fresh password for your account."
       lede="Choose a new password. It'll take effect immediately."
       footer={
         <span>
