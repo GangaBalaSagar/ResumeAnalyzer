@@ -369,7 +369,7 @@ export default function Landing() {
 
           <section className="landing-scene landing-scene--testimonial relative -mt-8 pb-20 md:-mt-12 md:pb-24 border-t border-rule/60">
             <div className="mx-auto max-w-7xl px-6">
-              <Sheet className="landing-end-panel mx-auto max-w-6xl p-6 md:p-8" stack tabIndex={0}>
+              <Sheet className="landing-end-panel mx-auto max-w-6xl p-6 md:p-8" stack lift tabIndex={0}>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                   <div className="landing-end-panel__quote landing-field landing-field--testimonial lg:col-span-5 text-left lg:pr-6">
                     <Eyebrow>A note</Eyebrow>

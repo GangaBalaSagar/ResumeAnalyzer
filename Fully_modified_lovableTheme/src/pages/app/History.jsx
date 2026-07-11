@@ -658,7 +658,7 @@ function PublicArchiveEmptyState() {
             </div>
           </StickyNote>
 
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>Why create an account</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">

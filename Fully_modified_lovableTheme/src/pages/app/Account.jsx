@@ -143,7 +143,7 @@ export default function Account() {
           </Sheet>
 
           {/* Security */}
-          <Sheet className="relative p-6 md:p-8">
+          <Sheet className="relative p-6 md:p-8" lift>
             <Eyebrow>Security · Password</Eyebrow>
             <div className="mt-2 font-serif text-[24px] leading-tight">
               A new key, sent to your inbox.
@@ -181,7 +181,7 @@ export default function Account() {
           </Sheet>
 
           {/* Sign out */}
-          <Sheet className="relative p-6 md:p-8">
+          <Sheet className="relative p-6 md:p-8" lift>
             <Eyebrow>Sign out</Eyebrow>
             <div className="mt-2 font-serif text-[22px] leading-tight">
               Sign out of this browser.
@@ -206,7 +206,7 @@ export default function Account() {
 
         {/* RIGHT RAIL */}
         <aside className="col-span-12 lg:col-span-4 space-y-6">
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>Session</Eyebrow>
             <div className="mt-2 font-serif text-xl leading-tight">
               This visit, on the record.
@@ -246,7 +246,7 @@ export default function Account() {
             </div>
           </StickyNote>
 
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>House rules</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">

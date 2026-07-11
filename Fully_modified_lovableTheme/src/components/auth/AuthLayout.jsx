@@ -45,7 +45,7 @@ export default function AuthLayout({
 
         {/* Editorial aside */}
         <aside className="lg:col-span-5 relative min-h-[420px] hidden lg:block">
-          <div className="absolute right-8 top-4 w-[300px] h-[380px] sheet sheet-stack dog-ear p-7 rotate-[3deg]">
+          <Sheet className="absolute right-8 top-4 w-[300px] h-[380px] p-7 rotate-[3deg]" stack lift dogEar>
             <Eyebrow>Note</Eyebrow>
             <div className="mt-3 font-serif text-xl leading-snug">
               A quiet workspace for resume analysis.
@@ -56,7 +56,7 @@ export default function AuthLayout({
               visits — filed, indexed, and ready to reopen.
             </p>
             <div className="mt-6 eyebrow text-[10px]">Review 01 · Sign in</div>
-          </div>
+          </Sheet>
           <StickyNote className="absolute left-2 bottom-4 w-[220px]" rotate={-3}>
             {note || (
               <div className="text-[13px] leading-snug">
