@@ -230,7 +230,7 @@ export default function Dashboard() {
           </Sheet>
 
           {/* 2 — Recent activity */}
-          <Sheet className="relative p-6 md:p-8">
+          <Sheet className="relative p-6 md:p-8" lift>
             <div className="flex items-baseline justify-between gap-4">
               <div>
                 <Eyebrow>The ledger · recent analyses</Eyebrow>
@@ -316,7 +316,7 @@ export default function Dashboard() {
         {/* RIGHT RAIL */}
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           {/* 3 — Statistics */}
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>Running totals</Eyebrow>
             <div className="mt-2 font-serif text-xl leading-tight">The desk, in numbers</div>
             <div className="rule-line my-4" />
@@ -353,7 +353,7 @@ export default function Dashboard() {
           </StickyNote>
 
           {/* 4 — Quick actions / shortcuts */}
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>Shortcuts</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
