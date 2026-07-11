@@ -54,7 +54,7 @@ export default function Signup() {
     <AuthLayout
       eyebrow="Create account"
       title="Create your account."
-      lede="Create an account to save analyses, keep a private archive and pick up where you left off."
+      lede="Create an account to save analyses, keep a private archive, and pick up where you left off."
       footer={
         <span>
           Already a member?{" "}

@@ -52,7 +52,7 @@ export default function AuthLayout({
             </div>
             <div className="rule-line my-4" />
             <p className="text-sm text-ink-muted leading-relaxed">
-              Your sessions, saved analyses and drafts remain available between
+              Your sessions, analyses, and drafts remain available between
               visits — filed, indexed, and ready to reopen.
             </p>
             <div className="mt-6 eyebrow text-[10px]">Review 01 · Sign in</div>

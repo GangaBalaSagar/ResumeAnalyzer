@@ -585,7 +585,7 @@ function PublicArchiveEmptyState() {
             Filed, dated, <span className="italic font-normal">kept.</span>
           </h1>
           <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-xl">
-            A private archive for your resume analyses, ATS scores, and the reports you want to revisit later.
+            A private archive for your resume analyses, ATS scores, and reports to revisit later.
           </p>
         </div>
         <Link
@@ -608,7 +608,7 @@ function PublicArchiveEmptyState() {
             <Eyebrow>Open the archive</Eyebrow>
             <div className="mt-3 font-serif text-3xl">Your archive is ready to fill.</div>
             <p className="mt-3 text-sm text-ink-muted max-w-xl mx-auto">
-              Create an account to keep every reading filed by date, compare ATS scores, and return to reports whenever you need them.
+              Create an account to save every analysis by date, compare ATS scores, and return to reports whenever you need them.
             </p>
             <div className="mt-6 flex justify-center gap-3 flex-wrap">
               <Link
@@ -627,15 +627,15 @@ function PublicArchiveEmptyState() {
 
             <div className="mt-8 grid gap-4 md:grid-cols-3 text-left">
               <div className="rounded-sm border border-rule bg-secondary/40 p-4">
-                <div className="eyebrow text-[10px]">Save each analysis</div>
+                <div className="eyebrow text-[10px]">Save every analysis</div>
                 <div className="mt-2 text-sm text-ink-muted">
-                  Keep every analysis in a private archive for later review.
+                  Keep each analysis in a private archive for later review.
                 </div>
               </div>
               <div className="rounded-sm border border-rule bg-secondary/40 p-4">
                 <div className="eyebrow text-[10px]">Track progress</div>
                 <div className="mt-2 text-sm text-ink-muted">
-                  Compare ATS scores and watch your resumes improve over time.
+                  Compare ATS scores and watch your resume improve over time.
                 </div>
               </div>
               <div className="rounded-sm border border-rule bg-secondary/40 p-4">
@@ -653,7 +653,7 @@ function PublicArchiveEmptyState() {
             <div className="text-[13.5px] leading-snug">
               <div className="eyebrow text-[10px]">Cabinet note</div>
               <div className="mt-1 font-serif">
-                Your archive remembers what matters. A signed-in account keeps each analysis close at hand.
+                Your archive keeps what matters. A signed-in account keeps every analysis close at hand.
               </div>
             </div>
           </StickyNote>
@@ -664,15 +664,15 @@ function PublicArchiveEmptyState() {
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">01</span>
-                <span className="text-ink-muted">Access all your past analyses in one private archive.</span>
+                <span className="text-ink-muted">Access all past analyses in one private archive.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">02</span>
-                <span className="text-ink-muted">Compare ATS scores and track your resume improvements.</span>
+                <span className="text-ink-muted">Compare ATS scores and track improvements.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-serif text-accent shrink-0">03</span>
-                <span className="text-ink-muted">Pick up where you left off without re-uploading files.</span>
+                <span className="text-ink-muted">Resume where you left off — no re-upload needed.</span>
               </li>
             </ul>
           </Sheet>

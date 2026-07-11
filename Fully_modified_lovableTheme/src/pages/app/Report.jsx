@@ -274,10 +274,10 @@ export default function Report() {
       {!user && (
         <Sheet className="relative p-8 md:p-10 border border-accent/20 bg-accent/5 no-print" lift>
           <PaperClip />
-          <Eyebrow>📊 Demo Report</Eyebrow>
+          <Eyebrow>Demo Report</Eyebrow>
           <h2 className="font-serif text-2xl mt-2 mb-3">This is a sample ATS analysis.</h2>
           <p className="text-[15px] leading-relaxed text-ink-muted mb-6">
-            Sign in to analyze your own resume, generate customized ATS reports, and track your improvements over time.
+            Sign in to analyze your resume, generate personalized reports, and track your progress over time.
           </p>
           <div className="flex items-center gap-3 flex-wrap">
             <button
@@ -285,14 +285,14 @@ export default function Report() {
               onClick={() => navigate("/login")}
               className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors bg-paper"
             >
-              Login
+              Sign in
             </button>
             <button
               type="button"
               onClick={() => navigate("/signup")}
               className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
             >
-              Sign Up
+              Create an account
             </button>
           </div>
         </Sheet>
@@ -301,7 +301,7 @@ export default function Report() {
       {/* Masthead — treat the page like a document cover */}
       <header className="flex items-end justify-between gap-6 flex-wrap">
         <div>
-          <Eyebrow>Evaluation report · Ready for review</Eyebrow>
+          <Eyebrow>Evaluation Report · Ready for Review</Eyebrow>
           <h1 className="mt-3 font-serif text-[44px] md:text-[52px] leading-[1.02] tracking-tight">
             A close, <span className="italic font-normal">considered</span> analysis.
           </h1>
@@ -321,13 +321,13 @@ export default function Report() {
             onClick={handlePrint}
             className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
           >
-            Print report
+            Print Report
           </button>
           <Link
             to="/app/analyze"
             className="px-4 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
           >
-            New analysis →
+            New Analysis →
           </Link>
         </div>
       </header>
@@ -388,7 +388,7 @@ export default function Report() {
       {/* 2 — Executive Summary */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
         <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" lift>
-          <Eyebrow>Executive summary · AI summary</Eyebrow>
+          <Eyebrow>Executive Summary</Eyebrow>
           <div className="rule-line mt-3 mb-5" />
           <p className="font-serif text-[19px] leading-[1.6] text-ink">
             <span className="float-left font-serif text-[52px] leading-[0.85] mr-2 mt-1 text-accent">
@@ -551,7 +551,7 @@ export default function Report() {
         <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" dogEar stack lift>
           <PaperClip />
           <div className="flex items-baseline justify-between gap-4 flex-wrap">
-            <Eyebrow>AI suggestions · Margin notes</Eyebrow>
+            <Eyebrow>Suggestions · Margin notes</Eyebrow>
             <button
               type="button"
               onClick={copySuggestions}

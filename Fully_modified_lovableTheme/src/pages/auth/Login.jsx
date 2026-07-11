@@ -41,7 +41,7 @@ export default function Login() {
     <AuthLayout
       eyebrow="Review access"
       title="Welcome back."
-      lede="Sign in to reopen your analyses, drafts and archived reports."
+      lede="Sign in to reopen your analyses, drafts, and archived reports."
       footer={
         <span>
           New here?{" "}
