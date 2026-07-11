@@ -183,7 +183,7 @@ export default function Report() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-10">
+        <Sheet className="relative p-10" lift>
           <PaperClip />
           <Eyebrow>One moment</Eyebrow>
           <div className="mt-2 font-serif text-2xl">Loading the report…</div>
@@ -199,7 +199,7 @@ export default function Report() {
   if (error) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-10">
+        <Sheet className="relative p-10" lift>
           <PaperClip />
           <Eyebrow>Trouble</Eyebrow>
           <div className="mt-2 font-serif text-2xl">Unable to load report</div>
@@ -230,7 +230,7 @@ export default function Report() {
   if (!result) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-10">
+        <Sheet className="relative p-10" lift>
           <PaperClip />
           <Eyebrow>Nothing on the desk</Eyebrow>
           <h1 className="mt-3 font-serif text-4xl">No analysis to open yet.</h1>
@@ -387,7 +387,7 @@ export default function Report() {
 
       {/* 2 — Executive Summary */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
-        <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10">
+        <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" lift>
           <Eyebrow>Executive summary · The desk's analysis</Eyebrow>
           <div className="rule-line mt-3 mb-5" />
           <p className="font-serif text-[19px] leading-[1.6] text-ink">
@@ -414,7 +414,7 @@ export default function Report() {
               <div className="mt-1 font-serif italic">{verdict.note}</div>
             </div>
           </StickyNote>
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>At a glance</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <dl className="space-y-3 text-sm">
@@ -430,7 +430,7 @@ export default function Report() {
 
       {/* 3 — Skills Analysis */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8">
+        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
           <div className="flex items-baseline justify-between">
             <Eyebrow>Matched skills · On the page</Eyebrow>
             <span className="eyebrow text-[10px]">{matched.length}</span>
@@ -454,7 +454,7 @@ export default function Report() {
           )}
         </Sheet>
 
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8">
+        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
           <div className="flex items-baseline justify-between">
             <Eyebrow>Missing skills · To add</Eyebrow>
             <span className="eyebrow text-[10px]">{missing.length}</span>
@@ -481,7 +481,7 @@ export default function Report() {
 
       {/* 4 — Charts */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" stack>
+        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" stack lift>
           <Eyebrow>Match percentage</Eyebrow>
           <div className="rule-line mt-3 mb-2" />
           <div className="h-64">
@@ -517,7 +517,7 @@ export default function Report() {
           </div>
         </Sheet>
 
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8">
+        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
           <Eyebrow>Skills overview</Eyebrow>
           <div className="rule-line mt-3 mb-2" />
           <div className="h-64">
@@ -548,7 +548,7 @@ export default function Report() {
 
       {/* 5 — AI Suggestions */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8 relative">
-        <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" dogEar stack>
+        <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" dogEar stack lift>
           <PaperClip />
           <div className="flex items-baseline justify-between gap-4 flex-wrap">
             <Eyebrow>AI suggestions · Margin notes</Eyebrow>
@@ -591,7 +591,7 @@ export default function Report() {
               </div>
             </div>
           </StickyNote>
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>How to work through these</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ol className="space-y-3 text-sm">

@@ -184,7 +184,7 @@ export default function History() {
         {/* MAIN — the ledger */}
         <div className="col-span-12 lg:col-span-8 space-y-6">
           {/* Search + summary strip */}
-          <Sheet className="relative p-5 md:p-6">
+          <Sheet className="relative p-5 md:p-6" lift>
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex-1 min-w-[220px]">
                 <label className="block eyebrow text-[10px]">Search the cabinet</label>
@@ -232,7 +232,7 @@ export default function History() {
 
           {/* Loading */}
           {loading && !error && (
-            <Sheet className="relative p-10">
+            <Sheet className="relative p-10" lift>
               <PaperClip />
               <Eyebrow>One moment</Eyebrow>
               <div className="mt-2 font-serif text-2xl">Loading the cabinet…</div>
@@ -255,7 +255,7 @@ export default function History() {
 
           {/* Empty (filtered) */}
           {!loading && !error && items.length > 0 && filtered.length === 0 && (
-            <Sheet className="relative p-10 text-center">
+            <Sheet className="relative p-10 text-center" lift>
               <Eyebrow>No matching folder</Eyebrow>
               <div className="mt-2 font-serif text-xl">
                 Nothing on file matches "{query}".
@@ -304,7 +304,7 @@ export default function History() {
 
         {/* RIGHT RAIL */}
         <aside className="col-span-12 lg:col-span-4 space-y-6">
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>Cabinet totals</Eyebrow>
             <div className="mt-2 font-serif text-xl leading-tight">Archive summary</div>
             <div className="rule-line my-4" />
@@ -326,7 +326,7 @@ export default function History() {
             </div>
           </StickyNote>
 
-          <Sheet className="relative p-6">
+          <Sheet className="relative p-6" lift>
             <Eyebrow>How the archive is kept</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">
