@@ -5,11 +5,14 @@ import { useAuthModal } from "../contexts/AuthModalContext.jsx";
 import { setupApiInterceptor } from "../api.js";
 import {
   clearSessionStartTimestamp,
+  ensureLastActivityTimestamp,
   getAbsoluteSessionExpiryMs,
   getSessionExpiryMs,
+  isInactivityExpired,
   isAbsoluteSessionExpired,
   isSessionExpired,
   isProtectedAppRoute,
+  setLastActivityTimestamp,
   setAuthNotice,
 } from "../utils/authSession.js";
 
@@ -105,7 +108,9 @@ export default function useApiAuth() {
       return undefined;
     }
 
-    if (isSessionExpired(session) || isAbsoluteSessionExpired()) {
+    ensureLastActivityTimestamp(session);
+
+    if (isSessionExpired(session) || isAbsoluteSessionExpired() || isInactivityExpired(session)) {
       if (isProtectedAppRoute(location.pathname)) {
         logoutToLogin("Your session has expired. Please sign in again.");
       } else {
@@ -186,6 +191,7 @@ export default function useApiAuth() {
 
     const onActivity = () => {
       if (logoutInFlightRef.current || !session) return;
+      setLastActivityTimestamp();
       scheduleIdleLogout();
     };
 

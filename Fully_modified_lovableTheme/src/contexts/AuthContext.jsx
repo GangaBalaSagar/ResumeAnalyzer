@@ -4,7 +4,9 @@ import { supabase } from "../services/supabase/client.js";
 import {
   clearAuthSessionArtifacts,
   ensureSessionStartTimestamp,
+  ensureLastActivityTimestamp,
   isAbsoluteSessionExpired,
+  isInactivityExpired,
   isSessionExpired,
   isProtectedAppRoute,
   setAuthNotice,
@@ -54,10 +56,13 @@ export function AuthProvider({ children }) {
       const currentSession = data?.session ?? null;
       if (currentSession) {
         ensureSessionStartTimestamp(currentSession);
+        ensureLastActivityTimestamp(currentSession);
       }
       if (
         currentSession &&
-        (isSessionExpired(currentSession) || isAbsoluteSessionExpired())
+        (isSessionExpired(currentSession) ||
+          isAbsoluteSessionExpired() ||
+          isInactivityExpired(currentSession))
       ) {
         await performLocalLogout({
           notice: isProtectedAppRoute(location.pathname)
@@ -76,8 +81,14 @@ export function AuthProvider({ children }) {
         if (!mountedRef.current) return;
         if (newSession) {
           ensureSessionStartTimestamp(newSession);
+          ensureLastActivityTimestamp(newSession);
         }
-        if (newSession && (isSessionExpired(newSession) || isAbsoluteSessionExpired())) {
+        if (
+          newSession &&
+          (isSessionExpired(newSession) ||
+            isAbsoluteSessionExpired() ||
+            isInactivityExpired(newSession))
+        ) {
           performLocalLogout({
             notice: isProtectedAppRoute(location.pathname)
               ? "Your session has expired. Please sign in again."

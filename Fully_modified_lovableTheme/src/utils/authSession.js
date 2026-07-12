@@ -1,6 +1,8 @@
 const AUTH_NOTICE_KEY = "ra_auth_notice_v1";
 const AUTH_SESSION_STARTED_AT_KEY = "ra_session_started_at_v1";
+const AUTH_LAST_ACTIVITY_AT_KEY = "ra_last_activity_at_v1";
 const MAX_SESSION_LIFETIME_MS = 24 * 60 * 60 * 1000;
+const MAX_INACTIVITY_MS = 30 * 60 * 1000;
 
 export function isProtectedAppRoute(pathname = "") {
   const path = String(pathname || "");
@@ -69,6 +71,57 @@ export function ensureSessionStartTimestamp(session) {
   }
 }
 
+export function getLastActivityTimestamp() {
+  if (typeof window === "undefined") return null;
+  try {
+    const lastActivityAt = Number(localStorage.getItem(AUTH_LAST_ACTIVITY_AT_KEY));
+    return Number.isFinite(lastActivityAt) && lastActivityAt > 0 ? lastActivityAt : null;
+  } catch {
+    return null;
+  }
+}
+
+export function ensureLastActivityTimestamp(session, timestamp = Date.now()) {
+  if (typeof window === "undefined" || !session) return;
+  try {
+    const existing = getLastActivityTimestamp();
+    if (existing) return;
+    localStorage.setItem(AUTH_LAST_ACTIVITY_AT_KEY, String(timestamp));
+  } catch {
+    // Best effort only.
+  }
+}
+
+export function setLastActivityTimestamp(timestamp = Date.now()) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(AUTH_LAST_ACTIVITY_AT_KEY, String(timestamp));
+  } catch {
+    // Best effort only.
+  }
+}
+
+export function clearLastActivityTimestamp() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(AUTH_LAST_ACTIVITY_AT_KEY);
+  } catch {
+    // Best effort only.
+  }
+}
+
+export function getInactivityExpiryMs(session) {
+  if (!session) return null;
+  const lastActivityAt = getLastActivityTimestamp();
+  if (!lastActivityAt) return null;
+  return lastActivityAt + MAX_INACTIVITY_MS;
+}
+
+export function isInactivityExpired(session, now = Date.now()) {
+  const expiryMs = getInactivityExpiryMs(session);
+  return typeof expiryMs === "number" ? now >= expiryMs : false;
+}
+
 export function clearSessionStartTimestamp() {
   if (typeof window === "undefined") return;
   try {
@@ -100,4 +153,5 @@ export function consumeAuthNotice() {
 
 export function clearAuthSessionArtifacts() {
   clearSessionStartTimestamp();
+  clearLastActivityTimestamp();
 }
