@@ -185,9 +185,9 @@ export default function Landing() {
               <div className="landing-hero-layer landing-hero-layer--sheet absolute right-12 top-8 w-[320px] h-[440px]">
                 <div className="sheet sheet-lift dog-ear p-7 rotate-[3deg] h-full">
                   <PaperClip />
-                  <div className="eyebrow">Resume - Analysis - 412</div>
-                  <div className="mt-3 font-serif text-xl leading-tight">Elena Marsh</div>
-                  <div className="text-xs text-ink-muted">Senior Product Designer</div>
+                  <div className="eyebrow">Review 01 · Resume Analysis</div>
+                  <div className="mt-3 font-serif text-xl leading-tight">Resume.pdf</div>
+                  <div className="text-xs text-ink-muted">Software Engineer</div>
                   <div className="rule-line mt-4" />
                   <div className="mt-6 eyebrow">Skills</div>
                   <div className="mt-2 space-y-2">
@@ -203,16 +203,18 @@ export default function Landing() {
               </div>
 
               <StickyNote className="absolute left-2 top-72 w-[200px]">
-                "Lead with outcomes - your impact line is buried under the role title."
+                Every application tells a story.
+The strongest ones are
+reviewed first.
               </StickyNote>
 
               <div className="landing-hero-layer landing-hero-layer--card absolute left-8 bottom-2 w-[220px]">
                 <div className="sheet sheet-lift p-4 rotate-[4deg]">
-                  <Eyebrow>Match - Senior PM</Eyebrow>
+                  <Eyebrow>Match Score</Eyebrow>
                   <div className="mt-1">
                     <AtsScore value={86} size="sm" />
                   </div>
-                  <div className="mt-1 text-xs text-ink-muted">Strong on craft, light on metrics.</div>
+                  <div className="mt-1 text-xs text-ink-muted">Review Ready</div>
                 </div>
               </div>
             </div>

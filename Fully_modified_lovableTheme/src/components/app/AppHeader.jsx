@@ -23,18 +23,18 @@ const sharedLinks = [
 
 const publicLinks = [
   sharedLinks[0],
-  { to: "/analyze", label: "Analyze", end: true },
+  { to: "/analyze", label: "Review", end: true },
   { to: "/report", label: "Report", end: true },
-  { to: "/history", label: "Past Analyses", end: true },
+  { to: "/history", label: "Archive", end: true },
   ...sharedLinks.slice(1),
 ];
 
 const privateLinks = [
   sharedLinks[0],
   { to: "/app/dashboard", label: "Dashboard", end: true },
-  { to: "/app/analyze", label: "Analyze", end: true },
+  { to: "/app/analyze", label: "Review", end: true },
   { to: "/app/report", label: "Report", end: true },
-  { to: "/app/history", label: "Past Analyses", end: true },
+  { to: "/app/history", label: "Archive", end: true },
   ...sharedLinks.slice(1),
 ];
 
@@ -65,7 +65,7 @@ export default function AppHeader({ onOpenMobileNav }) {
             <Mark />
             <div className="leading-tight hidden sm:block">
               <div className="font-serif text-[16px] tracking-tight">Resume Analyzer</div>
-              <div className="eyebrow text-[9px]">Resume Analyzer Pro</div>
+              <div className="eyebrow text-[9px]">Review Before You Apply</div>
             </div>
           </Link>
 

@@ -14,9 +14,9 @@ function initials(nameOrEmail = "") {
 
 const navLinks = [
   { to: "/", label: "Home", num: "01", end: true },
-  { to: "/analyze", label: "Analyze", num: "02" },
+  { to: "/analyze", label: "Review", num: "02" },
   { to: "/report", label: "Report", num: "03" },
-  { to: "/history", label: "Past Analyses", num: "04" },
+  { to: "/history", label: "Archive", num: "04" },
   { to: "/features", label: "Features", num: "05" },
   { to: "/faq", label: "FAQ", num: "06" },
 ];
