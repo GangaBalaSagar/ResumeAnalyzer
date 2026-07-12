@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Landing from "../pages/Landing.jsx";
 import Features from "../pages/Features.jsx";
 import FAQ from "../pages/FAQ.jsx";
+import HeroPrototype from "../pages/HeroPrototype.jsx";
 import PublicSite from "../components/public/PublicSite.jsx";
 import PublicAppLayout from "../components/public/PublicAppLayout.jsx";
 
@@ -22,6 +23,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/hero-preview" element={<HeroPrototype />} />
       <Route path="/features" element={<Features />} />
       <Route path="/faq" element={<FAQ />} />
       <Route

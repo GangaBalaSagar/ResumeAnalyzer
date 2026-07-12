@@ -260,7 +260,6 @@ reviewed first.
                               ? "md:col-span-5"
                               : "md:col-span-7 md:mt-8";
 
-                      // subtle shared-system offsets: nearby cards shift and tilt
                       const dx = index - activeFeatureIndex;
                       const distance = Math.abs(dx) || 1;
                       const translateX = `${Math.sign(dx) * Math.min(10, 6 * distance)}px`;

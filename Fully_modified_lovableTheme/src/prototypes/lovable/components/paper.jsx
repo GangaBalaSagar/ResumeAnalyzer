@@ -32,14 +32,6 @@ export function Bookmark({ children, color }) {
   );
 }
 
-export function StickyNote({ children, className = "", rotate = -1.5 }) {
-  return (
-    <div className={`sticky-note ${className}`} style={{ transform: `rotate(${rotate}deg)` }}>
-      {children}
-    </div>
-  );
-}
-
 export function Eyebrow({ children }) {
   return <div className="eyebrow">{children}</div>;
 }

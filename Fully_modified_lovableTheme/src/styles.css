@@ -1276,3 +1276,220 @@
     animation: none !important;
   }
 }
+
+/* Motion foundation for CinematicHero */
+.stage {
+  perspective: 1400px;
+  perspective-origin: 50% 30%;
+  transform-style: preserve-3d;
+}
+.sheet-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.parallax {
+  --depth: 6px;
+  transform: translate3d(
+    calc(var(--mx, 0) * var(--depth)),
+    calc(var(--my, 0) * var(--depth)),
+    0
+  );
+  transition: transform 400ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax { transform: none !important; }
+}
+
+/* Lamp breath */
+@keyframes lamp-breath {
+  0%, 100% { opacity: 0.92; }
+  50%      { opacity: 1;    }
+}
+.lamp-breath {
+  animation: lamp-breath 6s ease-in-out infinite;
+  will-change: opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lamp-breath { animation: none; opacity: 1; }
+}
+
+/* Live panel sheen */
+.live-panel-inner.has-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--px, 50%) var(--py, 50%), rgba(255,255,255,0.25) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 200ms;
+}
+.live-panel-inner.has-sheen:hover::before {
+  opacity: 1;
+}
+
+/* Sheet hover for live variant */
+.sheet-hover:hover {
+  box-shadow: var(--shadow-paper-lift);
+}
+
+/* ============================================================================
+   PREMIUM SPRING-BASED INTERACTIONS — Recruiter's Desk Hero Polish
+   ============================================================================ */
+
+/* Shared spring easing — matches MotionConfigProvider SHARED_SPRING */
+:root {
+  --spring-ease: cubic-bezier(0.32, 0.72, 0, 1); /* ~stiffness 220, damping 26, mass 0.9 */
+  --spring-swift: cubic-bezier(0.22, 1, 0.36, 1);  /* snappy for micro-interactions */
+  --spring-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* gentle for ambient */
+}
+
+/* 1. BETTER PAPER PHYSICS — Sheet lift with spring, not linear */
+.sheet {
+  transition:
+    transform 300ms var(--spring-ease),
+    box-shadow 300ms var(--spring-ease),
+    border-color 200ms var(--spring-swift);
+}
+.sheet-lift:hover,
+.sheet:hover {
+  transform: translateY(-3px) rotate(-0.1deg);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.9),
+    inset -1px -1px 0 rgba(26, 26, 26, 0.03),
+    var(--shadow-paper-lift);
+}
+.sheet-lift:active,
+.sheet:active {
+  transform: translateY(1px) rotate(0deg);
+  transition-duration: 100ms;
+}
+
+/* 2. BETTER HOVER LIFT — Sticky note with spring */
+.sticky-note {
+  transition:
+    transform 300ms var(--spring-ease),
+    box-shadow 300ms var(--spring-ease);
+}
+.sticky-note:hover {
+  transform: translate3d(0, -8px, 0) rotate(-1deg) !important;
+  box-shadow:
+    0 1px 2px rgba(26, 26, 26, 0.06),
+    0 12px 28px -8px rgba(26, 26, 26, 0.22),
+    0 20px 40px -16px rgba(26, 26, 26, 0.28);
+}
+
+/* 3. BETTER POINTER RESPONSE — PaperClip follows pointer with spring */
+.sheet svg[width="22"][height="44"] {
+  transition:
+    transform 400ms var(--spring-ease),
+    opacity 250ms var(--spring-swift);
+  transform-origin: left center;
+}
+.sheet:hover svg[width="22"][height="44"] {
+  transform: rotate(8deg) translate3d(3px, -3px, 0);
+  opacity: 0.98;
+}
+
+/* 4. BETTER DEPTH — Layered shadows on hero stage */
+.landing-hero-stage {
+  filter: drop-shadow(0 30px 60px -40px rgba(26, 26, 26, 0.25));
+}
+.landing-hero-layer--sheet,
+.landing-hero-layer--card {
+  transition:
+    transform 400ms var(--spring-ease),
+    box-shadow 400ms var(--spring-ease);
+}
+
+/* 5. BETTER AMBIENT LIGHTING — Glows breathe with spring */
+.landing-ambient__glow,
+.landing-ambient__sheen {
+  transition:
+    transform 500ms var(--spring-gentle),
+    opacity 500ms var(--spring-gentle);
+}
+
+/* 6. BETTER SOFT SHADOWS — Scene cards cast subtle depth */
+.landing-scene {
+  transition: transform 300ms var(--spring-ease);
+}
+
+/* 7. BETTER SUBTLE MOTION — Card focus states with spring */
+.landing-feature-card,
+.landing-workflow-card,
+.landing-testimonial-card,
+.landing-cta-panel {
+  transition:
+    transform 300ms var(--spring-ease),
+    box-shadow 300ms var(--spring-ease),
+    border-color 250ms var(--spring-swift),
+    opacity 250ms var(--spring-swift),
+    filter 250ms var(--spring-swift);
+}
+.landing-feature-card:hover,
+.landing-feature-card:focus-within,
+.landing-workflow-card:hover,
+.landing-workflow-card:focus-within,
+.landing-testimonial-card:hover,
+.landing-testimonial-card:focus-within,
+.landing-cta-panel:hover,
+.landing-cta-panel:focus-within {
+  --card-lift: -0.6rem;
+}
+
+/* 8. BETTER SPRING ANIMATION — Workflow rail dots */
+.landing-workflow-rail span {
+  transition:
+    transform 300ms var(--spring-ease),
+    background-color 250ms var(--spring-swift),
+    border-color 250ms var(--spring-swift),
+    box-shadow 250ms var(--spring-swift),
+    opacity 250ms var(--spring-swift);
+}
+.landing-workflow-rail span.active {
+  box-shadow:
+    0 0 0 10px rgba(77, 166, 255, 0.1),
+    0 0 24px rgba(77, 166, 255, 0.28);
+}
+
+/* 9. BETTER FLOATING EFFECT — Scroll hint bounce */
+.animate-bounce {
+  animation: bounce-gentle 2.4s var(--spring-gentle) infinite;
+}
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+/* 10. BETTER PREMIUM POLISH — Button shimmer with spring */
+.landing-action::after {
+  transition: transform 500ms var(--spring-gentle);
+}
+.landing-action:hover::after,
+.landing-action:focus-visible::after {
+  transform: translateX(120%);
+}
+
+/* 11. RESPECT REDUCED MOTION — Disable all springs */
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .sticky-note,
+  .sticky-note:hover,
+  .sheet svg[width="22"][height="44"],
+  .landing-ambient__glow,
+  .landing-ambient__sheen,
+  .landing-hero-layer,
+  .landing-feature-card,
+  .landing-workflow-card,
+  .landing-testimonial-card,
+  .landing-cta-panel,
+  .landing-workflow-rail span,
+  .landing-action::after,
+  .animate-bounce {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
