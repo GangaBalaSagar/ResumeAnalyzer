@@ -146,7 +146,7 @@ export default function SheetsOnDesk() {
 
           <div className="lg:col-span-8">
             <div
-              className="landing-field landing-field--cards landing-feature-grid grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6"
+              className="landing-field landing-field--cards landing-feature-grid grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 items-start"
               data-focus-state="idle"
             >
               {SHEETS.map((sheet, index) => {
@@ -177,7 +177,7 @@ export default function SheetsOnDesk() {
                     label={`Sheet - ${sheet.n}`}
                     title={sheet.title}
                     dogEar={index === 0}
-                    className={`landing-feature-card ${spanClasses}`}
+                    className={`landing-feature-card ${spanClasses} ${index === 3 ? "pb-4 md:pb-4" : ""}`}
                     style={{
                       "--card-offset": index === 0 ? "0px" : index === 1 ? "1.1rem" : index === 2 ? "0.45rem" : "1.55rem",
                       "--card-translate-x": translateX,

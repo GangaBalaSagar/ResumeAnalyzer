@@ -183,7 +183,7 @@ export default function Report() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-10" lift>
+        <Sheet className="relative p-6" lift>
           <PaperClip />
           <Eyebrow>One moment</Eyebrow>
           <div className="mt-2 font-serif text-2xl">Loading the report…</div>
@@ -199,7 +199,7 @@ export default function Report() {
   if (error) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-10" lift>
+        <Sheet className="relative p-6" lift>
           <PaperClip />
           <Eyebrow>Trouble</Eyebrow>
           <div className="mt-2 font-serif text-2xl">Unable to load report</div>
@@ -230,7 +230,7 @@ export default function Report() {
   if (!result) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-10" lift>
+        <Sheet className="relative p-6" lift>
           <PaperClip />
           <Eyebrow>No analysis yet</Eyebrow>
           <h1 className="mt-3 font-serif text-4xl">No analysis to open yet.</h1>
@@ -272,7 +272,7 @@ export default function Report() {
       `}</style>
 
       {!user && (
-        <Sheet className="relative p-8 md:p-10 border border-accent/20 bg-accent/5 no-print" lift>
+        <Sheet className="relative p-6 md:p-8 border border-accent/20 bg-accent/5 no-print" lift>
           <PaperClip />
           <Eyebrow>Demo Report</Eyebrow>
           <h2 className="font-serif text-2xl mt-2 mb-3">This is a sample ATS analysis.</h2>
@@ -333,7 +333,7 @@ export default function Report() {
       </header>
 
       {/* 1 — Overall Match Score: the "cover" of the report */}
-      <Sheet className="relative p-6 md:p-10 overflow-hidden" lift dogEar>
+      <Sheet className="relative p-4 md:p-6 overflow-hidden" lift dogEar>
         <PaperClip />
         <div className="grid grid-cols-12 gap-8 items-center">
           <div className="col-span-12 md:col-span-4 text-center md:text-left">
@@ -387,7 +387,7 @@ export default function Report() {
 
       {/* 2 — Executive Summary */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
-        <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" lift>
+        <Sheet className="col-span-12 lg:col-span-8 relative p-4 md:p-6" lift>
           <Eyebrow>Executive Summary</Eyebrow>
           <div className="rule-line mt-3 mb-5" />
           <p className="font-serif text-[19px] leading-[1.6] text-ink">
@@ -414,7 +414,7 @@ export default function Report() {
               <div className="mt-1 font-serif italic">{verdict.note}</div>
             </div>
           </StickyNote>
-          <Sheet className="relative p-6" lift>
+          <Sheet className="relative p-4" lift>
             <Eyebrow>At a glance</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <dl className="space-y-3 text-sm">
@@ -430,7 +430,7 @@ export default function Report() {
 
       {/* 3 — Skills Analysis */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
+        <Sheet className="col-span-12 lg:col-span-6 relative p-4 md:p-6" lift>
           <div className="flex items-baseline justify-between">
             <Eyebrow>Matched skills · On the page</Eyebrow>
             <span className="eyebrow text-[10px]">{matched.length}</span>
@@ -454,7 +454,7 @@ export default function Report() {
           )}
         </Sheet>
 
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
+        <Sheet className="col-span-12 lg:col-span-6 relative p-4 md:p-6" lift>
           <div className="flex items-baseline justify-between">
             <Eyebrow>Missing skills · To add</Eyebrow>
             <span className="eyebrow text-[10px]">{missing.length}</span>
@@ -481,7 +481,7 @@ export default function Report() {
 
       {/* 4 — Charts */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8">
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" stack lift>
+        <Sheet className="col-span-12 lg:col-span-6 relative p-4 md:p-6" stack lift>
           <Eyebrow>Match percentage</Eyebrow>
           <div className="rule-line mt-3 mb-2" />
           <div className="h-64">
@@ -517,7 +517,7 @@ export default function Report() {
           </div>
         </Sheet>
 
-        <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
+        <Sheet className="col-span-12 lg:col-span-6 relative p-4 md:p-6" lift>
           <Eyebrow>Skills overview</Eyebrow>
           <div className="rule-line mt-3 mb-2" />
           <div className="h-64">
@@ -548,7 +548,7 @@ export default function Report() {
 
       {/* 5 — AI Suggestions */}
       <div className="grid grid-cols-12 gap-6 lg:gap-8 relative">
-        <Sheet className="col-span-12 lg:col-span-8 relative p-6 md:p-10" dogEar stack lift>
+        <Sheet className="col-span-12 lg:col-span-8 relative p-4 md:p-6" dogEar stack lift>
           <PaperClip />
           <div className="flex items-baseline justify-between gap-4 flex-wrap">
             <Eyebrow>Suggestions · Margin notes</Eyebrow>
@@ -591,7 +591,7 @@ export default function Report() {
                 </div>
             </div>
           </StickyNote>
-          <Sheet className="relative p-6" lift>
+          <Sheet className="relative p-4" lift>
             <Eyebrow>How to work through these</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ol className="space-y-3 text-sm">
@@ -613,7 +613,7 @@ export default function Report() {
       </div>
 
       {/* 6 — Job Description comparison */}
-      <Sheet className="relative p-6 md:p-10 ruled" lift>
+      <Sheet className="relative p-4 md:p-6 ruled" lift>
         <div className="flex items-baseline justify-between gap-4 flex-wrap">
           <div>
             <Eyebrow>Job description · Keywords marked</Eyebrow>

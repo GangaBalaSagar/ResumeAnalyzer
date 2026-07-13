@@ -66,7 +66,7 @@ export default function ReturnPreview() {
           {/* MAIN COLUMN */}
           <div className="col-span-12 lg:col-span-8 space-y-8">
             {/* Continue working */}
-            <Sheet className="relative p-6 md:p-8" lift dogEar>
+            <Sheet className="relative p-4 md:p-6" lift dogEar>
               <PaperClip />
               <div className="flex items-baseline justify-between gap-4 flex-wrap">
                 <div>
@@ -77,7 +77,7 @@ export default function ReturnPreview() {
                 </div>
                 <span className="hidden md:block eyebrow text-[10px]">auto-saved</span>
               </div>
-              <div className="rule-line my-5" />
+              <div className="rule-line my-3" />
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -106,7 +106,7 @@ export default function ReturnPreview() {
             </Sheet>
 
             {/* Recent activity */}
-            <Sheet className="relative p-6 md:p-8" lift>
+            <Sheet className="relative p-4 md:p-6" lift>
               <div className="flex items-baseline justify-between gap-4">
                 <div>
                   <Eyebrow>Recent activity</Eyebrow>
@@ -118,7 +118,7 @@ export default function ReturnPreview() {
                   Open the archive →
                 </Link>
               </div>
-              <div className="rule-line my-5" />
+              <div className="rule-line my-3" />
 
               <ul className="divide-y divide-rule">
                 {MOCK_ITEMS.slice(0, 3).map((d) => (
@@ -152,10 +152,10 @@ export default function ReturnPreview() {
           {/* RIGHT RAIL */}
           <aside className="col-span-12 lg:col-span-4 space-y-6">
             {/* Statistics */}
-            <Sheet className="relative p-6" lift>
+            <Sheet className="relative p-4" lift>
               <Eyebrow>Running totals</Eyebrow>
               <div className="mt-2 font-serif text-xl leading-tight">Reviews at a glance</div>
-              <div className="rule-line my-4" />
+              <div className="rule-line my-3" />
 
               <dl className="grid grid-cols-2 gap-x-4 gap-y-5">
                 <div>
@@ -194,9 +194,9 @@ export default function ReturnPreview() {
             </StickyNote>
 
             {/* Quick actions */}
-            <Sheet className="relative p-6" lift>
+            <Sheet className="relative p-4" lift>
               <Eyebrow>Shortcuts</Eyebrow>
-              <div className="rule-line mt-3 mb-4" />
+              <div className="rule-line mt-2 mb-3" />
               <ul className="space-y-3 text-sm">
                 <Link
                   to="/app/analyze"

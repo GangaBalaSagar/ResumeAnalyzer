@@ -74,7 +74,7 @@ export default function ReviewProcess() {
                     className={spanClasses}
                   >
                     <Sheet
-                      className="landing-workflow-card p-6 h-full"
+                      className="landing-workflow-card p-4"
                       dogEar={index !== 2}
                       style={{
                         "--card-offset": index === 0 ? "0px" : index === 1 ? "1rem" : index === 2 ? "0.35rem" : index === 3 ? "1rem" : "1.55rem",
@@ -85,7 +85,7 @@ export default function ReviewProcess() {
                         <div className="landing-workflow-card__number font-serif text-3xl text-accent">
                           {stage.n}
                         </div>
-                        <div className="rule-line landing-workflow-card__rule my-4" />
+                        <div className="rule-line landing-workflow-card__rule my-2" />
                         <div className="landing-workflow-card__title font-serif text-xl">{stage.title}</div>
                         <p className="landing-workflow-card__copy mt-2 text-sm text-ink-muted">{stage.detail}</p>
                       </div>

@@ -54,7 +54,7 @@ export default function SubmitPreview() {
                   PDF · DOCX · ≤ {MAX_MB} MB
                 </span>
               </div>
-              <div className="rule-line my-6" />
+              <div className="rule-line my-4" />
 
               {/* File Card - attached state */}
               <div className="relative">
@@ -114,19 +114,19 @@ export default function SubmitPreview() {
                   {mockJD.trim().split(/\s+/).length} words
                 </span>
               </div>
-              <div className="rule-line my-6" />
+              <div className="rule-line my-4" />
 
               <div className="relative">
                 {/* Left-margin editorial ruling */}
                 <div className="absolute top-0 bottom-0 left-6 w-px bg-destructive/25 pointer-events-none hidden md:block" />
-                <textarea
+<textarea
                   rows={8}
                   value={mockJD}
                   readOnly
-                  className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-none min-h-[220px]"
+                  className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-none"
                 >
 {mockJD}
-                </textarea>
+</textarea>
               </div>
 
               <div className="mt-3 text-[11px] text-ink-muted italic font-serif">
@@ -142,7 +142,7 @@ export default function SubmitPreview() {
             </StickyNote>
 
             {/* Actions Preview */}
-            <Sheet className="relative p-6 md:p-8" lift>
+            <Sheet className="relative p-6" lift>
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div className="text-xs text-ink-muted italic font-serif">
                   Your review is private. Filed under your archive only.

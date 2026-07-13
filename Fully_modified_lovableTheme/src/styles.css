@@ -429,9 +429,6 @@
     }
 
 
-.landing-feature-card:hover .rule-line {
-  filter: brightness(1.2);
-}
 .landing-feature-card:hover .sticky-note {
   filter: brightness(1.2);
   transform: translateY(-2px) !important;

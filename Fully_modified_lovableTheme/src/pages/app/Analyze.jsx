@@ -248,7 +248,7 @@ function onPickFile(e) {
                 PDF · DOCX · ≤ {MAX_MB} MB
               </span>
             </div>
-            <div className="rule-line my-6" />
+            <div className="rule-line my-4" />
 
             {file ? (
               <FileCard file={file} onReplace={() => fileInputRef.current?.click()} onClear={clearFile}>
@@ -291,7 +291,7 @@ function onPickFile(e) {
           </Sheet>
 
           {/* Job description — editorial writing sheet */}
-          <Sheet className="relative p-6 md:p-10" lift>
+          <Sheet className="relative p-4 md:p-6" lift>
             <div className="flex items-baseline justify-between gap-4">
               <div>
                 <Eyebrow>Step 02 · The role brief</Eyebrow>
@@ -303,7 +303,7 @@ function onPickFile(e) {
                 {wordCount} {wordCount === 1 ? "word" : "words"}
               </span>
             </div>
-            <div className="rule-line my-6" />
+            <div className="rule-line my-4" />
 
             <div className="relative">
               {/* Left-margin editorial ruling */}
@@ -313,7 +313,7 @@ function onPickFile(e) {
                 value={jd}
                 onChange={(e) => setJd(e.target.value)}
                 placeholder="Paste the role brief here, exactly as posted…"
-                className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-y min-h-[280px]"
+                className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-y"
               />
             </div>
 
@@ -368,7 +368,7 @@ function onPickFile(e) {
             </div>
           </StickyNote>
 
-          <Sheet className="relative p-6" lift>
+          <Sheet className="relative p-4" lift>
             <Eyebrow>What the review checks</Eyebrow>
             <ul className="mt-4 space-y-3 text-sm">
               {[
@@ -388,7 +388,7 @@ function onPickFile(e) {
             </ul>
           </Sheet>
 
-          <Sheet className="relative p-6" lift>
+          <Sheet className="relative p-4" lift>
             <Eyebrow>Review rules</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <dl className="space-y-3 text-sm">

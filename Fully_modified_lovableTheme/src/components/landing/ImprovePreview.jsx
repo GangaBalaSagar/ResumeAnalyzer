@@ -73,7 +73,7 @@ export default function ImprovePreview() {
 
           <div className="lg:col-span-8 space-y-8">
             {/* JD Comparison Sheet */}
-            <Sheet className="relative p-6 md:p-10 ruled" lift>
+            <Sheet className="relative p-4 md:p-6 ruled" lift>
               <div className="flex items-baseline justify-between gap-4 flex-wrap">
                 <div>
                   <Eyebrow>Job description · Keywords marked</Eyebrow>
@@ -101,13 +101,13 @@ export default function ImprovePreview() {
             </Sheet>
 
             {/* Suggestions */}
-            <Sheet className="relative p-6 md:p-10" dogEar stack lift>
+            <Sheet className="relative p-4 md:p-6" dogEar lift>
               <PaperClip />
               <div className="flex items-baseline justify-between gap-4 flex-wrap">
                 <Eyebrow>Suggestions · Margin notes</Eyebrow>
                 <span className="text-xs text-ink-muted">Copy to clipboard</span>
               </div>
-              <div className="rule-line mt-3 mb-6" />
+              <div className="rule-line my-4" />
               <ol className="space-y-5">
                 {report.suggestions.map((s, i) => (
                   <li key={i} className="flex gap-4">

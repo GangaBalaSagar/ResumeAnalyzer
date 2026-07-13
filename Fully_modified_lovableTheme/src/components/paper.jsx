@@ -73,7 +73,7 @@ export function CanonicalPaper({
   className = "",
 }) {
   return (
-    <Sheet className={`relative p-6 md:p-10 ${className}`} lift={lift} dogEar={dogEar}>
+    <Sheet className={`relative p-6 md:p-8 ${className}`} lift={lift} dogEar={dogEar}>
       <PaperClip />
       <div className="flex items-baseline justify-between gap-4">
         <div>
@@ -81,7 +81,7 @@ export function CanonicalPaper({
           <div className="mt-2 font-serif text-2xl leading-tight">{title}</div>
         </div>
       </div>
-      <div className="rule-line my-6" />
+      <div className="rule-line mb-4" />
       {children}
     </Sheet>
   );

@@ -84,7 +84,7 @@ export default function ComparePreview() {
           </div>
 
           <div className="lg:col-span-8">
-            <Sheet className="relative p-6 md:p-8 overflow-hidden" lift>
+            <Sheet className="relative p-4 md:p-6 overflow-hidden" lift>
               <div className="flex items-baseline justify-between gap-4">
                 <div>
                   <Eyebrow>Review in progress</Eyebrow>
@@ -98,7 +98,7 @@ export default function ComparePreview() {
               </div>
 
               {/* Scanning surface — a small ruled sheet with a moving reading line */}
-              <div className="relative mt-6 h-24 md:h-28 bg-paper border border-rule rounded-sm overflow-hidden ruled">
+              <div className="relative mt-4 h-16 md:h-20 bg-paper border border-rule rounded-sm overflow-hidden ruled">
                 {/* Reading line */}
                 <div
                   className="absolute left-0 right-0 h-[2px] bg-accent/80 shadow-[0_0_12px_rgba(139,92,246,0.6)] transition-all duration-500 ease-out"

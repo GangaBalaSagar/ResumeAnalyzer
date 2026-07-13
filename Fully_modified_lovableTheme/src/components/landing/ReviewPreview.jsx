@@ -232,7 +232,7 @@ export default function ReviewPreview() {
               <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" stack lift>
                 <Eyebrow>Match percentage</Eyebrow>
                 <div className="rule-line mt-3 mb-2" />
-                <div className="h-64 flex items-center justify-center">
+                <div className="h-48 flex items-center justify-center">
                   <svg viewBox="0 0 200 200" width="100%" height="100%">
                     <circle cx="100" cy="100" r="70" stroke="var(--color-rule)" strokeWidth="20" fill="none" />
                     <circle
@@ -261,7 +261,7 @@ export default function ReviewPreview() {
               <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
                 <Eyebrow>Skills overview</Eyebrow>
                 <div className="rule-line mt-3 mb-2" />
-                <div className="h-64 flex items-end justify-center gap-4 px-4">
+                <div className="h-48 flex items-end justify-center gap-4 px-4">
                   <div className="flex-1 max-w-[120px] flex flex-col items-center">
                     <div
                       className="w-full bg-accent rounded-t-[2px] transition-all duration-500"
