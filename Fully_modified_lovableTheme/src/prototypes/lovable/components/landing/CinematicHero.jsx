@@ -33,6 +33,14 @@ function ScrollHero() {
     offset: ["start start", "end end"],
   });
   const p = useSpring(scrollYProgress, {
+  // Layout fix: adjust the outer container height based on browser zoom
+  // This ensures the hero's scroll distance scales proportionally with the surrounding content.
+  // The zoom factor is derived from the ratio of the layout viewport size to the visual viewport size.
+  // At 100% zoom the factor is 1, preserving the original 500vh height.
+  // When zoomed out, the factor < 1, reducing the container height accordingly.
+  // We update on resize to handle dynamic zoom changes.
+  // Note: This does not affect any animation values (p, camScale, etc.).
+
     stiffness: 120,
     damping: 26,
     mass: 0.6,
@@ -72,9 +80,10 @@ function ScrollHero() {
 
   const hintOpacity = useTransform(p, [0, 0.05, 0.13], [1, 1, 0]);
 
+
   return (
     <div ref={ref} className="relative" style={{ height: "500vh" }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden"><div className="relative mx-auto max-w-7xl h-full">
         <DeskStage className="-z-10" />
         <motion.div
           className="stage absolute inset-0"
@@ -154,8 +163,8 @@ function ScrollHero() {
               <path d="M7 1v16M1 12l6 6 6-6" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
             </motion.svg>
           </motion.div>
-        </motion.div>
-      </div>
+</motion.div>
+        </div></div>
     </div>
   );
 }

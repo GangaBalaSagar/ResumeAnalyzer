@@ -39,7 +39,7 @@ export function Eyebrow({ children }) {
 export function PaperClip() {
   return (
     <svg
-      className="absolute -top-3 left-6 text-ink-muted/70"
+      className="absolute -top-2 left-6 text-ink-muted/70"
       width="22"
       height="44"
       viewBox="0 0 22 44"
@@ -53,5 +53,28 @@ export function PaperClip() {
         fill="none"
       />
     </svg>
+  );
+}
+
+export function CanonicalPaper({
+  children,
+  label,
+  title,
+  dogEar = false,
+  lift = true,
+  className = "",
+}) {
+  return (
+    <Sheet className={`relative p-6 md:p-10 ${className}`} lift={lift} dogEar={dogEar}>
+      <PaperClip />
+      <div className="flex items-baseline justify-between gap-4">
+        <div>
+          <Eyebrow>{label}</Eyebrow>
+          <div className="mt-2 font-serif text-2xl leading-tight">{title}</div>
+        </div>
+      </div>
+      <div className="rule-line my-6" />
+      {children}
+    </Sheet>
   );
 }

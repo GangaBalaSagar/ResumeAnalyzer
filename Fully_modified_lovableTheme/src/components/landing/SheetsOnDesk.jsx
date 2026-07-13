@@ -1,4 +1,4 @@
-import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
+import { CanonicalPaper, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import { Link } from "react-router-dom";
 
 const SHEETS = [
@@ -172,31 +172,26 @@ export default function SheetsOnDesk() {
                 }[sheet.demo];
 
                 return (
-                  <Sheet
+                  <CanonicalPaper
                     key={sheet.title}
-                    className={`landing-feature-card ${spanClasses} p-6`}
-                    dogEar={index % 2 === 0}
-                    data-focus={index === 1 ? "active" : index === 0 || index === 2 ? "adjacent" : "distant"}
+                    label={`Sheet - ${sheet.n}`}
+                    title={sheet.title}
+                    dogEar={index === 0}
+                    className={`landing-feature-card ${spanClasses}`}
                     style={{
                       "--card-offset": index === 0 ? "0px" : index === 1 ? "1.1rem" : index === 2 ? "0.45rem" : "1.55rem",
                       "--card-translate-x": translateX,
                       "--card-tilt": tilt,
                     }}
+                    data-focus={index === 1 ? "active" : index === 0 || index === 2 ? "adjacent" : "distant"}
                   >
-                    <div className="landing-feature-card__inner">
-                      <div className="flex items-baseline justify-between">
-                        <Eyebrow>Sheet - {sheet.n}</Eyebrow>
-                        <PaperClip />
-                      </div>
-                      <div className="landing-feature-card__title mt-3 font-serif text-2xl">{sheet.title}</div>
-                      <p className="landing-feature-card__copy mt-2 text-sm text-ink-muted">{sheet.preview}</p>
-                      <div className="rule-line landing-feature-card__rule mt-6" />
-                      <div className="landing-feature-card__meta mt-3 text-xs text-ink-muted">
-                        Filed under - Active analyses
-                      </div>
-                      <DemoComponent />
+                    <p className="landing-feature-card__copy mt-2 text-sm text-ink-muted">{sheet.preview}</p>
+                    <div className="rule-line landing-feature-card__rule mt-6" />
+                    <div className="landing-feature-card__meta mt-3 text-xs text-ink-muted">
+                      Filed under - Active analyses
                     </div>
-                  </Sheet>
+                    <DemoComponent />
+                  </CanonicalPaper>
                 );
               })}
             </div>

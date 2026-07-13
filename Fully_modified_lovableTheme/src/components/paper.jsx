@@ -63,3 +63,26 @@ export function PaperClip() {
     </svg>
   );
 }
+
+export function CanonicalPaper({
+  children,
+  label,
+  title,
+  dogEar = false,
+  lift = true,
+  className = "",
+}) {
+  return (
+    <Sheet className={`relative p-6 md:p-10 ${className}`} lift={lift} dogEar={dogEar}>
+      <PaperClip />
+      <div className="flex items-baseline justify-between gap-4">
+        <div>
+          <Eyebrow>{label}</Eyebrow>
+          <div className="mt-2 font-serif text-2xl leading-tight">{title}</div>
+        </div>
+      </div>
+      <div className="rule-line my-6" />
+      {children}
+    </Sheet>
+  );
+}
