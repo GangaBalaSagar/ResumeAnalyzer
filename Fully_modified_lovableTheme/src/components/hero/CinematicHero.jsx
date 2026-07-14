@@ -174,7 +174,7 @@ export default function CinematicHero() {
               considered analysis — the way a senior reviewer would give it.
             </p>
             <div className="hero-anchor-cta">
-              <Link to="/upload" className="hero-btn hero-btn--primary">
+              <Link to="/analyze" className="hero-btn hero-btn--primary">
                 Begin a review
               </Link>
               <Link to="/features" className="hero-btn hero-btn--ghost">

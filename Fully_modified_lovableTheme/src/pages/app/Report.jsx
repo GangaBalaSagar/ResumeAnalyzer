@@ -661,7 +661,7 @@ export default function Report() {
 
 function ScoreRow({ label, value }) {
   return (
-    <div className="flex items-baseline justify-between gap-3">
+    <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-3 items-start">
       <dt className="eyebrow text-[10px]">{label}</dt>
       <dd className="font-serif text-[22px] text-ink leading-none">{value}</dd>
     </div>

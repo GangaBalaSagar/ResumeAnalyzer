@@ -452,7 +452,7 @@ function onPickFile(e) {
               <button
                 type="button"
                 onClick={() => setShowGuestModal(false)}
-                className="text-sm text-ink-muted hover:text-ink transition-colors px-3 py-2"
+                className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 hover:bg-secondary rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
               >
                 Close
               </button>

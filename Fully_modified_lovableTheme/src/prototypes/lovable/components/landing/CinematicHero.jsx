@@ -124,7 +124,7 @@ function ScrollHero() {
               receive a quiet, considered analysis.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link to="/upload" className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors">
+              <Link to="/analyze" className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors">
                 Place a resume on the desk
               </Link>
               <Link to="/features" className="px-5 py-3 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm">
@@ -216,7 +216,7 @@ function StaticHero() {
           a quiet, considered analysis.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Link to="/upload" className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors">Place a resume on the desk</Link>
+          <Link to="/analyze" className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors">Place a resume on the desk</Link>
           <Link to="/features" className="px-5 py-3 text-sm border border-ink/20 hover:border-ink/60 transition-colors rounded-sm">Read the features</Link>
         </div>
       </div>
