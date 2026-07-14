@@ -11,7 +11,7 @@ export default function MatchDonutChart({ matchPercent, size = "default" }) {
   const isLarge = size === "large";
 
   return (
-    <div className={isLarge ? "h-64" : "h-52"}>
+    <div className={isLarge ? "h-64" : "h-52"} role="img" aria-label={`Match score: ${matchPercent}% match, ${100 - matchPercent}% gap`}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie

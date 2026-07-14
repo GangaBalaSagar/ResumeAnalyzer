@@ -15,7 +15,7 @@ export default function AuthGate({ children }) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16">
         <Sheet className="relative p-10">
-          <PaperClip />
+          <PaperClip aria-hidden="true" />
           <Eyebrow>One moment</Eyebrow>
           <div className="mt-3 font-serif text-2xl">Checking your credentials…</div>
           <div className="rule-line my-5" />

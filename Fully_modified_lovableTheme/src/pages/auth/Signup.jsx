@@ -94,6 +94,8 @@ export default function Signup() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@studio.com"
+            aria-describedby={error ? "signup-error" : undefined}
+            aria-invalid={!!error}
           />
         </AuthField>
 
@@ -107,6 +109,8 @@ export default function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              aria-describedby={error ? "signup-error" : undefined}
+              aria-invalid={!!error}
             />
           </AuthField>
           <AuthField label="Confirm password" htmlFor="confirm">
@@ -118,12 +122,14 @@ export default function Signup() {
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               placeholder="••••••••"
+              aria-describedby={error ? "signup-error" : undefined}
+              aria-invalid={!!error}
             />
           </AuthField>
         </div>
 
-        <AuthMessage kind="error">{error}</AuthMessage>
-        <AuthMessage kind="success">{notice}</AuthMessage>
+<AuthMessage kind="error" id="signup-error">{error}</AuthMessage>
+<AuthMessage kind="success" id="signup-notice">{notice}</AuthMessage>
 
         <div className="pt-2">
           <AuthPrimaryButton type="submit" disabled={submitting}>

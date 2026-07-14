@@ -69,6 +69,8 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@studio.com"
+            aria-describedby={error ? "login-error" : undefined}
+            aria-invalid={!!error}
           />
         </AuthField>
 
@@ -81,11 +83,13 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
+            aria-describedby={error ? "login-error" : undefined}
+            aria-invalid={!!error}
           />
         </AuthField>
 
-        <AuthMessage kind="error">{error}</AuthMessage>
-        <AuthMessage>{notice}</AuthMessage>
+<AuthMessage kind="error" id="login-error">{error}</AuthMessage>
+<AuthMessage id="login-notice">{notice}</AuthMessage>
 
         <div className="flex items-center justify-between pt-2">
           <AuthPrimaryButton type="submit" disabled={submitting}>

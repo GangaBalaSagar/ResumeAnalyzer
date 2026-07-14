@@ -17,60 +17,65 @@ export default function AuthLayout({
 }) {
   return (
     <PublicSite>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 px-4 py-2 bg-ink text-paper rounded-sm">
+        Skip to main content
+      </a>
       <div className="mx-auto max-w-7xl px-6">
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start pt-6 pb-16">
-        {/* Form sheet */}
-        <div className="lg:col-span-7 animate-fade-up">
-          <Sheet lift className="relative p-8 md:p-12">
-            <PaperClip />
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <h1 className="mt-4 font-serif text-[44px] leading-[1.05] tracking-tight">
-              {title}
-            </h1>
-            {lede && (
-              <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-lg">
-                {lede}
-              </p>
-            )}
-            <div className="rule-line my-8" />
-            {children}
-            {footer && (
-              <>
-                <div className="rule-line mt-10" />
-                <div className="mt-6 text-sm text-ink-muted">{footer}</div>
-              </>
-            )}
-          </Sheet>
-        </div>
-
-        {/* Editorial aside */}
-        <aside className="lg:col-span-5 relative min-h-[420px] hidden lg:block">
-          <Sheet className="absolute right-8 top-4 w-[300px] h-[380px] p-7 rotate-[3deg]" stack lift dogEar>
-            <Eyebrow>Note</Eyebrow>
-            <div className="mt-3 font-serif text-xl leading-snug">
-              A quiet workspace for resume analysis.
+        <main id="main-content" className="relative">
+          <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start pt-6 pb-16">
+            {/* Form sheet */}
+            <div className="lg:col-span-7 animate-fade-up">
+              <Sheet lift className="relative p-8 md:p-12">
+                <PaperClip aria-hidden="true" />
+                <Eyebrow>{eyebrow}</Eyebrow>
+                <h1 className="mt-4 font-serif text-[44px] leading-[1.05] tracking-tight">
+                  {title}
+                </h1>
+                {lede && (
+                  <p className="mt-4 text-[15px] leading-relaxed text-ink-muted max-w-lg">
+                    {lede}
+                  </p>
+                )}
+                <div className="rule-line my-8" />
+                {children}
+                {footer && (
+                  <>
+                    <div className="rule-line mt-10" />
+                    <div className="mt-6 text-sm text-ink-muted">{footer}</div>
+                  </>
+                )}
+              </Sheet>
             </div>
-            <div className="rule-line my-4" />
-            <p className="text-sm text-ink-muted leading-relaxed">
-              Your sessions, analyses, and drafts remain available between
-              visits — filed, indexed, and ready to reopen.
-            </p>
-            <div className="mt-6 eyebrow text-[10px]">Review 01 · Sign in</div>
-          </Sheet>
-          <StickyNote className="absolute left-2 bottom-4 w-[220px]" rotate={-3}>
-            {note || (
-              <div className="text-[13px] leading-snug">
-                <div className="eyebrow text-[10px]">Reminder</div>
-                <div className="mt-1 font-serif">
-                  Bring the job description. It sharpens the analysis.
+
+            {/* Editorial aside */}
+            <aside className="lg:col-span-5 relative min-h-[420px] hidden lg:block">
+              <Sheet className="absolute right-8 top-4 w-[300px] h-[380px] p-7 rotate-[3deg]" stack lift dogEar>
+                <Eyebrow>Note</Eyebrow>
+                <div className="mt-3 font-serif text-xl leading-snug">
+                  A quiet workspace for resume analysis.
                 </div>
-              </div>
-            )}
-          </StickyNote>
-        </aside>
-      </section>
-      </div>
-    </PublicSite>
+                <div className="rule-line my-4" />
+                <p className="text-sm text-ink-muted leading-relaxed">
+                  Your sessions, analyses, and drafts remain available between
+                  visits — filed, indexed, and ready to reopen.
+                </p>
+                <div className="mt-6 eyebrow text-[10px]">Review 01 · Sign in</div>
+              </Sheet>
+              <StickyNote className="absolute left-2 bottom-4 w-[220px]" rotate={-3}>
+                {note || (
+                  <div className="text-[13px] leading-snug">
+                    <div className="eyebrow text-[10px]">Reminder</div>
+                    <div className="mt-1 font-serif">
+                      Bring the job description. It sharpens the analysis.
+                    </div>
+                  </div>
+                )}
+              </StickyNote>
+            </aside>
+          </section>
+        </main>
+        </div>
+      </PublicSite>
   );
 }
 
@@ -90,10 +95,13 @@ export function AuthField({ label, hint, htmlFor, children }) {
   );
 }
 
-export function AuthInput({ className = "", ...props }) {
+export function AuthInput({ className = "", autoComplete, id, ...props }) {
+  const autoCompleteValue = autoComplete || (props.type === "email" ? "email" : props.type === "password" ? "current-password" : "off");
   return (
     <input
       {...props}
+      id={id}
+      autoComplete={autoCompleteValue}
       className={`w-full bg-transparent border-0 border-b border-rule focus:border-ink text-ink placeholder:text-ink-muted/60 font-serif text-[17px] py-2 px-0 outline-none transition-colors ${className}`}
     />
   );
@@ -121,7 +129,7 @@ export function AuthSecondaryLink({ to, children }) {
   );
 }
 
-export function AuthMessage({ kind = "info", children }) {
+export function AuthMessage({ kind = "info", children, id }) {
   if (!children) return null;
   const tone =
     kind === "error"
@@ -131,6 +139,7 @@ export function AuthMessage({ kind = "info", children }) {
       : "border-rule bg-secondary/40 text-ink-muted";
   return (
     <div
+      id={id}
       className={`border-l-2 pl-4 py-3 pr-4 text-sm font-serif italic ${tone}`}
       role={kind === "error" ? "alert" : "status"}
     >

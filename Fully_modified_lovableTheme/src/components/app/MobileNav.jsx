@@ -29,14 +29,32 @@ export default function MobileNav({ open, onClose }) {
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+    const focusable = ref.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    
+    const onKey = (e) => {
+      if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first || !ref.current?.contains(document.activeElement)) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
     };
-  }, [open, onClose]);
+    
+    document.addEventListener("keydown", onKey);
+    first?.focus();
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   if (!open) return null;
 
@@ -66,7 +84,7 @@ export default function MobileNav({ open, onClose }) {
             className="h-8 w-8 shrink-0 inline-flex items-center justify-center border border-ink/15 hover:border-ink/50 rounded-sm"
             aria-label="Close"
           >
-            <svg width="12" height="12" viewBox="0 0 12 12">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
               <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>

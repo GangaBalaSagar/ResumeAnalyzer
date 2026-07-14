@@ -24,10 +24,13 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-screen bg-desk flex flex-col">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 px-4 py-2 bg-ink text-paper rounded-sm">
+        Skip to main content
+      </a>
       <AppHeader onOpenMobileNav={() => setNavOpen(true)} />
       <MobileNav open={navOpen} onClose={() => setNavOpen(false)} />
 
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 md:px-6 py-8 md:py-10">
+      <main id="main-content" className="flex-1 mx-auto w-full max-w-7xl px-4 md:px-6 py-8 md:py-10">
         <div className="flex flex-col gap-8 xl:flex-row">
           <div className="min-w-0 flex-1">
             <PageContainer>

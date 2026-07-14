@@ -50,7 +50,7 @@ export default function Analyze() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { setCurrentReportId } = useReport();
-  const [showGuestModal, setShowGuestModal] = useState(false);
+const [showGuestModal, setShowGuestModal] = useState(false);
   const [file, setFile] = useState(null);
   const [jd, setJd] = useState("");
   const [drag, setDrag] = useState(false);
@@ -62,23 +62,15 @@ export default function Analyze() {
   const progressRef = useRef(null);
   const stageRef = useRef(null);
 
-  // Restore saved JD
-// Validation helpers for file uploads
-function handleFileSelect(file) {
-  const validationError = validateFile(file);
-  if (validationError) {
-    setError(validationError);
-    setFile(null);
-  } else {
-    setError(null);
-    setFile(file);
-  }
-}
+  // Close guest modal on Escape key
+  useEffect(() => {
+    if (!showGuestModal) return;
+    const onKey = (e) => e.key === "Escape" && setShowGuestModal(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [showGuestModal]);
 
-function onPickFile(e) {
-  const f = e.target.files?.[0];
-  if (f) handleFileSelect(f);
-}
+  // Restore saved JD
   useEffect(() => {
     const saved = localStorage.getItem(LS_JD_KEY);
     if (saved) setJd(saved);
@@ -172,9 +164,26 @@ function onPickFile(e) {
             err?.message ||
             "We couldn't complete the review. Please try again."
       );
-    } finally {
+} finally {
       setLoading(false);
     }
+  }
+
+  // Validation helpers for file uploads
+  function handleFileSelect(file) {
+    const validationError = validateFile(file);
+    if (validationError) {
+      setError(validationError);
+      setFile(null);
+    } else {
+      setError(null);
+      setFile(file);
+    }
+  }
+
+  function onPickFile(e) {
+    const f = e.target.files?.[0];
+    if (f) handleFileSelect(f);
   }
 
   function handleOpenLogin() {
@@ -268,6 +277,15 @@ function onPickFile(e) {
                 onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
                 onDragLeave={() => setDrag(false)}
                 onDrop={onDrop}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label="Upload resume file (PDF or DOCX, max 5MB)"
                 className={`group block relative border border-dashed rounded-sm py-14 md:py-16 px-6 md:px-8 text-center cursor-pointer transition-all ${
                   drag
                     ? "border-accent bg-accent/5 scale-[1.003]"
@@ -280,7 +298,13 @@ function onPickFile(e) {
                   className="hidden"
                   accept=".pdf,.docx"
                   onChange={onPickFile}
+                  id="resume-upload"
+                  aria-label="Upload your resume (PDF or DOCX, max 5MB)"
+                  aria-describedby="resume-upload-hint"
                 />
+                <span id="resume-upload-hint" className="sr-only">
+                  Choose a PDF or DOCX file up to 5MB
+                </span>
                 <PaperStack tilt={drag} />
 <div className="mt-6 font-serif text-2xl md:text-[26px]">
                   {drag ? "Drop it here." : "Drop your resume here"}
@@ -415,7 +439,7 @@ function onPickFile(e) {
       {showGuestModal && (
         <div className="fixed inset-0 bg-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-up">
           <Sheet className="!shadow-overlay relative p-8 md:p-10 max-w-md w-full" dogEar lift>
-            <PaperClip />
+            <PaperClip aria-hidden="true" />
             <Eyebrow>Sign in required</Eyebrow>
             <h3 className="font-serif text-2xl mt-3 mb-4">Start a review</h3>
             <p className="text-[15px] leading-relaxed text-ink-muted">

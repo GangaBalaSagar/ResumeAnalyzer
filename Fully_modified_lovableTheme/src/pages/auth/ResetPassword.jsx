@@ -86,6 +86,8 @@ export default function ResetPassword() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              aria-describedby={error ? "reset-error" : notice ? "reset-notice" : undefined}
+              aria-invalid={!!error}
             />
           </AuthField>
           <AuthField label="Confirm new password" htmlFor="confirm">
@@ -97,11 +99,13 @@ export default function ResetPassword() {
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               placeholder="••••••••"
+              aria-describedby={error ? "reset-error" : undefined}
+              aria-invalid={!!error}
             />
           </AuthField>
 
-          <AuthMessage kind="error">{error}</AuthMessage>
-          <AuthMessage kind="success">{notice}</AuthMessage>
+<AuthMessage kind="error" id="reset-error">{error}</AuthMessage>
+<AuthMessage kind="success" id="reset-notice">{notice}</AuthMessage>
 
           <div className="pt-2">
             <AuthPrimaryButton type="submit" disabled={submitting}>

@@ -26,16 +26,31 @@ export default function UserMenu() {
 
   useEffect(() => {
     if (!open) return;
-    const onDoc = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    const focusable = ref.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    
+    const onKey = (e) => {
+      if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first || !ref.current?.contains(document.activeElement)) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
     };
-    const onKey = (e) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("mousedown", onDoc);
+    
     document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDoc);
-      document.removeEventListener("keydown", onKey);
-    };
+    first?.focus();
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   const label = user?.user_metadata?.full_name || user?.email || "";
@@ -64,7 +79,7 @@ export default function UserMenu() {
           </span>
           <span className="eyebrow text-[9px]">Signed in</span>
         </span>
-        <svg width="10" height="10" viewBox="0 0 10 10" className="text-ink-muted">
+        <svg width="10" height="10" viewBox="0 0 10 10" className="text-ink-muted" aria-hidden="true">
           <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" fill="none" strokeWidth="1.2" />
         </svg>
       </button>

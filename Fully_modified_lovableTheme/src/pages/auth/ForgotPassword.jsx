@@ -68,11 +68,13 @@ export default function ForgotPassword() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@studio.com"
+            aria-describedby={error ? "forgot-error" : undefined}
+            aria-invalid={!!error}
           />
         </AuthField>
 
-        <AuthMessage kind="error">{error}</AuthMessage>
-        <AuthMessage kind="success">{notice}</AuthMessage>
+<AuthMessage kind="error" id="forgot-error">{error}</AuthMessage>
+<AuthMessage kind="success" id="forgot-notice">{notice}</AuthMessage>
 
         <div className="pt-2">
           <AuthPrimaryButton type="submit" disabled={submitting}>

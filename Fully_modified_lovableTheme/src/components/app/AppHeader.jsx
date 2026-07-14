@@ -56,7 +56,7 @@ export default function AppHeader({ onOpenMobileNav }) {
             className="lg:hidden h-9 w-9 inline-flex items-center justify-center border border-ink/15 hover:border-ink/50 rounded-sm transition-colors"
             aria-label="Open navigation"
           >
-            <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true">
               <path d="M1 1h14M1 6h14M1 11h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>

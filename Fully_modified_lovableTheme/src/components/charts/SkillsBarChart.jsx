@@ -7,7 +7,7 @@ export default function SkillsBarChart({ matchedCount, missingCount }) {
   ];
 
   return (
-    <div className="h-64">
+    <div className="h-64" role="img" aria-label={`Skills overview: ${matchedCount} matched, ${missingCount} missing`}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={barData} margin={{ top: 12, right: 12, left: -8, bottom: 4 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--color-rule)" vertical={false} />
