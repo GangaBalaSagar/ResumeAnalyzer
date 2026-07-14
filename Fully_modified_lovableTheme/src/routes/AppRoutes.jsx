@@ -24,7 +24,8 @@ import Account from "../pages/app/Account.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<LandingV2 />} />
+      <Route path="/landing-old" element={<Landing />} />
       <Route path="/landing-v2" element={<LandingV2 />} />
       <Route path="/hero-preview" element={<HeroPrototype />} />
       <Route path="/hero-test" element={<HeroTest />} />
