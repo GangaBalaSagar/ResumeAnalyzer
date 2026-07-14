@@ -32,7 +32,7 @@ export default function DeskStage({ className = "" }) {
       />
       {/* L1c — Coffee ring */}
       <div
-        className="absolute w-[110px] h-[110px] right-[14%] top-[22%] rounded-full opacity-70"
+        className="absolute w-[110px] h-[110px] right-[14%] top-[22%] rounded-full opacity-70 max-w-[15%] max-h-[15%]"
         style={{
           background:
             "radial-gradient(closest-side, transparent 62%, rgba(88,54,20,0.16) 66%, rgba(88,54,20,0.08) 72%, transparent 78%)",
@@ -60,7 +60,7 @@ export default function DeskStage({ className = "" }) {
       />
       {/* Edge tape hint */}
       <div
-        className="absolute left-[10%] w-[120px] h-[10px] top-[13%] opacity-40"
+        className="absolute left-[10%] w-[120px] h-[10px] top-[13%] opacity-40 max-w-[20%]"
         style={{
           background: "rgba(255,255,255,0.65)",
           transform: "rotate(-1.6deg)",

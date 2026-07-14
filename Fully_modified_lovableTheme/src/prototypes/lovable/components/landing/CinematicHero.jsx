@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -28,6 +28,26 @@ export default function CinematicHero() {
 
 function ScrollHero() {
   const ref = useRef(null);
+  const [scrollHeightVh, setScrollHeightVh] = useState(500);
+
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    const update = () => {
+      const factor = vv.height / window.innerHeight;
+      setScrollHeightVh(500 * factor);
+    };
+
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -82,11 +102,11 @@ function ScrollHero() {
 
 
   return (
-    <div ref={ref} className="relative" style={{ height: "500vh" }}>
-      <div className="sticky top-0 h-screen overflow-hidden"><div className="relative mx-auto max-w-7xl h-full">
+    <div ref={ref} className="relative hero-scroll-container" style={{ height: `${scrollHeightVh}vh` }}>
+      <div className="sticky top-0 h-[100vh] h-[100dvh] overflow-hidden hero-sticky-container"><div className="relative mx-auto max-w-7xl h-full">
         <DeskStage className="-z-10" />
         <motion.div
-          className="stage absolute inset-0"
+          className="stage absolute inset-0 camera-stage"
           style={{ scale: camScale, rotateX: camTiltX, transformOrigin: "50% 45%" }}
         >
           <motion.div
@@ -115,7 +135,7 @@ function ScrollHero() {
 
           <motion.div
             aria-hidden="true"
-            className="absolute pointer-events-none top-[18%] w-[46vw] h-[70vh]"
+            className="absolute pointer-events-none top-[18%] w-[60%] h-[70%] max-w-[800px] max-h-[700px] spotlight"
             style={{
               left: gazeX,
               opacity: gazeOpacity,
@@ -127,20 +147,20 @@ function ScrollHero() {
           />
 
           <motion.div
-            className="absolute right-[30%] top-[5%] w-[340px] sheet-3d"
+            className="absolute right-[30%] top-[5%] w-[340px] max-w-[90%] sheet-3d"
             style={{ y: jdY, x: jdX, rotate: jdRotate, opacity: jdOpacity, zIndex: 2 }}
           >
             <JobDescriptionSheet p={p} />
           </motion.div>
 
           <motion.div
-            className="absolute right-[6%] top-[17%] w-[360px] sheet-3d"
+            className="absolute right-[6%] top-[17%] w-[360px] max-w-[90%] sheet-3d"
             style={{ y: resumeY, x: resumeX, rotate: resumeRotate, opacity: resumeOpacity, zIndex: 3 }}
           >
             <ResumeSheet p={p} />
           </motion.div>
 
-          <div className="absolute right-[6%] bottom-[14%] w-[340px] h-[80px]">
+          <div className="absolute right-[6%] bottom-[14%] w-[340px] max-w-[90%] h-[80px]">
             <Caption opacity={capA}>Every résumé deserves a careful reading.</Caption>
             <Caption opacity={capB}>A candidate arrives.</Caption>
             <Caption opacity={capC}>A role to fill, placed beside it.</Caption>
@@ -182,7 +202,7 @@ function Caption({ opacity, children }) {
 
 function StaticHero() {
   return (
-    <div className="relative min-h-[80vh] px-6 pt-12 pb-20">
+    <div className="relative min-h-[80vh] min-h-[80dvh] px-6 pt-12 pb-20">
       <DeskStage className="-z-10" />
       <div className="relative max-w-2xl">
         <Eyebrow>Vol. I · The Recruiter's Desk</Eyebrow>

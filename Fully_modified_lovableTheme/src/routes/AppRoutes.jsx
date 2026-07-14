@@ -6,6 +6,7 @@ import FAQ from "../pages/FAQ.jsx";
 import HeroPrototype from "../pages/HeroPrototype.jsx";
 import PublicSite from "../components/public/PublicSite.jsx";
 import PublicAppLayout from "../components/public/PublicAppLayout.jsx";
+import HeroTest from "../pages/HeroTest.jsx";
 
 import NotFound from "../pages/NotFound.jsx";
 import Login from "../pages/auth/Login.jsx";
@@ -26,6 +27,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Landing />} />
       <Route path="/landing-v2" element={<LandingV2 />} />
       <Route path="/hero-preview" element={<HeroPrototype />} />
+      <Route path="/hero-test" element={<HeroTest />} />
       <Route path="/features" element={<Features />} />
       <Route path="/faq" element={<FAQ />} />
       <Route

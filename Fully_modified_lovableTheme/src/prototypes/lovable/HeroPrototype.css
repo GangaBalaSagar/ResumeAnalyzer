@@ -29,6 +29,35 @@
   .parallax { transform: none !important; }
 }
 
+/* ---------------------------------------------------------------
+   Container queries for responsive Hero layout
+   --------------------------------------------------------------- */
+.hero-scroll-container {
+  --hero-scroll-height: 500;
+}
+.hero-sticky-container {
+  container-type: inline-size;
+  container-name: hero;
+}
+.camera-stage {
+  container-type: inline-size;
+  container-name: camera;
+}
+
+@container hero (max-width: 40rem) { /* 640px */
+  .sheet-3d {
+    width: 85cqw !important;
+    max-width: 85cqw !important;
+  }
+}
+
+@container camera (max-width: 40rem) {
+  .spotlight {
+    width: 60cqw;
+    height: 60cqh;
+  }
+}
+
 /* Lamp breath animation */
 @keyframes lamp-breath {
   0%, 100% { opacity: 0.92; }
