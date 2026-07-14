@@ -574,12 +574,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Print — hero shouldn't attempt to animate on paper */
-@media print {
-  .hero-scroll, .hero-sticky { height: auto !important; overflow: visible !important; position: static !important; }
-  .hero-read-band, .hero-verdict, .hero-score, .hero-captions { display: none !important; }
-}
-
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hero-read-band { display: none; }

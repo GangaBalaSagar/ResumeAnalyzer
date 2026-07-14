@@ -176,10 +176,6 @@ export default function Report() {
     } catch {}
   }
 
-  function handlePrint() {
-    window.print();
-  }
-
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
@@ -261,18 +257,9 @@ export default function Report() {
 
   return (
     <div className="space-y-10 report-root">
-      {/* Print helpers — scoped to this page so nothing else is affected. */}
-      <style>{`
-        @media print {
-          .no-print { display: none !important; }
-          .report-root { color: #000; }
-          .sheet, .sticky-note { box-shadow: none !important; page-break-inside: avoid; }
-          body { background: #fff; }
-        }
-      `}</style>
 
       {!user && (
-        <Sheet className="relative p-6 md:p-8 border border-accent/20 bg-accent/5 no-print" lift>
+        <Sheet className="relative p-6 md:p-8 border border-accent/20 bg-accent/5" lift>
           <PaperClip />
           <Eyebrow>Demo Report</Eyebrow>
           <h2 className="font-serif text-2xl mt-2 mb-3">This is a sample ATS analysis.</h2>
@@ -298,7 +285,7 @@ export default function Report() {
         </Sheet>
       )}
 
-      {/* Masthead — treat the page like a document cover */}
+{/* Masthead — treat the page like a document cover */}
       <header className="flex items-end justify-between gap-6 flex-wrap">
         <div>
           <Eyebrow>Evaluation Report · Ready for Review</Eyebrow>
@@ -315,14 +302,7 @@ export default function Report() {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-3 no-print">
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
-          >
-            Print Report
-          </button>
+        <div className="flex items-center gap-3">
           <Link
             to="/app/analyze"
             className="px-4 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 transition-colors"
@@ -555,7 +535,7 @@ export default function Report() {
             <button
               type="button"
               onClick={copySuggestions}
-              className="text-xs story-link no-print"
+              className="text-xs story-link"
             >
               {copied ? "Copied ✓" : "Copy to clipboard"}
             </button>
