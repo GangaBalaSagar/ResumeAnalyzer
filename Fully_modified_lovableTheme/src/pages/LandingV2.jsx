@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import AppHeader from "../components/app/AppHeader.jsx";
 import MobileNav from "../components/app/MobileNav.jsx";
-import HeroPrototype from "./HeroPrototype.jsx";
+import { CinematicHero } from "@/components/hero";
+import "@/components/hero/hero.css";
 import SubmitPreview from "../components/landing/SubmitPreview.jsx";
 import SheetsOnDesk from "../components/landing/SheetsOnDesk.jsx";
 import ReviewProcess from "../components/landing/ReviewProcess.jsx";
@@ -39,7 +40,7 @@ export default function LandingV2() {
       <MobileNav open={navOpen} onClose={() => setNavOpen(false)} />
 
       {/* Chapter 1: Understand — The Hero */}
-      <HeroPrototype />
+      <CinematicHero />
 
       {/* Chapter 2: Submit — Preview the Analyze page */}
       <SubmitPreview />
