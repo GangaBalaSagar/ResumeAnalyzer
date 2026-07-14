@@ -68,7 +68,7 @@ export default function LandingV2() {
         <div className="mx-auto max-w-7xl px-6">
           <Sheet className="landing-end-panel mx-auto max-w-6xl p-6 md:p-8" stack lift tabIndex={0}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-              <div className="landing-end-panel__quote landing-field landing-field--testimonial lg:col-span-5 text-left lg:pr-6">
+              <div className="landing-end-panel__quote landing-field landing-field--testimonial lg:col-span-6 text-left lg:pr-6">
                 <Eyebrow>A note</Eyebrow>
                 <blockquote className="mt-6 font-serif text-3xl md:text-4xl italic leading-snug text-ink">
                   "Upload. Compare. Improve. The fastest way to know if your resume fits the role."
@@ -76,7 +76,7 @@ export default function LandingV2() {
                 <div className="mt-6 text-sm text-ink-muted">- Resume Analyzer Pro</div>
               </div>
 
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-6">
                 <div className="landing-section-bridge hidden lg:block mb-8" />
                 <div className="landing-end-panel__cta landing-field landing-field--cta">
                   <Eyebrow>Begin</Eyebrow>

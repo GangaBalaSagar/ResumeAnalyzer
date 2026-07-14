@@ -1,5 +1,6 @@
 import { Sheet, PaperClip, Eyebrow, StickyNote } from "../../components/paper.jsx";
 import AtsScore, { bandFor, verdictFor } from "../../components/app/AtsScore.jsx";
+import { MatchDonutChart, SkillsBarChart } from "../../components/charts";
 
 const MOCK_REPORT = {
   matchPercent: 87,
@@ -102,41 +103,7 @@ export default function ReviewPreview() {
                   </div>
                 </div>
                 <div className="col-span-12 md:col-span-4 h-52">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <svg viewBox="0 0 200 200" width="100%" height="100%">
-                      <circle
-                        cx="100"
-                        cy="100"
-                        r="86"
-                        stroke="var(--color-rule)"
-                        strokeWidth="32"
-                        fill="none"
-                      />
-                      <circle
-                        cx="100"
-                        cy="100"
-                        r="86"
-                        stroke="var(--color-accent)"
-                        strokeWidth="32"
-                        fill="none"
-                        strokeDasharray={`${(matchPercent / 100) * 540} 540`}
-                        strokeDashoffset="135"
-                        strokeLinecap="round"
-                        style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px" }}
-                      />
-                      <text
-                        x="100"
-                        y="108"
-                        textAnchor="middle"
-                        fontFamily="var(--font-serif)"
-                        fontSize="48"
-                        fill="var(--color-ink)"
-                        fontWeight="bold"
-                      >
-                        {matchPercent}%
-                      </text>
-                    </svg>
-                  </div>
+                  <MatchDonutChart matchPercent={matchPercent} size="default" />
                 </div>
                 <div className="col-span-12 md:col-span-4">
                   <dl className="space-y-4">
@@ -232,26 +199,7 @@ export default function ReviewPreview() {
               <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" stack lift>
                 <Eyebrow>Match percentage</Eyebrow>
                 <div className="rule-line mt-3 mb-2" />
-                <div className="h-48 flex items-center justify-center">
-                  <svg viewBox="0 0 200 200" width="100%" height="100%">
-                    <circle cx="100" cy="100" r="70" stroke="var(--color-rule)" strokeWidth="20" fill="none" />
-                    <circle
-                      cx="100"
-                      cy="100"
-                      r="70"
-                      stroke="var(--color-accent)"
-                      strokeWidth="20"
-                      fill="none"
-                      strokeDasharray={`${(matchPercent / 100) * 440} 440`}
-                      strokeDashoffset="110"
-                      strokeLinecap="round"
-                      style={{ transform: "rotate(-90deg)", transformOrigin: "100px 100px" }}
-                    />
-                    <text x="100" y="108" textAnchor="middle" fontFamily="var(--font-serif)" fontSize="36" fill="var(--color-ink)" fontWeight="bold">
-                      {matchPercent}%
-                    </text>
-                  </svg>
-                </div>
+                <MatchDonutChart matchPercent={matchPercent} size="large" />
                 <div className="mt-2 flex items-center justify-center gap-6 text-xs text-ink-muted">
                   <LegendDot color="var(--color-accent)" label={`Match · ${matchPercent}%`} />
                   <LegendDot color="var(--color-rule)" label={`Gap · ${100 - matchPercent}%`} />
@@ -261,28 +209,7 @@ export default function ReviewPreview() {
               <Sheet className="col-span-12 lg:col-span-6 relative p-6 md:p-8" lift>
                 <Eyebrow>Skills overview</Eyebrow>
                 <div className="rule-line mt-3 mb-2" />
-                <div className="h-48 flex items-end justify-center gap-4 px-4">
-                  <div className="flex-1 max-w-[120px] flex flex-col items-center">
-                    <div
-                      className="w-full bg-accent rounded-t-[2px] transition-all duration-500"
-                      style={{ height: `${(matched.length / totalSkills) * 100}%`, minHeight: "20px" }}
-                    />
-                    <div className="mt-2 text-center">
-                      <div className="font-serif text-[14px] text-ink">{matched.length}</div>
-                      <div className="eyebrow text-[10px]">Matched</div>
-                    </div>
-                  </div>
-                  <div className="flex-1 max-w-[120px] flex flex-col items-center">
-                    <div
-                      className="w-full bg-ink-muted rounded-t-[2px] transition-all duration-500"
-                      style={{ height: `${(missing.length / totalSkills) * 100}%`, minHeight: "20px" }}
-                    />
-                    <div className="mt-2 text-center">
-                      <div className="font-serif text-[14px] text-ink">{missing.length}</div>
-                      <div className="eyebrow text-[10px]">Missing</div>
-                    </div>
-                  </div>
-                </div>
+                <SkillsBarChart matchedCount={matched.length} missingCount={missing.length} />
               </Sheet>
             </div>
 

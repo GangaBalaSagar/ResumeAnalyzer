@@ -38,7 +38,7 @@ export default function ReviewProcess() {
     <section className="landing-scene landing-scene--workflow relative -mt-2 pt-10 pb-16 md:-mt-4 md:pt-14 md:pb-20 border-t border-rule/60">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
             <Eyebrow>The review process</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl leading-tight">
               Five stages.
@@ -62,8 +62,8 @@ export default function ReviewProcess() {
                     : index === 2
                     ? "md:col-span-5 md:mt-10"
                     : index === 3
-                    ? "md:col-span-5 md:ml-auto md:-mt-1"
-                    : "md:col-span-5 md:ml-auto md:mt-10";
+                    ? "md:col-span-5 md:mt-10"
+                    : "md:col-span-5 md:mt-10";
 
                 const dx = index - 2;
                 const translateX = `${Math.sign(dx) * Math.min(8, 5 * Math.abs(dx))}px`;
