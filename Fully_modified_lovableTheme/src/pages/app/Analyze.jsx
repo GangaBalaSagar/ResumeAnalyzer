@@ -159,15 +159,18 @@ function onPickFile(e) {
       } catch {}
 
       setTimeout(() => navigate("/app/report"), 450);
-    } catch (err) {
+} catch (err) {
       if (progressRef.current) clearInterval(progressRef.current);
       if (stageRef.current) clearInterval(stageRef.current);
       setProgress(0);
       setStageIdx(0);
+      const isNetworkError = !err?.response;
       setError(
-        err?.response?.data?.error ||
-          err?.message ||
-        "We couldn't complete the review. Please try again."
+        isNetworkError
+          ? "Cannot reach the server. Please check your connection."
+          : err?.response?.data?.error ||
+            err?.message ||
+            "We couldn't complete the review. Please try again."
       );
     } finally {
       setLoading(false);

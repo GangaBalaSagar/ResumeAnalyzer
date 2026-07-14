@@ -3,6 +3,7 @@ import { isProtectedAppRoute, setAuthNotice } from "./utils/authSession.js";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  timeout: 60000,
 });
 
 let requestInterceptorId = null;
@@ -30,6 +31,14 @@ export function setupApiInterceptor(
     responseInterceptorId = null;
   }
 
+  const getPathname = () => {
+    try {
+      return window.location.pathname;
+    } catch {
+      return pathname;
+    }
+  };
+
   requestInterceptorId = api.interceptors.request.use(
     (config) => {
       if (session?.access_token) {
@@ -44,13 +53,14 @@ export function setupApiInterceptor(
     (response) => response,
     async (error) => {
       const status = error?.response?.status;
+      const isNetworkError = !error.response;
       if (status === 401 && !isLoggingOut) {
         isLoggingOut = true;
         try {
           if (signOut && openLoginModal) {
             const hasAuthHeader = Boolean(error.config?.headers?.Authorization);
             const shouldPrompt =
-              hasAuthHeader || isProtectedAppRoute(pathname);
+              hasAuthHeader || isProtectedAppRoute(getPathname());
 
             if (shouldPrompt && setPendingAction && hasAuthHeader) {
               const retryAction = () => api.request(error.config);
@@ -69,6 +79,10 @@ export function setupApiInterceptor(
         } finally {
           isLoggingOut = false;
         }
+      }
+      // Network error: backend unreachable
+      if (isNetworkError && !isLoggingOut) {
+        setAuthNotice("Cannot reach the server. Please check your connection.");
       }
       return Promise.reject(error);
     }
