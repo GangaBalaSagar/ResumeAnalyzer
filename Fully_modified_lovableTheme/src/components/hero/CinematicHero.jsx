@@ -285,8 +285,8 @@ function ResumeSheet({ readT }) {
 
       <div className="hero-sheet-header">
         <div className="hero-sheet-eyebrow">Candidate</div>
-        <div className="hero-sheet-name">Aria Chen</div>
-        <div className="hero-sheet-sub">Senior Software Engineer · 6 yrs</div>
+        <div className="hero-sheet-name">Your Name</div>
+        <div className="hero-sheet-sub">Your Title · Experience</div>
       </div>
       <div className="hero-sheet-rule" />
 
@@ -297,7 +297,7 @@ function ResumeSheet({ readT }) {
       </div>
 
       <div className="hero-sheet-foot">
-        <span className="hero-sheet-eyebrow">Ref · A-2101</span>
+        <span className="hero-sheet-eyebrow">Ref · RES-001</span>
       </div>
     </div>
   );
@@ -343,8 +343,8 @@ function JDSheet({ p }) {
     <div className="hero-sheet hero-sheet--jd">
       <div className="hero-sheet-header">
         <div className="hero-sheet-eyebrow">Role · Brief</div>
-        <div className="hero-sheet-name">Sr. Frontend Engineer</div>
-        <div className="hero-sheet-sub">Meridian Labs · Remote · Full-time</div>
+        <div className="hero-sheet-name">Your Target Role</div>
+        <div className="hero-sheet-sub">Company Name · Location · Type</div>
       </div>
       <div className="hero-sheet-rule" />
 
@@ -355,7 +355,7 @@ function JDSheet({ p }) {
       </div>
 
       <div className="hero-sheet-foot">
-        <span className="hero-sheet-eyebrow">Brief · JD-14</span>
+        <span className="hero-sheet-eyebrow">Brief · JD-001</span>
       </div>
     </div>
   );

@@ -12,8 +12,8 @@ const MOCK_REPORT = {
     "Highlight containerization and deployment experience with Docker.",
     "Reframe two bullets to lead with quantified impact rather than responsibilities.",
   ],
-  jobDescription: "We are looking for a Senior Product Designer to join our team. You will build user interfaces with React and JavaScript, and design backend services with Node.js and REST APIs. Additionally, we expect experience with TypeScript, unit Testing, and containerization using Docker.",
-  resumeFilename: "Mara_Designer_Resume.pdf",
+  jobDescription: "We are looking for a qualified candidate to join our team. You will build user interfaces and design backend services. Additionally, we expect experience with TypeScript, unit Testing, and containerization using Docker.",
+  resumeFilename: "Your_Resume.pdf",
   createdAt: new Date().toISOString(),
 };
 

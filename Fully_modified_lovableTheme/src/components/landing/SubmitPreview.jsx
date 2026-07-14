@@ -15,8 +15,8 @@ function fileKind(name = "") {
 }
 
 export default function SubmitPreview() {
-  const mockFile = { name: "Mara_Designer_Resume.pdf", size: 245760 };
-  const mockJD = "We are looking for a Senior Product Designer to join our team. You will lead design for core product surfaces, collaborate with engineering and product management, and define design systems. Required: 5+ years product design, Figma expertise, design systems experience, portfolio demonstrating shipped consumer products.";
+  const mockFile = { name: "Your_Resume.pdf", size: 245760 };
+  const mockJD = "We are looking for a qualified candidate to join our team. You will collaborate with cross-functional teams, contribute to product development, and apply your expertise to solve real problems. Required: relevant experience, strong communication skills, and a portfolio demonstrating shipped products.";
 
   return (
     <section className="landing-scene landing-scene--submit relative -mt-2 pt-10 pb-18 md:-mt-4 md:pt-14 md:pb-24">

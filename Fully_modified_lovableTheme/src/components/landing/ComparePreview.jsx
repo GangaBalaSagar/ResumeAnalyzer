@@ -48,7 +48,7 @@ export default function ComparePreview() {
     };
   }, []);
 
-  const mockFile = { name: "Mara_Designer_Resume.pdf", size: 245760 };
+  const mockFile = { name: "Your_Resume.pdf", size: 245760 };
 
   function fileKind(name = "") {
     const ext = name.split(".").pop()?.toUpperCase();

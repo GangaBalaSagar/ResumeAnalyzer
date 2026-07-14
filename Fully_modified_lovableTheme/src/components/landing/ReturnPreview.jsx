@@ -22,10 +22,10 @@ function fmtRelative(iso) {
 }
 
 const MOCK_ITEMS = [
-  { _id: "1", resumeFilename: "Mara_Designer_Resume.pdf", matchPercent: 87, createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
-  { _id: "2", resumeFilename: "Mara_Eng_Resume.pdf", matchPercent: 72, createdAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString() },
-  { _id: "3", resumeFilename: "Mara_PM_Resume.pdf", matchPercent: 91, createdAt: new Date(Date.now() - 16 * 24 * 60 * 60 * 1000).toISOString() },
-  { _id: "4", resumeFilename: "Mara_Designer_v2_Resume.pdf", matchPercent: 83, createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() },
+  { _id: "1", resumeFilename: "Frontend_Engineer_Review.pdf", matchPercent: 87, createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
+  { _id: "2", resumeFilename: "Backend_Engineer_Review.pdf", matchPercent: 72, createdAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString() },
+  { _id: "3", resumeFilename: "React_Developer_Review.pdf", matchPercent: 91, createdAt: new Date(Date.now() - 16 * 24 * 60 * 60 * 1000).toISOString() },
+  { _id: "4", resumeFilename: "Python_Developer_Review.pdf", matchPercent: 83, createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() },
 ];
 
 const stats = {
@@ -36,7 +36,7 @@ const stats = {
 };
 
 function greetingFor(hour) {
-  if (hour < 5) return "Still working";
+  if (hour < 5) return "Welcome back";
   if (hour < 12) return "Good morning";
   if (hour < 18) return "Good afternoon";
   return "Good evening";
@@ -45,7 +45,6 @@ function greetingFor(hour) {
 export default function ReturnPreview() {
   const hour = new Date().getHours();
   const hello = greetingFor(hour);
-  const name = "Mara";
   const hasDraft = true;
 
   return (
@@ -54,7 +53,7 @@ export default function ReturnPreview() {
         <header>
           <Eyebrow>Chapter 6 · Return</Eyebrow>
           <h2 className="mt-4 font-serif text-4xl leading-tight">
-            {hello}, <span className="italic font-normal">{name}.</span>
+            {hello}.
           </h2>
           <p className="mt-5 text-ink-muted text-[15px] leading-relaxed max-w-xl">
             Your archive is tidy. Pick up where you left off, or open a new folder
@@ -83,7 +82,7 @@ export default function ReturnPreview() {
                 <div>
                   <div className="eyebrow text-[10px]">Last review</div>
                   <div className="mt-1 font-serif text-[18px] leading-tight truncate">
-                    Mara_Designer_Resume.pdf
+                    Your_Resume.pdf
                   </div>
                   <div className="mt-1 flex items-baseline gap-2 text-sm text-ink-muted">
                     <span className="eyebrow text-[10px]">Match</span>
@@ -96,7 +95,7 @@ export default function ReturnPreview() {
                 <div className="min-w-0">
                   <div className="eyebrow text-[10px]">Job description in progress</div>
                   <div className="mt-1 font-serif italic text-[14.5px] leading-snug text-ink-muted line-clamp-3">
-                    "We are looking for a Senior Product Designer to join our team. You will lead design for core product surfaces..."
+                    "We are looking for a qualified candidate to join our team. You will collaborate with cross-functional teams..."
                   </div>
                   <Link to="/app/analyze" className="mt-3 inline-block story-link text-sm">
                     Keep drafting →
