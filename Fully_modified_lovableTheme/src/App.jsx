@@ -3,6 +3,7 @@ import { AuthModalProvider } from "./contexts/AuthModalContext.jsx";
 import { ReportProvider } from "./contexts/ReportContext.jsx";
 import useApiAuth from "./hooks/useApiAuth.js";
 import AppRoutes from "./routes/AppRoutes.jsx";
+import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 
 function ApiAuthBridge() {
   useApiAuth();
@@ -15,7 +16,9 @@ export default function App() {
       <AuthModalProvider>
         <ReportProvider>
           <ApiAuthBridge />
-          <AppRoutes />
+          <ErrorBoundary>
+            <AppRoutes />
+          </ErrorBoundary>
         </ReportProvider>
       </AuthModalProvider>
     </AuthProvider>
