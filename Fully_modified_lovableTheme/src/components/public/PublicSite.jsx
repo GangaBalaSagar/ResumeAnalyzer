@@ -1,76 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Eyebrow } from "../paper.jsx";
 import AppHeader from "../app/AppHeader.jsx";
 import MobileNav from "../app/MobileNav.jsx";
-
-const NAV = [
-  { to: "/", label: "Home", end: true },
-  { to: "/features", label: "Features" },
-  { to: "/faq", label: "FAQ" },
-];
-
-function Mark() {
-  return (
-    <div className="relative h-9 w-7 shrink-0">
-      <div className="absolute inset-0 bg-paper border border-rule rounded-[2px] rotate-[-4deg] shadow-stack" />
-      <div className="absolute inset-0 bg-paper border border-rule rounded-[2px] rotate-[2deg] translate-x-[2px] translate-y-[1px] shadow-paper" />
-      <div className="absolute inset-0 flex items-center justify-center font-serif text-[13px] font-semibold">R</div>
-      <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-5 h-1.5 bg-accent/80 rounded-b-sm" />
-    </div>
-  );
-}
+import AppFooter from "../app/AppFooter.jsx";
 
 export function PublicFooter() {
-  return (
-    <footer className="border-t border-rule/60 mt-20">
-      <div className="mx-auto max-w-7xl px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <Mark />
-            <div className="leading-tight">
-              <div className="font-serif text-[15px]">Resume Analyzer</div>
-              <div className="eyebrow text-[9px]">Workspace</div>
-            </div>
-          </div>
-          <p className="mt-4 text-ink-muted text-[13px] max-w-xs leading-relaxed">
-            A quiet workspace for resume analysis. Your resume, compared to the role — clearly, precisely.
-          </p>
-        </div>
-        <div>
-          <div className="eyebrow text-[10px]">Workspace</div>
-          <ul className="mt-3 space-y-2 text-ink-muted">
-            {NAV.map((n) => (
-              <li key={n.to}>
-                <Link to={n.to} className="hover:text-ink transition-colors">{n.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="eyebrow text-[10px]">Access</div>
-          <ul className="mt-3 space-y-2 text-ink-muted">
-            <li><Link to="/login" className="hover:text-ink transition-colors">Sign in</Link></li>
-            <li><Link to="/signup" className="hover:text-ink transition-colors">Create an account</Link></li>
-            <li><Link to="/app/analyze" className="hover:text-ink transition-colors">Begin an analysis</Link></li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-rule/60">
-        <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between text-xs text-ink-muted">
-          <div>© Resume Analyzer · 2026</div>
-          <div className="flex gap-6">
-            <span>Review 01</span>
-            <span>Filed for later review</span>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
+  return <AppFooter />;
 }
 
 /**
- * PublicSite — shared marketing shell for Landing, Features, FAQ.
+ * PublicSite â€” shared marketing shell for Landing, Features, FAQ.
  * Wraps children in a Desk background, sticky header, and rich footer.
  */
 export default function PublicSite({ children }) {
@@ -90,7 +29,7 @@ export default function PublicSite({ children }) {
 }
 
 /**
- * PageIntro — shared editorial intro used at the top of Features and FAQ.
+ * PageIntro â€” shared editorial intro used at the top of Features and FAQ.
  */
 export function PageIntro({ eyebrow, title, italic, lede }) {
   return (
