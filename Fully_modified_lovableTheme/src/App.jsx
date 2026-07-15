@@ -4,6 +4,7 @@ import { ReportProvider } from "./contexts/ReportContext.jsx";
 import useApiAuth from "./hooks/useApiAuth.js";
 import AppRoutes from "./routes/AppRoutes.jsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 function ApiAuthBridge() {
   useApiAuth();
@@ -17,6 +18,7 @@ export default function App() {
         <ReportProvider>
           <ApiAuthBridge />
           <ErrorBoundary>
+            <ScrollToTop />
             <AppRoutes />
           </ErrorBoundary>
         </ReportProvider>

@@ -12,7 +12,7 @@ export default function Signup() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/app/analyze";
+  const from = location.state?.from?.pathname || "/app/dashboard";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

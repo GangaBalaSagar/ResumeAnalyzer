@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Sheet, PaperClip, Eyebrow, StickyNote } from "../../components/paper.jsx";
 
 const MAX_MB = 5;
@@ -154,12 +155,12 @@ export default function SubmitPreview() {
                   >
                     Reset
                   </button>
-                  <button
-                    type="button"
+                  <Link
+                    to="/analyze"
                     className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
                   >
                     Begin review →
-                  </button>
+                  </Link>
                 </div>
               </div>
             </Sheet>
