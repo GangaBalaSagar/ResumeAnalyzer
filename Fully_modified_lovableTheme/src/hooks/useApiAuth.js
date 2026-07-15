@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useAuthModal } from "../contexts/AuthModalContext.jsx";
 import { setupApiInterceptor } from "../api.js";
+import { publishActivitySync, subscribeSessionSync } from "../services/sessionSync.js";
 import {
   clearSessionStartTimestamp,
   ensureLastActivityTimestamp,
@@ -45,6 +46,7 @@ export default function useApiAuth() {
   const absoluteTimerRef = useRef(null);
   const idleTimerRef = useRef(null);
   const logoutInFlightRef = useRef(false);
+  const [sessionSyncPulse, setSessionSyncPulse] = useState(0);
 
   const clearTimers = useCallback(() => {
     if (expiryTimerRef.current) {
@@ -78,6 +80,15 @@ export default function useApiAuth() {
     },
     [clearPendingAction, clearTimers, openLoginModal, signOut]
   );
+
+  useEffect(() => {
+    const unsubscribe = subscribeSessionSync((message) => {
+      if (message?.kind === "activity") {
+        setSessionSyncPulse((value) => value + 1);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     setupApiInterceptor(
@@ -191,7 +202,9 @@ export default function useApiAuth() {
 
     const onActivity = () => {
       if (logoutInFlightRef.current || !session) return;
-      setLastActivityTimestamp();
+      const timestamp = Date.now();
+      setLastActivityTimestamp(timestamp);
+      publishActivitySync(timestamp);
       scheduleIdleLogout();
     };
 
@@ -213,5 +226,6 @@ export default function useApiAuth() {
     clearPendingAction,
     signOut,
     location.pathname,
+    sessionSyncPulse,
   ]);
 }

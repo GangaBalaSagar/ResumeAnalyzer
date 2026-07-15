@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { supabase } from "../../services/supabase/client.js";
-import { getSessionExpiryMs, getAbsoluteSessionExpiryMs, getInactivityExpiryMs, getLastActivityTimestamp } from "../../utils/authSession.js";
+import { subscribeSessionSync } from "../../services/sessionSync.js";
+import {
+  getSessionExpiryMs,
+  getAbsoluteSessionExpiryMs,
+  getInactivityExpiryMs,
+  getLastActivityTimestamp,
+} from "../../utils/authSession.js";
 
 /**
  * Account — a personal dossier.
@@ -48,10 +54,20 @@ function initialsFor(user) {
 export default function Account() {
   const { user, session, signOut } = useAuth();
   const navigate = useNavigate();
+  const [sessionSyncPulse, setSessionSyncPulse] = useState(0);
 
   const [resetStatus, setResetStatus] = useState("idle"); // idle | sending | sent | error
   const [resetError, setResetError] = useState(null);
   const [signingOut, setSigningOut] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = subscribeSessionSync((message) => {
+      if (message?.kind === "activity" || message?.kind === "metadata") {
+        setSessionSyncPulse((value) => value + 1);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const meta = user?.user_metadata || {};
   const displayName = meta.full_name || meta.name || null;
@@ -88,7 +104,7 @@ export default function Account() {
       inactivityTimeoutMinutes: 30,
       absoluteTimeoutHours: 24,
     };
-  }, [user, session]);
+  }, [user, session, sessionSyncPulse]);
 
   async function handleResetPassword() {
     if (!email || email === "—") return;
