@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { supabase } from "../../services/supabase/client.js";
+import { getSessionExpiryMs, getAbsoluteSessionExpiryMs, getInactivityExpiryMs, getLastActivityTimestamp } from "../../utils/authSession.js";
 
 /**
  * Account — a personal dossier.
@@ -61,11 +62,31 @@ export default function Account() {
     "email";
 
   const sessionMeta = useMemo(() => {
+    const now = Date.now();
+    const sessionExpiryMs = session ? getSessionExpiryMs(session) : null;
+    const absoluteExpiryMs = getAbsoluteSessionExpiryMs();
+    const inactivityExpiryMs = session ? getInactivityExpiryMs(session) : null;
+    const lastActivityAt = getLastActivityTimestamp();
+    const sessionStartedAt = typeof window !== "undefined"
+      ? Number(localStorage.getItem("ra_session_started_at_v1")) || null
+      : null;
+
+    const effectiveExpiryMs = [sessionExpiryMs, absoluteExpiryMs, inactivityExpiryMs]
+      .filter((v) => typeof v === "number")
+      .reduce((min, v) => Math.min(min, v), Infinity);
+
+    const isEffectivelyExpired = effectiveExpiryMs !== Infinity ? now >= effectiveExpiryMs : false;
+
     return {
       createdAt: user?.created_at,
       lastSignIn: user?.last_sign_in_at,
-      expiresAt: session?.expires_at ? new Date(session.expires_at * 1000) : null,
+      sessionStartedAt: sessionStartedAt ? new Date(sessionStartedAt) : null,
+      lastActivityAt: lastActivityAt ? new Date(lastActivityAt) : null,
+      expiresAt: effectiveExpiryMs !== Infinity ? new Date(effectiveExpiryMs) : null,
+      isExpired: isEffectivelyExpired,
       userId: user?.id,
+      inactivityTimeoutMinutes: 30,
+      absoluteTimeoutHours: 24,
     };
   }, [user, session]);
 
@@ -213,7 +234,8 @@ export default function Account() {
             </div>
             <div className="rule-line my-4" />
             <dl className="space-y-4">
-              <SessionRow label="Last sign-in" value={fmtDateTime(sessionMeta.lastSignIn)} />
+              <SessionRow label="Session started" value={fmtDateTime(sessionMeta.sessionStartedAt)} />
+              <SessionRow label="Last activity" value={fmtDateTime(sessionMeta.lastActivityAt)} />
               <SessionRow
                 label="Session expires"
                 value={
@@ -222,6 +244,8 @@ export default function Account() {
                     : "—"
                 }
               />
+              <SessionRow label="Inactivity timeout" value={`${sessionMeta.inactivityTimeoutMinutes} min`} mono />
+              <SessionRow label="Absolute timeout" value={`${sessionMeta.absoluteTimeoutHours} hrs`} mono />
               <SessionRow label="Provider" value={provider} mono />
             </dl>
             <div className="rule-line my-4" />
