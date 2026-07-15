@@ -247,7 +247,7 @@ const [showGuestModal, setShowGuestModal] = useState(false);
         {/* WORKBENCH — main sheet */}
         <div className="col-span-12 lg:col-span-8 space-y-6">
           {/* Document drop */}
-          <Sheet className="relative p-6 md:p-10" dogEar lift>
+          <Sheet className="relative p-6 md:p-10 landing-feature-card" dogEar lift>
             <PaperClip />
             <div className="flex items-baseline justify-between gap-4">
               <div>
@@ -318,7 +318,7 @@ const [showGuestModal, setShowGuestModal] = useState(false);
           </Sheet>
 
           {/* Job description — editorial writing sheet */}
-          <Sheet className="relative p-4 md:p-6" lift>
+          <Sheet className="relative p-4 md:p-6 landing-feature-card" lift>
             <div className="flex items-baseline justify-between gap-4">
               <div>
                 <Eyebrow>Step 02 · The role brief</Eyebrow>
@@ -395,7 +395,7 @@ const [showGuestModal, setShowGuestModal] = useState(false);
             </div>
           </StickyNote>
 
-          <Sheet className="relative p-4" lift>
+          <Sheet className="relative p-4 landing-feature-card" lift>
             <Eyebrow>What the review checks</Eyebrow>
             <ul className="mt-4 space-y-3 text-sm">
               {[
@@ -415,7 +415,7 @@ const [showGuestModal, setShowGuestModal] = useState(false);
             </ul>
           </Sheet>
 
-          <Sheet className="relative p-4" lift>
+          <Sheet className="relative p-4 landing-feature-card" lift>
             <Eyebrow>Review rules</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <dl className="space-y-3 text-sm">
@@ -561,7 +561,7 @@ function FileCard({ file, onReplace, onClear, children }) {
 
 function ReadingProgress({ progress, stageIdx, file }) {
   return (
-    <Sheet className="relative p-6 md:p-8 overflow-hidden" lift>
+    <Sheet className="relative p-6 md:p-8 overflow-hidden landing-feature-card" lift>
       <div className="flex items-baseline justify-between gap-4">
         <div>
           <Eyebrow>Review in progress</Eyebrow>

@@ -156,7 +156,7 @@ export default function Dashboard() {
         {/* MAIN COLUMN */}
         <div className="col-span-12 lg:col-span-8 space-y-8">
           {/* Continue working */}
-          <Sheet className="relative p-4 md:p-6" lift dogEar>
+          <Sheet className="relative p-4 md:p-6 landing-feature-card" lift dogEar>
             <PaperClip />
             <div className="flex items-baseline justify-between gap-4 flex-wrap">
               <div>
@@ -230,7 +230,7 @@ export default function Dashboard() {
           </Sheet>
 
           {/* 2 — Recent activity */}
-          <Sheet className="relative p-4 md:p-6" lift>
+          <Sheet className="relative p-4 md:p-6 landing-feature-card" lift>
             <div className="flex items-baseline justify-between gap-4">
               <div>
                 <Eyebrow>Recent activity</Eyebrow>
@@ -316,7 +316,7 @@ export default function Dashboard() {
         {/* RIGHT RAIL */}
         <aside className="col-span-12 lg:col-span-4 space-y-6">
           {/* 3 — Statistics */}
-          <Sheet className="relative p-4" lift>
+          <Sheet className="relative p-4 landing-feature-card" lift>
             <Eyebrow>Running totals</Eyebrow>
             <div className="mt-2 font-serif text-xl leading-tight">Analysis at a glance</div>
             <div className="rule-line my-4" />
@@ -353,7 +353,7 @@ export default function Dashboard() {
           </StickyNote>
 
           {/* 4 — Quick actions / shortcuts */}
-          <Sheet className="relative p-4" lift>
+          <Sheet className="relative p-4 landing-feature-card" lift>
             <Eyebrow>Shortcuts</Eyebrow>
             <div className="rule-line mt-3 mb-4" />
             <ul className="space-y-3 text-sm">

@@ -42,7 +42,7 @@ export default function SubmitPreview() {
 
           <div className="lg:col-span-8 space-y-6">
             {/* Resume Sheet */}
-            <Sheet className="relative p-6 md:p-10" lift dogEar>
+            <Sheet className="relative p-6 md:p-10 landing-feature-card" lift dogEar>
               <PaperClip />
               <div className="flex items-baseline justify-between gap-4">
                 <div>
@@ -103,7 +103,7 @@ export default function SubmitPreview() {
             </Sheet>
 
             {/* Job Description Sheet */}
-            <Sheet className="relative p-6 md:p-10" lift>
+            <Sheet className="relative p-6 md:p-10 landing-feature-card" lift>
               <div className="flex items-baseline justify-between gap-4">
                 <div>
                   <Eyebrow>Step 02 · The role brief</Eyebrow>
@@ -143,7 +143,7 @@ export default function SubmitPreview() {
             </StickyNote>
 
             {/* Actions Preview */}
-            <Sheet className="relative p-6" lift>
+            <Sheet className="relative p-6 landing-feature-card" lift>
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div className="text-xs text-ink-muted italic font-serif">
                   Your review is private. Filed under your archive only.
