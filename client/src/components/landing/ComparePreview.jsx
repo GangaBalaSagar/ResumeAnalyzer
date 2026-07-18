@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Sheet, PaperClip, Eyebrow } from "../../components/paper.jsx";
+import { Sheet, PaperClip, Eyebrow } from "../paper.jsx";
 
 const READING_STAGES = [
   "Reading the resume…",

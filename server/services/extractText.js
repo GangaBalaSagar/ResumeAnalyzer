@@ -15,7 +15,7 @@ const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 
 async function extractFromPDF(filePath) {
-  const buffer = fs.readFileSync(filePath);
+  const buffer = await fs.promises.readFile(filePath);
   const data = await pdfParse(buffer);
   return data.text || '';
 }

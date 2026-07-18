@@ -15,10 +15,13 @@ server/.env
 # Build outputs
 dist/
 build/
+coverage/
+.cache/
 client/dist/
 server/dist/
 
 # Logs
+*.log
 npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*

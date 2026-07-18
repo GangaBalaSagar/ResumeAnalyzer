@@ -1,5 +1,5 @@
-import { Sheet, PaperClip, Eyebrow, StickyNote } from "../../components/paper.jsx";
-import AtsScore from "../../components/app/AtsScore.jsx";
+import { Sheet, PaperClip, Eyebrow, StickyNote } from "../paper.jsx";
+import AtsScore from "../app/AtsScore.jsx";
 import { Link } from "react-router-dom";
 
 function fmtDate(iso) {

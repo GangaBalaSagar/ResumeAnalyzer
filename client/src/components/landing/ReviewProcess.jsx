@@ -1,4 +1,4 @@
-import { Sheet, Eyebrow } from "../../components/paper.jsx";
+import { Sheet, Eyebrow } from "../paper.jsx";
 
 const STAGES = [
   {

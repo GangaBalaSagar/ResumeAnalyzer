@@ -1,4 +1,4 @@
-import { CanonicalPaper, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
+import { CanonicalPaper, Eyebrow, StickyNote, PaperClip } from "../paper.jsx";
 import { Link } from "react-router-dom";
 
 const SHEETS = [

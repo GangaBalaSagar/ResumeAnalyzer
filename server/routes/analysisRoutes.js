@@ -15,6 +15,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const controller = require('../controllers/analysisController');
 const analysisValidation = require('../middleware/validation/analysisValidation');
 const { analysisLimiter, dashboardLimiter, historyLimiter, reportLimiter } = require('../middleware/rateLimiter');
+const { cleanupUploadedFile } = require("../utils/uploadCleanup");
 
 // POST analyze: PROTECTED - requires authentication
 router.post('/analyze', authMiddleware, analysisLimiter, (req, res, next) => {
@@ -23,7 +24,10 @@ router.post('/analyze', authMiddleware, analysisLimiter, (req, res, next) => {
       // Return JSON error for unsupported file types
       const message = err.message || 'Only PDF (.pdf) and Word (.docx) files are supported.';
       const status = err.status || 400;
-      return res.status(status).json({ error: message });
+      cleanupUploadedFile(req.file?.path, "multer upload error").finally(() => {
+        res.status(status).json({ error: message });
+      });
+      return;
     }
     next();
   });

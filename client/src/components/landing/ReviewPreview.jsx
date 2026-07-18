@@ -1,6 +1,6 @@
-import { Sheet, PaperClip, Eyebrow, StickyNote } from "../../components/paper.jsx";
-import AtsScore, { bandFor, verdictFor } from "../../components/app/AtsScore.jsx";
-import { MatchDonutChart, SkillsBarChart } from "../../components/charts";
+import { Sheet, PaperClip, Eyebrow, StickyNote } from "../paper.jsx";
+import AtsScore, { bandFor, verdictFor } from "../app/AtsScore.jsx";
+import { MatchDonutChart, SkillsBarChart } from "../charts/index.js";
 
 const MOCK_REPORT = {
   matchPercent: 87,

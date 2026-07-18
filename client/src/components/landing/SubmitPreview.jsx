@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sheet, PaperClip, Eyebrow, StickyNote } from "../../components/paper.jsx";
+import { Sheet, PaperClip, Eyebrow, StickyNote } from "../paper.jsx";
 
 const MAX_MB = 5;
 

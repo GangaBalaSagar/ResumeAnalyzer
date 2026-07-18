@@ -1,4 +1,4 @@
-import { Sheet, PaperClip, Eyebrow, StickyNote } from "../../components/paper.jsx";
+import { Sheet, PaperClip, Eyebrow, StickyNote } from "../paper.jsx";
 import { Link } from "react-router-dom";
 
 const MOCK_REPORT = {

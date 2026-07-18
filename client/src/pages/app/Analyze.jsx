@@ -49,8 +49,8 @@ function fileKind(name = "") {
 export default function Analyze() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { setCurrentReportId } = useReport();
-const [showGuestModal, setShowGuestModal] = useState(false);
+  const { setCurrentReportId, clearCurrentReport } = useReport();
+  const [showGuestModal, setShowGuestModal] = useState(false);
   const [file, setFile] = useState(null);
   const [jd, setJd] = useState("");
   const [drag, setDrag] = useState(false);
@@ -61,6 +61,17 @@ const [showGuestModal, setShowGuestModal] = useState(false);
   const fileInputRef = useRef(null);
   const progressRef = useRef(null);
   const stageRef = useRef(null);
+
+  function resetFileInput() {
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function clearStoredAnalysisReferences() {
+    clearCurrentReport();
+    try {
+      localStorage.removeItem(LS_LAST_RESULT);
+    } catch {}
+  }
 
   // Close guest modal on Escape key
   useEffect(() => {
@@ -114,6 +125,8 @@ const [showGuestModal, setShowGuestModal] = useState(false);
       setShowGuestModal(true);
       return;
     }
+
+    clearStoredAnalysisReferences();
 
     const formData = new FormData();
     formData.append("file", file);
@@ -175,15 +188,19 @@ const [showGuestModal, setShowGuestModal] = useState(false);
     if (validationError) {
       setError(validationError);
       setFile(null);
+      clearStoredAnalysisReferences();
     } else {
       setError(null);
+      clearStoredAnalysisReferences();
       setFile(file);
     }
+    resetFileInput();
   }
 
   function onPickFile(e) {
     const f = e.target.files?.[0];
     if (f) handleFileSelect(f);
+    else resetFileInput();
   }
 
   function handleOpenLogin() {
@@ -206,11 +223,11 @@ const [showGuestModal, setShowGuestModal] = useState(false);
     setError(null);
     setProgress(0);
     setStageIdx(0);
+    clearStoredAnalysisReferences();
     try {
       localStorage.removeItem(LS_JD_KEY);
-      localStorage.removeItem(LS_LAST_RESULT);
     } catch {}
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    resetFileInput();
   }
 
   function onDrop(e) {
@@ -222,7 +239,13 @@ const [showGuestModal, setShowGuestModal] = useState(false);
 
   function clearFile() {
     setFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    clearStoredAnalysisReferences();
+    resetFileInput();
+  }
+
+  function handleReplaceFile() {
+    resetFileInput();
+    fileInputRef.current?.click();
   }
 
   const canSubmit = Boolean(file) && jd.trim().length > 0 && !loading;
@@ -263,7 +286,7 @@ const [showGuestModal, setShowGuestModal] = useState(false);
             <div className="rule-line my-4" />
 
             {file ? (
-              <FileCard file={file} onReplace={() => fileInputRef.current?.click()} onClear={clearFile}>
+              <FileCard file={file} onReplace={handleReplaceFile} onClear={clearFile}>
                 <input
                   ref={fileInputRef}
                   type="file"
