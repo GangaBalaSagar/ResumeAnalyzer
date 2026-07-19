@@ -195,7 +195,7 @@ When reporting a bug, please:
 
 Please do not disclose vulnerabilities publicly.
 
-If a security concern is discovered, report it responsibly and wait for guidance before sharing details broadly. A `SECURITY.md` file can be added later if the project needs a formal reporting process.
+If a security concern is discovered, report it responsibly and wait for guidance before sharing details broadly. See [SECURITY.md](SECURITY.md) for the reporting process and disclosure guidance.
 
 ## Thank You
 
