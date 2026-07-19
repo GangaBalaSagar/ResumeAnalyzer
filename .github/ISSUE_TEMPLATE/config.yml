@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation & Setup Help
+    url: https://github.com/<OWNER>/<REPOSITORY>
+    about: Questions about installation, configuration, usage, or project documentation.
+  # Repository maintainers should replace this placeholder before publishing.
+  - name: Report a Security Vulnerability
+    url: mailto:security@example.com
+    about: Do NOT report security vulnerabilities through public GitHub issues. Follow SECURITY.md for responsible disclosure.

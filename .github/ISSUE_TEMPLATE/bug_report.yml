@@ -1,0 +1,165 @@
+name: Bug Report
+description: Report a reproducible bug or unexpected behavior in Resume Analyzer.
+title: "Bug Report"
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug in Resume Analyzer.
+
+        Please search existing issues first, submit one bug per issue, and avoid using this form for security vulnerabilities.
+        If your report is security-related, please follow the guidance in `SECURITY.md`.
+
+        If the bug affects authentication, the upload pipeline, Gemini analysis, MongoDB persistence, or temporary uploads,
+        include enough detail to help us reproduce it reliably.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      description: Please confirm before submitting.
+      options:
+        - label: I searched existing issues.
+          required: true
+
+  - type: input
+    id: bug_summary
+    attributes:
+      label: Bug Summary
+      description: Short summary of the issue.
+      placeholder: "Example: Resume upload fails for DOCX files in Chrome"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Briefly describe the bug and the impact it has.
+      placeholder: "Describe what is happening and why it matters."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: List the exact steps needed to reproduce the issue.
+      placeholder: |
+        1. Go to ...
+        2. Sign in as ...
+        3. Upload ...
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: "Describe the expected result."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: "Describe the observed result."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Edge
+        - Firefox
+        - Safari
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: node_version
+    attributes:
+      label: Node.js Version
+      description: Optional, especially helpful for frontend or backend build/runtime issues.
+      placeholder: "Example: 18.20.4"
+    validations:
+      required: false
+
+  - type: input
+    id: app_version
+    attributes:
+      label: Application Version
+      description: Use the release or branch version you tested, for example 1.0.0.
+      placeholder: "Example: 1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area_affected
+    attributes:
+      label: Area Affected
+      description: Select the part of the app most closely related to the bug.
+      options:
+        - Frontend
+        - Backend
+        - Authentication
+        - Resume Upload
+        - Resume Analysis
+        - Dashboard
+        - Archive
+        - Account
+        - Deployment
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optional. Attach screenshots or paste image links if they help show the issue.
+      placeholder: "Add screenshots here if applicable."
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Optional. Paste relevant console output, server logs, or error messages.
+      render: shell
+      placeholder: "Paste logs here."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: Additional Information
+      description: Optional. Add anything else that might help us diagnose the issue.
+      placeholder: "Add any extra context here."
+    validations:
+      required: false
