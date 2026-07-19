@@ -18,6 +18,13 @@
   <img src="https://img.shields.io/badge/Google_Gemini-8E75FF?logo=google&logoColor=white" alt="Google Gemini badge" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey" alt="MIT license badge" />
 </p>
+<p align="center">
+  <a href="#live-demo">Live Demo</a> •
+  <a href="#installation">Installation</a> •
+  <a href="CONTRIBUTING.md">Contributing</a> •
+  <a href="SECURITY.md">Security</a> •
+  <a href="LICENSE">License</a>
+</p>
 
 ## Table of Contents
 
@@ -44,9 +51,8 @@
 
 | Target | Status |
 | --- | --- |
-| Frontend | Not published yet |
-| Backend | Not published yet |
-| Demo Video | Not published yet |
+| Frontend | Coming soon |
+| Backend | Coming soon |
 
 ## Project Overview
 
@@ -134,55 +140,45 @@ The backend follows a production-oriented shape because the workflow crosses sev
 
 ## Application Screenshots
 
-The user will upload screenshots later. Add the relative image path for each section when the files are available.
-
 ### Landing Page
 
-> Screenshot placeholder: add relative path here.
+<p align="center">
+  <img src="docs/screenshots/Home.png" alt="Landing Page" width="900">
+</p>
 
-Caption: Public homepage and hero section.
+The homepage introduces Resume Analyzer with a strong editorial hero and clear entry points into review.
 
-### Features Page
+### Resume Analysis
 
-> Screenshot placeholder: add relative path here.
+<p align="center">
+  <img src="docs/screenshots/Review.png" alt="Resume Analysis" width="900">
+</p>
 
-Caption: Product feature overview.
-
-### Analyze Resume
-
-> Screenshot placeholder: add relative path here.
-
-Caption: Resume upload and job description entry flow.
+Upload a resume and job description to begin a private analysis.
 
 ### Analysis Report
 
-> Screenshot placeholder: add relative path here.
+<p align="center">
+  <img src="docs/screenshots/Report.png" alt="Analysis Report" width="900">
+</p>
 
-Caption: AI-generated match report and recommendations.
-
-### Dashboard
-
-> Screenshot placeholder: add relative path here.
-
-Caption: Private workspace and recent activity.
+Review ATS-style scores, matched skills, missing skills, and suggested improvements.
 
 ### Archive
 
-> Screenshot placeholder: add relative path here.
+<p align="center">
+  <img src="docs/screenshots/Archive.png" alt="Archive" width="900">
+</p>
 
-Caption: Saved analysis history and archive controls.
+Keep past analyses organized in a private archive for later review.
 
 ### Account
 
-> Screenshot placeholder: add relative path here.
+<p align="center">
+  <img src="docs/screenshots/Account.png" alt="Account" width="900">
+</p>
 
-Caption: Profile, password, and session management.
-
-### Authentication
-
-> Screenshot placeholder: add relative path here.
-
-Caption: Login, sign-up, and password reset flows.
+Manage profile details, password resets, and session access in one place.
 
 ## Architecture
 
@@ -340,7 +336,7 @@ ResumeAnalyzer/
 ### Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/GangaBalaSagar/ResumeAnalyzer.git
 cd ResumeAnalyzer
 ```
 
@@ -451,27 +447,12 @@ Realistic next steps for the current codebase:
 
 ## Contributing
 
-The repository does not currently include a `CONTRIBUTING.md` file.
-
-If you add one later, it should describe:
-
-- Local setup
-- Branching and commit conventions
-- Testing expectations
-- Pull request review guidelines
+[CONTRIBUTING.md](CONTRIBUTING.md) covers local setup, branching, coding guidelines, testing expectations, and pull request review expectations.
 
 ## Security
 
-The repository does not currently include a `SECURITY.md` file.
-
-If you add one later, it should describe:
-
-- How to report vulnerabilities
-- Expected response process
-- Sensitive data handling
+[SECURITY.md](SECURITY.md) explains how to report vulnerabilities privately, what to include, and how responsible disclosure works for this project.
 
 ## License
 
-The repository does not currently include a standalone `LICENSE` file.
-
-The backend `package.json` declares the project license as MIT.
+[LICENSE](LICENSE) contains the MIT license terms for Resume Analyzer.
