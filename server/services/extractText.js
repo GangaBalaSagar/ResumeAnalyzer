@@ -1,15 +1,3 @@
-/**
- * extractText.js
- *
- * Utilities to extract text from uploaded resume files (PDF and DOCX)
- * - pdf-parse for PDFs
- * - mammoth for DOCX
- *
- * Exported function: extractResumeText(filePath, mimetype)
- *
- * NOTE: multer stores files on disk; we pass file.path and file.mimetype here.
- */
-
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
@@ -50,7 +38,12 @@ function validateExtractedText(text, fileType) {
     throw new ExtractionError('Document contains no extractable text', 'EMPTY_DOCUMENT', 400, { fileType });
   }
   if (trimmed.length > MAX_TEXT_LENGTH) {
-    return trimmed.slice(0, MAX_TEXT_LENGTH);
+    throw new ExtractionError(
+      `Document exceeds maximum text length (${MAX_TEXT_LENGTH} characters). Please use a shorter document.`,
+      'TEXT_TOO_LONG',
+      400,
+      { fileType, textLength: trimmed.length, maxLength: MAX_TEXT_LENGTH }
+    );
   }
   return trimmed;
 }

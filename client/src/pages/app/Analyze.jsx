@@ -4,6 +4,7 @@ import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.js
 import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
+import { useAbortController, useRequestDedupe } from "../../hooks/useAbortController.js";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -50,6 +51,8 @@ export default function Analyze() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { setCurrentReportId, clearCurrentReport } = useReport();
+  const { getController, abort: abortRequest, isAborted, cleanup: cleanupAbort } = useAbortController();
+  const { startRequest, endRequest, isInFlight } = useRequestDedupe();
   const [showGuestModal, setShowGuestModal] = useState(false);
   const [file, setFile] = useState(null);
   const [jd, setJd] = useState("");
@@ -93,13 +96,14 @@ export default function Analyze() {
     return () => clearTimeout(id);
   }, [jd]);
 
-  // Clean up intervals on unmount
+  // Clean up intervals and abort controller on unmount
   useEffect(() => {
     return () => {
       if (progressRef.current) clearInterval(progressRef.current);
       if (stageRef.current) clearInterval(stageRef.current);
+      abortRequest();
     };
-  }, []);
+  }, [abortRequest]);
 
   const wordCount = useMemo(
     () => (jd.trim() ? jd.trim().split(/\s+/).length : 0),
@@ -107,22 +111,33 @@ export default function Analyze() {
   );
 
   async function handleAnalyze() {
+    if (isInFlight("analyze")) {
+      return;
+    }
+    if (!startRequest("analyze")) {
+      return;
+    }
+
     setError(null);
     if (!file) {
       setError("Please attach a resume before starting the review.");
+      endRequest("analyze");
       return;
     }
     if (file.size > MAX_MB * 1024 * 1024) {
       setError(`The resume is larger than ${MAX_MB} MB.`);
+      endRequest("analyze");
       return;
     }
     if (!jd.trim()) {
       setError("Please paste the job description so we can compare it against your resume.");
+      endRequest("analyze");
       return;
     }
 
     if (!user) {
       setShowGuestModal(true);
+      endRequest("analyze");
       return;
     }
 
@@ -131,6 +146,8 @@ export default function Analyze() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("jobDescription", jd);
+
+    const controller = getController();
 
     try {
       setLoading(true);
@@ -147,7 +164,12 @@ export default function Analyze() {
 
       const res = await api.post("/analyze", formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        signal: controller.signal,
       });
+
+      if (isAborted()) {
+        return;
+      }
 
       clearInterval(progressRef.current);
       clearInterval(stageRef.current);
@@ -164,7 +186,10 @@ export default function Analyze() {
       } catch {}
 
       setTimeout(() => navigate("/app/report"), 450);
-} catch (err) {
+    } catch (err) {
+      if (isAborted() || err?.name === "CanceledError" || err?.name === "AbortError") {
+        return;
+      }
       if (progressRef.current) clearInterval(progressRef.current);
       if (stageRef.current) clearInterval(stageRef.current);
       setProgress(0);
@@ -177,7 +202,8 @@ export default function Analyze() {
             err?.message ||
             "We couldn't complete the review. Please try again."
       );
-} finally {
+    } finally {
+      endRequest("analyze");
       setLoading(false);
     }
   }

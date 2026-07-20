@@ -5,6 +5,7 @@ import AtsScore from "../../components/app/AtsScore.jsx";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
+import { useAbortController } from "../../hooks/useAbortController.js";
 
 /**
  * Dashboard — the command center of Resume Analyzer Pro.
@@ -74,6 +75,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [draft, setDraft] = useState({ jd: "", lastResult: null });
+  const { createController, abort } = useAbortController();
 
   function handleOpenReport(id) {
     if (id) {
@@ -83,25 +85,23 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    let alive = true;
+    const controller = createController();
     (async () => {
       try {
         setLoading(true);
-        const res = await api.get("/analyses");
-        if (!alive) return;
+        const res = await api.get("/analyses", { signal: controller.signal });
+        if (controller.signal.aborted) return;
         setItems(res.data?.items ?? []);
         setError(null);
       } catch (err) {
-        if (!alive) return;
+        if (err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
         setError(err?.response?.data?.error || err?.message || "Could not read the archive.");
       } finally {
-        if (alive) setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     })();
-    return () => {
-      alive = false;
-    };
-  }, []);
+    return () => abort();
+  }, [createController, abort]);
 
   // Read the "continue working" hints written by the Analyze page.
   useEffect(() => {

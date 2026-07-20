@@ -9,6 +9,7 @@ import AtsScore, { bandFor, verdictFor } from "../../components/app/AtsScore.jsx
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
+import { useAbortController } from "../../hooks/useAbortController.js";
 
 /**
  * Report — the signature "expertly reviewed document" experience.
@@ -87,6 +88,7 @@ export default function Report() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { currentReportId } = useReport();
+  const { createController, abort } = useAbortController();
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -116,31 +118,29 @@ export default function Report() {
       return;
     }
 
-    let isMounted = true;
+    const controller = createController();
     setLoading(true);
     setError(null);
 
     api
-      .get(`/analyses/${currentReportId}`)
+      .get(`/analyses/${currentReportId}`, { signal: controller.signal })
       .then((res) => {
-        if (!isMounted) return;
+        if (controller.signal.aborted) return;
         setPayload(res.data);
       })
       .catch((err) => {
-        if (!isMounted) return;
+        if (err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
         setPayload(null);
         setError(err);
       })
       .finally(() => {
-        if (isMounted) {
+        if (!controller.signal.aborted) {
           setLoading(false);
         }
       });
 
-    return () => {
-      isMounted = false;
-    };
-  }, [currentReportId, user]);
+    return () => abort();
+  }, [currentReportId, user, createController, abort]);
 
   const result = payload?.analysis || payload;
   const jd = payload?.jobDescription ?? "";

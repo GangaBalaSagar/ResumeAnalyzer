@@ -60,6 +60,8 @@ function mapExtractionErrorToStatus(error) {
   switch (error.code) {
     case "EXTRACTION_TIMEOUT":
       return 408;
+    case "TEXT_TOO_LONG":
+      return 413;
     case "PASSWORD_PROTECTED":
     case "CORRUPTED_PDF":
     case "CORRUPTED_DOCX":
@@ -88,6 +90,8 @@ function getExtractionUserMessage(error) {
   switch (error.code) {
     case "EXTRACTION_TIMEOUT":
       return "Document processing timed out. Please try a smaller file.";
+    case "TEXT_TOO_LONG":
+      return "The uploaded document contains too much text to analyze. Please use a shorter document.";
     case "PASSWORD_PROTECTED":
       return "Password-protected documents are not supported. Please remove protection and try again.";
     case "CORRUPTED_PDF":

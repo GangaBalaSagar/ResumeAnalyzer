@@ -5,6 +5,7 @@ import AtsScore, { bandFor } from "../../components/app/AtsScore.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
+import { useAbortController } from "../../hooks/useAbortController.js";
 
 /**
  * History — an archival cabinet of previously analyzed resumes.
@@ -55,6 +56,7 @@ export default function History() {
   const { user } = useAuth();
   const loadGuard = useRef(false);
   const deleteTriggerRef = useRef(null);
+  const { createController, abort } = useAbortController();
 
   function handleViewReport(id) {
     if (id) {
@@ -64,15 +66,18 @@ export default function History() {
   }
 
   async function load() {
+    const controller = createController();
     try {
       setLoading(true);
-      const res = await api.get("/analyses");
+      const res = await api.get("/analyses", { signal: controller.signal });
+      if (controller.signal.aborted) return;
       setItems(res.data?.items ?? []);
       setError(null);
     } catch (err) {
+      if (err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
       setError(err?.response?.data?.error || err?.message || "Could not load past analyses.");
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) setLoading(false);
     }
   }
 
@@ -94,7 +99,8 @@ export default function History() {
 
     loadGuard.current = true;
     load();
-  }, [user]);
+    return () => abort();
+  }, [user, createController, abort]);
 
 
   if (!user) {
