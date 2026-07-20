@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 
@@ -26,6 +26,7 @@ const navLinks = [
  */
 export default function MobileNav({ open, onClose }) {
   const { user, signOut } = useAuth();
+  const ref = useRef(null);
 
   useEffect(() => {
     if (!open) return;
@@ -72,7 +73,7 @@ export default function MobileNav({ open, onClose }) {
         className="absolute inset-0 bg-ink/20 backdrop-blur-[1px]"
       />
 
-      <div className="absolute inset-y-0 left-0 w-[86%] max-w-[320px] bg-desk border-r border-rule shadow-overlay animate-fade-up flex flex-col">
+      <div ref={ref} className="absolute inset-y-0 left-0 w-[86%] max-w-[320px] bg-desk border-r border-rule shadow-overlay animate-fade-up flex flex-col">
         <div className="px-5 pt-5 pb-4 border-b border-rule/60 flex items-start justify-between gap-3">
           <div>
             <div className="eyebrow text-[10px]">Menu</div>
