@@ -19,8 +19,17 @@ export default function StatusSheet({
   dogEar = false,
 }) {
   // Map variant to default eyebrows/titles if not provided
+  // Normalize variants for backward compatibility
+  const normalizedVariant = (() => {
+    const v = String(variant).toLowerCase();
+    if (v === "service unavailable" || v === "service_unavailable") return "service";
+    if (v === "session expired" || v === "session_expired") return "warning";
+    return v; // error, service, offline, timeout, empty, warning, loading
+  })();
+
+  // Map variant to default eyebrows/titles if not provided
   const getDefaults = () => {
-    switch (variant) {
+    switch (normalizedVariant) {
       case "loading":
         return {
           eyebrow: "Loading",
@@ -33,23 +42,29 @@ export default function StatusSheet({
           title: "Connection Lost",
           description: "Check your internet connection and try again.",
         };
-      case "service unavailable":
+      case "service":
         return {
           eyebrow: "System",
           title: "Service Unavailable",
           description: "The server is temporarily unavailable. Please try again in a few minutes.",
         };
-      case "session expired":
+      case "timeout":
         return {
-          eyebrow: "Auth",
-          title: "Session Expired",
-          description: "Please sign in again to continue.",
+          eyebrow: "Delay",
+          title: "Request Timed Out",
+          description: "The request took longer than expected to process. Please try again.",
         };
       case "empty":
         return {
           eyebrow: "Archive",
           title: "The cabinet is empty",
           description: "Nothing filed here yet.",
+        };
+      case "warning":
+        return {
+          eyebrow: "Attention",
+          title: "Action Required",
+          description: "Please check the required information and try again.",
         };
       case "error":
       default:
@@ -70,7 +85,7 @@ export default function StatusSheet({
   const renderDefaultIllustration = () => {
     if (illustration) return illustration;
 
-    switch (variant) {
+    switch (normalizedVariant) {
       case "loading":
         return (
           <div className="mx-auto w-16 h-20 relative mb-6 animate-pulse opacity-85">
@@ -86,16 +101,25 @@ export default function StatusSheet({
         );
       case "empty":
       case "offline":
-      case "service unavailable":
-      case "session expired":
+      case "service":
+      case "timeout":
+      case "warning":
       case "error":
       default:
         const accentTagColor = 
-          variant === "error" || variant === "offline" || variant === "service unavailable"
+          normalizedVariant === "error" || normalizedVariant === "offline" || normalizedVariant === "service" || normalizedVariant === "timeout"
             ? "border-destructive/30 text-destructive bg-destructive/5 font-serif italic"
-            : variant === "session expired"
+            : normalizedVariant === "warning"
             ? "border-accent/30 text-accent bg-accent/5 font-serif italic"
             : "border-rule bg-paper";
+
+        const tagLabel = (() => {
+          if (normalizedVariant === "offline") return "offline";
+          if (normalizedVariant === "service") return "service";
+          if (normalizedVariant === "timeout") return "timeout";
+          if (normalizedVariant === "warning") return "warning";
+          return "failed";
+        })();
 
         return (
           <div className="mx-auto w-20 h-24 relative mb-6">
@@ -106,9 +130,9 @@ export default function StatusSheet({
                 <div className="w-6 h-1 bg-ink-muted/20" />
                 <div className="w-3 h-3 rounded-full bg-ink-muted/10" />
               </div>
-              {variant !== "empty" && (
+              {normalizedVariant !== "empty" && (
                 <div className={`text-center py-0.5 border border-dashed rounded-sm ${accentTagColor}`}>
-                  {variant === "session expired" ? "expired" : variant === "offline" ? "offline" : "failed"}
+                  {tagLabel}
                 </div>
               )}
               <div className="space-y-1">
