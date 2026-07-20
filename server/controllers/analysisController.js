@@ -1,8 +1,59 @@
 const logger = require("../utils/logger");
 const { extractResumeText } = require("../services/extractText");
-const { analyzeWithGemini } = require("../services/geminiService");
+const { analyzeWithGemini, GeminiError, isGeminiError } = require("../services/geminiService");
 const Analysis = require("../models/Analysis");
 const { cleanupUploadedFile } = require("../utils/uploadCleanup");
+
+function mapGeminiErrorToStatus(error) {
+  if (!isGeminiError(error)) return 502;
+  switch (error.code) {
+    case "INVALID_API_KEY":
+      return 500;
+    case "RATE_LIMITED":
+      return 429;
+    case "BAD_REQUEST":
+    case "SAFETY_BLOCKED":
+    case "INVALID_JSON":
+    case "MALFORMED_JSON":
+      return 400;
+    case "MODEL_NOT_FOUND":
+    case "SERVICE_UNAVAILABLE":
+    case "UPSTREAM_ERROR":
+    case "TIMEOUT":
+    case "NETWORK_ERROR":
+    case "EMPTY_RESPONSE":
+    case "MISSING_RESPONSE_OBJECT":
+    case "NO_CANDIDATES":
+    case "EMPTY_CONTENT":
+      return 502;
+    default:
+      return 502;
+  }
+}
+
+function getUserFacingMessage(error) {
+  if (!isGeminiError(error)) return "AI analysis failed";
+  switch (error.code) {
+    case "INVALID_API_KEY":
+      return "AI service configuration error";
+    case "RATE_LIMITED":
+      return "Too many requests. Please try again later.";
+    case "SAFETY_BLOCKED":
+      return "Content was blocked by safety filters. Please try a different resume.";
+    case "INVALID_JSON":
+    case "MALFORMED_JSON":
+      return "AI returned an invalid response. Please try again.";
+    case "SERVICE_UNAVAILABLE":
+    case "UPSTREAM_ERROR":
+    case "TIMEOUT":
+    case "NETWORK_ERROR":
+      return "AI service temporarily unavailable. Please try again.";
+    case "MODEL_NOT_FOUND":
+      return "AI model unavailable. Please try again later.";
+    default:
+      return "AI analysis failed";
+  }
+}
 
 async function analyze(req, res) {
   const filePath = req.file?.path;
@@ -22,8 +73,9 @@ async function analyze(req, res) {
     try {
       aiResult = await analyzeWithGemini({ resumeText, jobDescription });
     } catch (err) {
-      logger.error("Gemini error:", err);
-      return res.status(502).json({ error: "AI analysis failed", details: err.message });
+      logger.error("Gemini error:", { code: err?.code, message: err?.message, status: err?.status, retryable: err?.retryable });
+      const status = mapGeminiErrorToStatus(err);
+      return res.status(status).json({ error: getUserFacingMessage(err) });
     }
 
     const analysis = await Analysis.create({

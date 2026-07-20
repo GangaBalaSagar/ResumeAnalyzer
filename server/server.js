@@ -33,11 +33,15 @@ app.get("/api/health", (req, res) => {
 app.use(errorHandler);
 
 mongoose.connect(config.database.mongoUri)
-  .then(() => logger.info("Connected to MongoDB Atlas"))
-  .catch(err => logger.error("MongoDB error:", err));
-
-app.listen(config.server.port, () => {
-  logger.info("Server running on port", config.server.port);
-});
+  .then(() => {
+    logger.info("Connected to MongoDB Atlas");
+    app.listen(config.server.port, () => {
+      logger.info("Server running on port", config.server.port);
+    });
+  })
+  .catch(err => {
+    logger.error("MongoDB connection failed:", err);
+    process.exit(1);
+  });
 
 
