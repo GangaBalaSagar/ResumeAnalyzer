@@ -1,13 +1,15 @@
 const logger = require("../utils/logger");
 
+const isDevelopment = (process.env.NODE_ENV || "").trim().toLowerCase() === "development";
+
 function errorHandler(err, req, res, next) {
   logger.error(err.message || "Internal Server Error", err);
 
   const response = {
-    error: err.message || "Internal Server Error",
+    error: isDevelopment ? (err.message || "Internal Server Error") : "Internal Server Error",
   };
 
-  if (process.env.NODE_ENV !== "production") {
+  if (isDevelopment) {
     response.stack = err.stack;
   }
 
