@@ -1,5 +1,5 @@
 const logger = require("../utils/logger");
-const { extractResumeText } = require("../services/extractText");
+const { extractResumeText, ExtractionError, isExtractionError } = require("../services/extractText");
 const { analyzeWithGemini, GeminiError, isGeminiError } = require("../services/geminiService");
 const Analysis = require("../models/Analysis");
 const { cleanupUploadedFile } = require("../utils/uploadCleanup");
@@ -55,6 +55,65 @@ function getUserFacingMessage(error) {
   }
 }
 
+function mapExtractionErrorToStatus(error) {
+  if (!isExtractionError(error)) return 400;
+  switch (error.code) {
+    case "EXTRACTION_TIMEOUT":
+      return 408;
+    case "PASSWORD_PROTECTED":
+    case "CORRUPTED_PDF":
+    case "CORRUPTED_DOCX":
+    case "TRUNCATED_PDF":
+    case "EMPTY_FILE":
+    case "EMPTY_DOCUMENT":
+    case "UNSUPPORTED_TYPE":
+    case "TOO_MANY_PAGES":
+    case "FILE_NOT_FOUND":
+    case "MISSING_FILEPATH":
+      return 400;
+    case "FILE_READ_ERROR":
+    case "PDF_PARSE_ERROR":
+    case "DOCX_PARSE_ERROR":
+    case "INVALID_PDF_RESULT":
+    case "INVALID_DOCX_RESULT":
+    case "EXTRACTION_EMPTY":
+      return 500;
+    default:
+      return 400;
+  }
+}
+
+function getExtractionUserMessage(error) {
+  if (!isExtractionError(error)) return "Failed to extract text from document";
+  switch (error.code) {
+    case "EXTRACTION_TIMEOUT":
+      return "Document processing timed out. Please try a smaller file.";
+    case "PASSWORD_PROTECTED":
+      return "Password-protected documents are not supported. Please remove protection and try again.";
+    case "CORRUPTED_PDF":
+      return "The PDF file appears to be corrupted. Please try a different file.";
+    case "CORRUPTED_DOCX":
+      return "The DOCX file appears to be corrupted. Please try a different file.";
+    case "TRUNCATED_PDF":
+      return "The PDF file is incomplete or truncated. Please try a different file.";
+    case "EMPTY_FILE":
+      return "The uploaded file is empty.";
+    case "EMPTY_DOCUMENT":
+      return "The document contains no extractable text.";
+    case "UNSUPPORTED_TYPE":
+      return "Unsupported file type. Please upload a PDF or DOCX file.";
+    case "TOO_MANY_PAGES":
+      return `Document exceeds maximum page limit (${error.details?.pageCount || '50'}). Please use a shorter document.`;
+    case "FILE_NOT_FOUND":
+    case "MISSING_FILEPATH":
+      return "File not found. Please try uploading again.";
+    case "FILE_READ_ERROR":
+      return "Failed to read the uploaded file. Please try again.";
+    default:
+      return "Failed to extract text from document. Please try a different file.";
+  }
+}
+
 async function analyze(req, res) {
   const filePath = req.file?.path;
 
@@ -65,8 +124,13 @@ async function analyze(req, res) {
     try {
       resumeText = await extractResumeText(req.file.path, req.file.mimetype);
     } catch (err) {
+      if (isExtractionError(err)) {
+        logger.error("Text extraction error:", { code: err.code, message: err.message, status: err.status, details: err.details });
+        const status = mapExtractionErrorToStatus(err);
+        return res.status(status).json({ error: getExtractionUserMessage(err) });
+      }
       logger.error("Text extraction error:", err.message);
-      return res.status(400).json({ error: "Failed to extract resume text" });
+      return res.status(500).json({ error: "Failed to extract resume text" });
     }
 
     let aiResult;
