@@ -212,7 +212,7 @@ async function analyzeWithGemini({ resumeText, jobDescription }) {
       const end = rawText.lastIndexOf("}");
 
       if (start === -1 || end === -1) {
-        logger.error("❌ Invalid Gemini response - no JSON object found:", rawText);
+        logger.error(`❌ Invalid Gemini response - no JSON object found (response length: ${rawText.length})`);
         throw new GeminiError("Gemini did not return valid JSON", "INVALID_JSON", 502, false, null);
       }
 
@@ -228,7 +228,7 @@ async function analyzeWithGemini({ resumeText, jobDescription }) {
         return parsed;
       } catch (err) {
         if (err instanceof GeminiError) throw err;
-        logger.error("❌ JSON parse error:", err, "\nRaw:", rawText);
+        logger.error(`❌ JSON parse error (response length: ${rawText.length}):`, err.message);
         throw new GeminiError("Gemini returned malformed JSON", "MALFORMED_JSON", 502, false, err);
       }
     } catch (error) {
