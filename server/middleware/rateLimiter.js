@@ -10,11 +10,9 @@ const rateLimit = require('express-rate-limit');
 
 const DEFAULT_MESSAGE = { error: 'Too many requests, please try again later.' };
 
-function isDevelopmentRequest(req) {
-  const env = process.env.NODE_ENV || '';
-  const host = req.hostname || '';
-
-  return env === 'development' || env === 'test' || host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '::1';
+function isDevelopmentRequest() {
+  const env = (process.env.NODE_ENV || '').trim().toLowerCase();
+  return env === 'development' || env === 'test';
 }
 
 function createLimiter(options = {}) {
@@ -24,7 +22,8 @@ function createLimiter(options = {}) {
     standardHeaders: true,
     legacyHeaders: false,
     keyGenerator: (req) => req.user?.id || req.ip,
-    skip: (req) => isDevelopmentRequest(req),
+    skip: () => isDevelopmentRequest(),
+    validate: { trustProxy: false },
     ...options,
   });
 }
