@@ -10,7 +10,9 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAbortController } from "../../hooks/useAbortController.js";
-import { getStandardErrorMessage } from "../../utils/errors.js";
+import StatusSheet from "../../components/status/StatusSheet.jsx";
+import failureMessages from "../../lib/failureMessages.js";
+import { mapErrorToType } from "../../utils/errorMapper.js";
 
 /**
  * Report — the signature "expertly reviewed document" experience.
@@ -134,7 +136,8 @@ export default function Report() {
       .catch((err) => {
         if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
         setPayload(null);
-        setError(getStandardErrorMessage(err) || "Unable to load report.");
+        const type = mapErrorToType(err);
+        setError({ isApiError: true, type });
       })
       .finally(() => {
         if (requestId === latestRequestIdRef.current) {
@@ -195,33 +198,30 @@ export default function Report() {
     );
   }
 
-  if (error) {
+  if (error && error.isApiError) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-6" lift>
-          <PaperClip />
-          <Eyebrow>Trouble</Eyebrow>
-          <div className="mt-2 font-serif text-2xl">Unable to load report</div>
-          <div className="rule-line my-5" />
-          <p className="text-sm text-ink-muted mb-6">
-            We couldn't load this analysis right now. This can happen if the report was deleted, the link is invalid, or the network request failed.
-          </p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
-            >
-              Retry
-            </button>
-            <Link
-              to="/app/dashboard"
-              className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors"
-            >
-              Back to Dashboard
-            </Link>
-          </div>
-        </Sheet>
+        <StatusSheet
+          variant={
+            error.type === "OFFLINE" || error.type === "NETWORK"
+              ? "offline"
+              : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
+              ? "service unavailable"
+              : error.type === "SESSION_EXPIRED"
+              ? "session expired"
+              : "error"
+          }
+          title={failureMessages[error.type]?.title || "Unable to Load Report"}
+          description={failureMessages[error.type]?.description || "We encountered an issue loading this review report."}
+          primaryAction={{
+            label: "Retry",
+            onClick: () => window.location.reload(),
+          }}
+          secondaryAction={{
+            label: "Back to Dashboard",
+            to: "/app/dashboard",
+          }}
+        />
       </div>
     );
   }
@@ -229,20 +229,15 @@ export default function Report() {
   if (!result) {
     return (
       <div className="max-w-3xl mx-auto text-center py-16">
-        <Sheet className="relative p-6" lift>
-          <PaperClip />
-          <Eyebrow>No analysis yet</Eyebrow>
-          <h1 className="mt-3 font-serif text-4xl">No analysis to open yet.</h1>
-          <p className="mt-4 text-ink-muted">
-            Upload a resume and paste a job description to begin a new analysis.
-          </p>
-          <Link
-            to="/app/analyze"
-            className="inline-block mt-8 px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90"
-          >
-            Begin an analysis →
-          </Link>
-        </Sheet>
+        <StatusSheet
+          variant="empty"
+          title="No analysis report open"
+          description="Upload a resume and paste a job description to begin a new review."
+          primaryAction={{
+            label: "Begin an analysis",
+            to: "/app/analyze",
+          }}
+        />
       </div>
     );
   }

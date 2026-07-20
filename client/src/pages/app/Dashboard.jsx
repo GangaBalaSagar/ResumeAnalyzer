@@ -6,7 +6,9 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAbortController } from "../../hooks/useAbortController.js";
-import { getStandardErrorMessage } from "../../utils/errors.js";
+import StatusSheet from "../../components/status/StatusSheet.jsx";
+import failureMessages from "../../lib/failureMessages.js";
+import { mapErrorToType } from "../../utils/errorMapper.js";
 
 /**
  * Dashboard — the command center of Resume Analyzer Pro.
@@ -76,8 +78,13 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [draft, setDraft] = useState({ jd: "", lastResult: null });
+  const [reloadKey, setReloadKey] = useState(0);
   const { createController, abort } = useAbortController();
   const latestRequestIdRef = useRef(0);
+
+  function handleRefresh() {
+    setReloadKey((prev) => prev + 1);
+  }
 
   function handleOpenReport(id) {
     if (id) {
@@ -98,7 +105,8 @@ export default function Dashboard() {
         setError(null);
       } catch (err) {
         if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
-        setError(getStandardErrorMessage(err) || "Could not read the archive.");
+        const mappedType = mapErrorToType(err);
+        setError({ isApiError: true, type: mappedType });
       } finally {
         if (requestId === latestRequestIdRef.current) {
           setLoading(false);
@@ -106,7 +114,7 @@ export default function Dashboard() {
       }
     })();
     return () => abort();
-  }, [createController, abort]);
+  }, [createController, abort, reloadKey]);
 
   // Read the "continue working" hints written by the Analyze page.
   useEffect(() => {
@@ -252,35 +260,54 @@ export default function Dashboard() {
             </div>
             <div className="rule-line my-5" />
 
-            {error && (
-              <div className="border-l-2 border-destructive/60 bg-destructive/5 pl-4 pr-4 py-3 text-sm font-serif italic text-destructive">
-                {error}
+            {error && error.isApiError ? (
+              <div className="py-2">
+                <StatusSheet
+                  variant={
+                    error.type === "OFFLINE" || error.type === "NETWORK"
+                      ? "offline"
+                      : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
+                      ? "service unavailable"
+                      : error.type === "SESSION_EXPIRED"
+                      ? "session expired"
+                      : "error"
+                  }
+                  title={failureMessages[error.type]?.title || "Unable to Load Dashboard"}
+                  description={failureMessages[error.type]?.description || "We encountered an issue loading your recent activity."}
+                  primaryAction={{
+                    label: "Refresh Dashboard",
+                    onClick: handleRefresh,
+                  }}
+                  lift={false}
+                />
               </div>
-            )}
+            ) : (
+              <>
+                {loading && (
+                  <div className="py-10 text-center text-sm text-ink-muted italic font-serif">
+                    Loading your archive…
+                  </div>
+                )}
 
-            {!error && loading && (
-              <div className="py-10 text-center text-sm text-ink-muted italic font-serif">
-                Loading your archive…
-              </div>
-            )}
-
-            {!error && !loading && recent.length === 0 && (
-              <div className="py-10 text-center">
-                <div className="mx-auto w-14 h-16 relative opacity-70">
-                  <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-5deg]" />
-                  <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[3deg] translate-x-1" />
-                </div>
-                <div className="mt-4 font-serif text-[17px]">Nothing filed yet.</div>
-                <div className="mt-1 text-sm text-ink-muted">
-                  Your first analysis will land here.
-                </div>
-                <Link
-                  to="/app/analyze"
-                  className="mt-5 inline-block text-sm px-4 py-2 border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
-                >
-                  Analyze a resume
-                </Link>
-              </div>
+                {!loading && recent.length === 0 && (
+                  <div className="py-10 text-center">
+                    <div className="mx-auto w-14 h-16 relative opacity-70">
+                      <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-5deg]" />
+                      <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[3deg] translate-x-1" />
+                    </div>
+                    <div className="mt-4 font-serif text-[17px]">Nothing filed yet.</div>
+                    <div className="mt-1 text-sm text-ink-muted">
+                      Your first analysis will land here.
+                    </div>
+                    <Link
+                      to="/app/analyze"
+                      className="mt-5 inline-block text-sm px-4 py-2 border border-ink/20 hover:border-ink/60 rounded-sm transition-colors"
+                    >
+                      Analyze a resume
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
 
             {!error && !loading && recent.length > 0 && (

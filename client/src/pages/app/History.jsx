@@ -6,7 +6,10 @@ import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useAbortController, useRequestDedupe } from "../../hooks/useAbortController.js";
-import { getStandardErrorMessage } from "../../utils/errors.js";
+import StatusSheet from "../../components/status/StatusSheet.jsx";
+import StatusInline from "../../components/status/StatusInline.jsx";
+import failureMessages from "../../lib/failureMessages.js";
+import { mapErrorToType } from "../../utils/errorMapper.js";
 
 /**
  * History — an archival cabinet of previously analyzed resumes.
@@ -50,6 +53,7 @@ export default function History() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [deletingId, setDeletingId] = useState(null);
@@ -72,13 +76,14 @@ export default function History() {
     const requestId = ++latestRequestIdRef.current;
     try {
       setLoading(true);
+      setError(null);
       const res = await api.get("/analyses", { signal: controller.signal });
       if (requestId !== latestRequestIdRef.current || controller.signal.aborted) return;
       setItems(res.data?.items ?? []);
-      setError(null);
     } catch (err) {
       if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
-      setError(getStandardErrorMessage(err) || "Could not load past analyses.");
+      const type = mapErrorToType(err);
+      setError({ isApiError: true, type });
     } finally {
       if (requestId === latestRequestIdRef.current) {
         setLoading(false);
@@ -121,10 +126,12 @@ export default function History() {
     try {
       setDeletingId(item._id);
       setDeleteDialogItem(null);
+      setDeleteError(null);
       await api.delete(`/analyses/${item._id}`);
       setItems((cur) => cur.filter((x) => x._id !== item._id));
     } catch (err) {
-      setError(getStandardErrorMessage(err) || "Could not delete this record.");
+      const type = mapErrorToType(err);
+      setDeleteError(failureMessages[type]?.description || "Could not delete this record.");
     } finally {
       endDeleteRequest(item._id);
       setDeletingId(null);
@@ -193,90 +200,115 @@ export default function History() {
       <div className="grid grid-cols-12 gap-6 lg:gap-10 items-start">
         {/* MAIN — the ledger */}
         <div className="col-span-12 lg:col-span-8 space-y-6">
-          {/* Search + summary strip */}
-          <Sheet className="relative p-5 md:p-6 landing-feature-card" lift>
-            <div className="flex items-center gap-4 flex-wrap">
-              <div className="flex-1 min-w-[220px]">
-                <label className="block eyebrow text-[10px]">Search your archive</label>
-                <div className="mt-2 flex items-center gap-3 border-b border-rule focus-within:border-ink transition-colors">
-                  <SearchGlyph />
-                  <input
-                    type="search"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Filter by document name…"
-                    className="flex-1 bg-transparent border-0 focus:outline-none text-[15px] font-serif py-2 placeholder:text-ink-muted/50"
-                  />
-                  {query && (
-                    <button
-                      type="button"
-                      onClick={() => setQuery("")}
-                      className="eyebrow text-[10px] text-ink-muted hover:text-ink"
-                    >
-                      clear
-                    </button>
-                  )}
+          {error && error.isApiError ? (
+            <StatusSheet
+              variant={
+                error.type === "OFFLINE" || error.type === "NETWORK"
+                  ? "offline"
+                  : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
+                  ? "service unavailable"
+                  : error.type === "SESSION_EXPIRED"
+                  ? "session expired"
+                  : "error"
+              }
+              title={failureMessages[error.type]?.title || "Archive Unavailable"}
+              description={failureMessages[error.type]?.description || "We encountered an issue loading your archived reviews."}
+              primaryAction={{
+                label: "Retry",
+                onClick: load,
+              }}
+              secondaryAction={{
+                label: "Back to Dashboard",
+                to: "/app/dashboard",
+              }}
+            />
+          ) : (
+            <>
+              {/* Search + summary strip */}
+              <Sheet className="relative p-5 md:p-6 landing-feature-card" lift>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <div className="flex-1 min-w-[220px]">
+                    <label className="block eyebrow text-[10px]">Search your archive</label>
+                    <div className="mt-2 flex items-center gap-3 border-b border-rule focus-within:border-ink transition-colors">
+                      <SearchGlyph />
+                      <input
+                        type="search"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Filter by document name…"
+                        className="flex-1 bg-transparent border-0 focus:outline-none text-[15px] font-serif py-2 placeholder:text-ink-muted/50"
+                      />
+                      {query && (
+                        <button
+                          type="button"
+                          onClick={() => setQuery("")}
+                          className="eyebrow text-[10px] text-ink-muted hover:text-ink"
+                        >
+                          clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="eyebrow text-[10px]">Showing</div>
+                    <div className="mt-1 font-serif text-[22px] leading-none">
+                      {filtered.length}
+                      <span className="text-[13px] text-ink-muted/70 ml-1">
+                        of {items.length}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="text-right shrink-0">
-                <div className="eyebrow text-[10px]">Showing</div>
-                <div className="mt-1 font-serif text-[22px] leading-none">
-                  {filtered.length}
-                  <span className="text-[13px] text-ink-muted/70 ml-1">
-                    of {items.length}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Sheet>
+              </Sheet>
 
-          {/* Error */}
-          {error && (
-            <div className="border-l-2 border-destructive/60 bg-destructive/5 pl-4 pr-4 py-3 text-sm font-serif italic text-destructive">
-              {error}
-              <div className="mt-1 text-[11px] text-ink-muted not-italic font-sans">
-                Check that <code className="font-mono">VITE_API_URL</code> points at your backend.
-              </div>
-            </div>
-          )}
+              {/* Action delete error notice */}
+              {deleteError && (
+                <StatusInline
+                  variant="error"
+                  message={deleteError}
+                  className="mb-4"
+                />
+              )}
 
-          {/* Loading */}
-          {loading && !error && (
-            <Sheet className="relative p-10 landing-feature-card" lift>
-              <PaperClip />
-              <Eyebrow>One moment</Eyebrow>
-              <div className="mt-2 font-serif text-2xl">Loading your archive…</div>
-              <div className="rule-line my-5" />
-              <div className="space-y-3">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="h-14 bg-secondary/40 border border-rule rounded-sm animate-pulse"
-                  />
-                ))}
-              </div>
-            </Sheet>
-          )}
+              {/* Loading */}
+              {loading && (
+                <Sheet className="relative p-10 landing-feature-card" lift>
+                  <PaperClip />
+                  <Eyebrow>One moment</Eyebrow>
+                  <div className="mt-2 font-serif text-2xl">Loading your archive…</div>
+                  <div className="rule-line my-5" />
+                  <div className="space-y-3">
+                    {[0, 1, 2].map((i) => (
+                      <div
+                        key={i}
+                        className="h-14 bg-secondary/40 border border-rule rounded-sm animate-pulse"
+                      />
+                    ))}
+                  </div>
+                </Sheet>
+              )}
 
-          {/* Empty */}
-          {!loading && !error && items.length === 0 && (
-            <EmptyCabinet />
-          )}
+              {/* Empty */}
+              {!loading && items.length === 0 && (
+                <EmptyCabinet />
+              )}
 
-          {/* Empty (filtered) */}
-          {!loading && !error && items.length > 0 && filtered.length === 0 && (
-            <Sheet className="relative p-10 text-center landing-feature-card" lift>
-              <Eyebrow>No matching results</Eyebrow>
-              <div className="mt-2 font-serif text-xl">
-                Nothing on file matches "{query}".
-              </div>
-              <button
-                onClick={() => setQuery("")}
-                className="mt-4 text-sm story-link"
-              >
-                Clear the search →
-              </button>
-            </Sheet>
+              {/* Empty (filtered) */}
+              {!loading && items.length > 0 && filtered.length === 0 && (
+                <Sheet className="relative p-10 text-center landing-feature-card" lift>
+                  <Eyebrow>No matching results</Eyebrow>
+                  <div className="mt-2 font-serif text-xl">
+                    Nothing on file matches "{query}".
+                  </div>
+                  <button
+                    onClick={() => setQuery("")}
+                    className="mt-4 text-sm story-link"
+                  >
+                    Clear the search →
+                  </button>
+                </Sheet>
+              )}
+            </>
           )}
 
           {/* The ledger */}
