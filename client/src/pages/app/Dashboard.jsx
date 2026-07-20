@@ -100,7 +100,7 @@ export default function Dashboard() {
         if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
         setError(getStandardErrorMessage(err) || "Could not read the archive.");
       } finally {
-        if (requestId === latestRequestIdRef.current && !controller.signal.aborted) {
+        if (requestId === latestRequestIdRef.current) {
           setLoading(false);
         }
       }

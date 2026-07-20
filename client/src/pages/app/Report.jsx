@@ -137,7 +137,7 @@ export default function Report() {
         setError(getStandardErrorMessage(err) || "Unable to load report.");
       })
       .finally(() => {
-        if (requestId === latestRequestIdRef.current && !controller.signal.aborted) {
+        if (requestId === latestRequestIdRef.current) {
           setLoading(false);
         }
       });

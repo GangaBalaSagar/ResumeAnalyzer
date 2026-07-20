@@ -5,7 +5,7 @@ import AtsScore, { bandFor } from "../../components/app/AtsScore.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
-import { useAbortController } from "../../hooks/useAbortController.js";
+import { useAbortController, useRequestDedupe } from "../../hooks/useAbortController.js";
 import { getStandardErrorMessage } from "../../utils/errors.js";
 
 /**
@@ -55,9 +55,9 @@ export default function History() {
   const [deletingId, setDeletingId] = useState(null);
   const [deleteDialogItem, setDeleteDialogItem] = useState(null);
   const { user } = useAuth();
-  const loadGuard = useRef(false);
   const deleteTriggerRef = useRef(null);
   const { createController, abort } = useAbortController();
+  const { startRequest: startDeleteRequest, endRequest: endDeleteRequest, isInFlight: isDeleteInFlight } = useRequestDedupe();
   const latestRequestIdRef = useRef(0);
 
   function handleViewReport(id) {
@@ -80,7 +80,7 @@ export default function History() {
       if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
       setError(getStandardErrorMessage(err) || "Could not load past analyses.");
     } finally {
-      if (requestId === latestRequestIdRef.current && !controller.signal.aborted) {
+      if (requestId === latestRequestIdRef.current) {
         setLoading(false);
       }
     }
@@ -96,13 +96,9 @@ export default function History() {
       setPage(1);
       setDeletingId(null);
       setDeleteDialogItem(null);
-      loadGuard.current = false;
       return;
     }
 
-    if (loadGuard.current) return;
-
-    loadGuard.current = true;
     load();
     return () => abort();
   }, [user, createController, abort]);
@@ -120,6 +116,8 @@ export default function History() {
   async function confirmDelete() {
     const item = deleteDialogItem;
     if (!item?._id) return;
+    if (!startDeleteRequest(item._id)) return;
+
     try {
       setDeletingId(item._id);
       setDeleteDialogItem(null);
@@ -128,6 +126,7 @@ export default function History() {
     } catch (err) {
       setError(getStandardErrorMessage(err) || "Could not delete this record.");
     } finally {
+      endDeleteRequest(item._id);
       setDeletingId(null);
       deleteTriggerRef.current?.focus?.();
       deleteTriggerRef.current = null;
