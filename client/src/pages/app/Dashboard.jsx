@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sheet, Eyebrow, StickyNote, PaperClip } from "../../components/paper.jsx";
 import AtsScore from "../../components/app/AtsScore.jsx";
@@ -6,6 +6,7 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAbortController } from "../../hooks/useAbortController.js";
+import { getStandardErrorMessage } from "../../utils/errors.js";
 
 /**
  * Dashboard — the command center of Resume Analyzer Pro.
@@ -76,6 +77,7 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [draft, setDraft] = useState({ jd: "", lastResult: null });
   const { createController, abort } = useAbortController();
+  const latestRequestIdRef = useRef(0);
 
   function handleOpenReport(id) {
     if (id) {
@@ -86,18 +88,21 @@ export default function Dashboard() {
 
   useEffect(() => {
     const controller = createController();
+    const requestId = ++latestRequestIdRef.current;
     (async () => {
       try {
         setLoading(true);
         const res = await api.get("/analyses", { signal: controller.signal });
-        if (controller.signal.aborted) return;
+        if (requestId !== latestRequestIdRef.current || controller.signal.aborted) return;
         setItems(res.data?.items ?? []);
         setError(null);
       } catch (err) {
-        if (err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
-        setError(err?.response?.data?.error || err?.message || "Could not read the archive.");
+        if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
+        setError(getStandardErrorMessage(err) || "Could not read the archive.");
       } finally {
-        if (!controller.signal.aborted) setLoading(false);
+        if (requestId === latestRequestIdRef.current && !controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     })();
     return () => abort();

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
@@ -10,6 +10,7 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAbortController } from "../../hooks/useAbortController.js";
+import { getStandardErrorMessage } from "../../utils/errors.js";
 
 /**
  * Report — the signature "expertly reviewed document" experience.
@@ -89,6 +90,7 @@ export default function Report() {
   const { user } = useAuth();
   const { currentReportId } = useReport();
   const { createController, abort } = useAbortController();
+  const latestRequestIdRef = useRef(0);
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -119,22 +121,23 @@ export default function Report() {
     }
 
     const controller = createController();
+    const requestId = ++latestRequestIdRef.current;
     setLoading(true);
     setError(null);
 
     api
       .get(`/analyses/${currentReportId}`, { signal: controller.signal })
       .then((res) => {
-        if (controller.signal.aborted) return;
+        if (requestId !== latestRequestIdRef.current || controller.signal.aborted) return;
         setPayload(res.data);
       })
       .catch((err) => {
-        if (err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
+        if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
         setPayload(null);
-        setError(err);
+        setError(getStandardErrorMessage(err) || "Unable to load report.");
       })
       .finally(() => {
-        if (!controller.signal.aborted) {
+        if (requestId === latestRequestIdRef.current && !controller.signal.aborted) {
           setLoading(false);
         }
       });

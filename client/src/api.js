@@ -82,7 +82,7 @@ export function setupApiInterceptor(
       }
       // Network error: backend unreachable
       if (isNetworkError && !isLoggingOut) {
-        setAuthNotice("Cannot reach the server. Please check your connection.");
+        setAuthNotice("Unable to reach the server. Check your internet connection and try again.");
       }
       return Promise.reject(error);
     }

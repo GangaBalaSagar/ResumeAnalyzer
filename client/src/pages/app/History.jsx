@@ -6,6 +6,7 @@ import { useReport } from "../../contexts/ReportContext.jsx";
 import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useAbortController } from "../../hooks/useAbortController.js";
+import { getStandardErrorMessage } from "../../utils/errors.js";
 
 /**
  * History — an archival cabinet of previously analyzed resumes.
@@ -57,6 +58,7 @@ export default function History() {
   const loadGuard = useRef(false);
   const deleteTriggerRef = useRef(null);
   const { createController, abort } = useAbortController();
+  const latestRequestIdRef = useRef(0);
 
   function handleViewReport(id) {
     if (id) {
@@ -67,17 +69,20 @@ export default function History() {
 
   async function load() {
     const controller = createController();
+    const requestId = ++latestRequestIdRef.current;
     try {
       setLoading(true);
       const res = await api.get("/analyses", { signal: controller.signal });
-      if (controller.signal.aborted) return;
+      if (requestId !== latestRequestIdRef.current || controller.signal.aborted) return;
       setItems(res.data?.items ?? []);
       setError(null);
     } catch (err) {
-      if (err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
-      setError(err?.response?.data?.error || err?.message || "Could not load past analyses.");
+      if (requestId !== latestRequestIdRef.current || err.name === "AbortError" || err.name === "CanceledError" || controller.signal.aborted) return;
+      setError(getStandardErrorMessage(err) || "Could not load past analyses.");
     } finally {
-      if (!controller.signal.aborted) setLoading(false);
+      if (requestId === latestRequestIdRef.current && !controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   }
 
@@ -121,7 +126,7 @@ export default function History() {
       await api.delete(`/analyses/${item._id}`);
       setItems((cur) => cur.filter((x) => x._id !== item._id));
     } catch (err) {
-      setError(err?.response?.data?.error || err?.message || "Could not delete this record.");
+      setError(getStandardErrorMessage(err) || "Could not delete this record.");
     } finally {
       setDeletingId(null);
       deleteTriggerRef.current?.focus?.();

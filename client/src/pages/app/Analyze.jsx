@@ -5,6 +5,7 @@ import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import { useAbortController, useRequestDedupe } from "../../hooks/useAbortController.js";
+import { getStandardErrorMessage } from "../../utils/errors.js";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -194,13 +195,8 @@ export default function Analyze() {
       if (stageRef.current) clearInterval(stageRef.current);
       setProgress(0);
       setStageIdx(0);
-      const isNetworkError = !err?.response;
       setError(
-        isNetworkError
-          ? "Cannot reach the server. Please check your connection."
-          : err?.response?.data?.error ||
-            err?.message ||
-            "We couldn't complete the review. Please try again."
+        getStandardErrorMessage(err) || "We couldn't complete the review. Please try again."
       );
     } finally {
       endRequest("analyze");
