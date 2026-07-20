@@ -4,6 +4,7 @@ const { extractResumeText, ExtractionError, isExtractionError } = require("../se
 const { analyzeWithGemini, GeminiError, isGeminiError } = require("../services/geminiService");
 const Analysis = require("../models/Analysis");
 const { cleanupUploadedFile } = require("../utils/uploadCleanup");
+const { validateFileSignature } = require("../middleware/upload");
 
 function mapGeminiErrorToStatus(error) {
   if (!isGeminiError(error)) return 502;
@@ -124,6 +125,12 @@ async function analyze(req, res) {
 
   try {
     const jobDescription = req.body.jobDescription;
+
+    // Validate file signature (magic bytes) before processing
+    const signatureValid = await validateFileSignature(req.file.path, req.file.mimetype);
+    if (!signatureValid) {
+      return res.status(400).json({ error: "File content does not match the expected format. Please upload a valid PDF or DOCX file." });
+    }
 
     let resumeText = "";
     try {

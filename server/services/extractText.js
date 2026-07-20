@@ -54,7 +54,7 @@ async function extractFromPDF(filePath) {
     buffer = await fs.promises.readFile(filePath);
   } catch (err) {
     if (err.code === 'ENOENT') {
-      throw new ExtractionError('File not found during extraction', 'FILE_NOT_FOUND', 400, { filePath });
+      throw new ExtractionError('File not found during extraction', 'FILE_NOT_FOUND', 400);
     }
     throw new ExtractionError('Failed to read file from disk', 'FILE_READ_ERROR', 500, { originalError: err.message });
   }
@@ -108,7 +108,7 @@ async function extractFromDOCX(filePath) {
       throw new ExtractionError('Corrupted or invalid DOCX file', 'CORRUPTED_DOCX', 400);
     }
     if (msg.includes('enoent') || err.code === 'ENOENT') {
-      throw new ExtractionError('File not found during extraction', 'FILE_NOT_FOUND', 400, { filePath });
+      throw new ExtractionError('File not found during extraction', 'FILE_NOT_FOUND', 400);
     }
     throw new ExtractionError('DOCX parsing failed', 'DOCX_PARSE_ERROR', 500, { originalError: err?.message });
   }
