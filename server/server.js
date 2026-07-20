@@ -19,8 +19,8 @@ app.use(cors({
   origin: config.cors.allowedOrigins
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: false }));
 app.use("/api", generalApiLimiter);
 
 // API routes
