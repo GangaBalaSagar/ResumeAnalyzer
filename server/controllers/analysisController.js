@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const logger = require("../utils/logger");
 const { extractResumeText, ExtractionError, isExtractionError } = require("../services/extractText");
 const { analyzeWithGemini, GeminiError, isGeminiError } = require("../services/geminiService");
@@ -199,9 +200,13 @@ async function listAnalyses(req, res) {
 }
 
 async function getAnalysis(req, res) {
-  const item = await Analysis.findById(req.params.id);
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(404).json({ error: "Analysis not found" });
+  }
 
-  if (!item || item.userId !== req.user.id) {
+  const item = await Analysis.findOne({ _id: req.params.id, userId: req.user.id });
+
+  if (!item) {
     return res.status(404).json({ error: "Analysis not found" });
   }
 
@@ -209,13 +214,15 @@ async function getAnalysis(req, res) {
 }
 
 async function deleteAnalysis(req, res) {
-  const item = await Analysis.findById(req.params.id);
-
-  if (!item || item.userId !== req.user.id) {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     return res.status(404).json({ error: "Analysis not found" });
   }
 
-  await Analysis.findByIdAndDelete(req.params.id);
+  const item = await Analysis.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
+
+  if (!item) {
+    return res.status(404).json({ error: "Analysis not found" });
+  }
 
   res.json({ success: true });
 }
