@@ -5,7 +5,10 @@ import api from "../../api.js";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useReport } from "../../contexts/ReportContext.jsx";
 import { useAbortController, useRequestDedupe } from "../../hooks/useAbortController.js";
-import { getStandardErrorMessage } from "../../utils/errors.js";
+import StatusSheet from "../../components/status/StatusSheet.jsx";
+import StatusInline from "../../components/status/StatusInline.jsx";
+import failureMessages from "../../lib/failureMessages.js";
+import { mapErrorToType } from "../../utils/errorMapper.js";
 
 const LS_JD_KEY = "ra_jd_v1";
 const LS_LAST_RESULT = "ra_last_result_v1";
@@ -62,9 +65,22 @@ export default function Analyze() {
   const [progress, setProgress] = useState(0);
   const [stageIdx, setStageIdx] = useState(0);
   const [error, setError] = useState(null);
+  const [isSlow, setIsSlow] = useState(false);
   const fileInputRef = useRef(null);
   const progressRef = useRef(null);
   const stageRef = useRef(null);
+
+  // Monitor loading duration to show a reassuring message if it takes too long
+  useEffect(() => {
+    if (!loading) {
+      setIsSlow(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setIsSlow(true);
+    }, 15000); // 15 seconds
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   function resetFileInput() {
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -195,9 +211,9 @@ export default function Analyze() {
       if (stageRef.current) clearInterval(stageRef.current);
       setProgress(0);
       setStageIdx(0);
-      setError(
-        getStandardErrorMessage(err) || "We couldn't complete the review. Please try again."
-      );
+      
+      const mappedType = mapErrorToType(err);
+      setError({ isApiError: true, type: mappedType });
     } finally {
       endRequest("analyze");
       setLoading(false);
@@ -282,7 +298,7 @@ export default function Analyze() {
           <br />
           <span className="italic font-normal">to begin.</span>
         </h1>
-<p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
+        <p className="mt-5 text-[15px] leading-relaxed text-ink-muted max-w-xl">
           Drop a PDF or DOCX, paste the job description, and we'll compare your
           resume against the requirements.
         </p>
@@ -291,144 +307,169 @@ export default function Analyze() {
       <div className="grid grid-cols-12 gap-6 lg:gap-10 items-start">
         {/* WORKBENCH — main sheet */}
         <div className="col-span-12 lg:col-span-8 space-y-6">
-          {/* Document drop */}
-          <Sheet className="relative p-6 md:p-10 landing-feature-card" dogEar lift>
-            <PaperClip />
-            <div className="flex items-baseline justify-between gap-4">
-              <div>
-                <Eyebrow>Step 01 · The resume</Eyebrow>
-                <div className="mt-2 font-serif text-2xl leading-tight">
-                  Upload your resume
+          {error && typeof error === "object" && error.isApiError ? (
+            <StatusSheet
+              variant={
+                error.type === "OFFLINE" || error.type === "NETWORK"
+                  ? "offline"
+                  : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
+                  ? "service unavailable"
+                  : error.type === "SESSION_EXPIRED"
+                  ? "session expired"
+                  : "error"
+              }
+              title={failureMessages[error.type]?.title}
+              description={failureMessages[error.type]?.description}
+              primaryAction={
+                error.type === "SESSION_EXPIRED"
+                  ? { label: "Sign In", onClick: handleOpenLogin }
+                  : { label: "Retry Review", onClick: handleAnalyze }
+              }
+              secondaryAction={{
+                label: "Back to Edit",
+                onClick: () => setError(null),
+              }}
+            />
+          ) : (
+            <>
+              {/* Document drop */}
+              <Sheet className="relative p-6 md:p-10 landing-feature-card" dogEar lift>
+                <PaperClip />
+                <div className="flex items-baseline justify-between gap-4">
+                  <div>
+                    <Eyebrow>Step 01 · The resume</Eyebrow>
+                    <div className="mt-2 font-serif text-2xl leading-tight">
+                      Upload your resume
+                    </div>
+                  </div>
+                  <span className="hidden md:block eyebrow text-[10px]">
+                    PDF · DOCX · ≤ {MAX_MB} MB
+                  </span>
+                </div>
+                <div className="rule-line my-4" />
+
+                {file ? (
+                  <FileCard file={file} onReplace={handleReplaceFile} onClear={clearFile}>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      className="hidden"
+                      accept=".pdf,.docx"
+                      onChange={onPickFile}
+                    />
+                  </FileCard>
+                ) : (
+                  <label
+                    onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+                    onDragLeave={() => setDrag(false)}
+                    onDrop={onDrop}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        fileInputRef.current?.click();
+                      }
+                    }}
+                    tabIndex={0}
+                    role="button"
+                    aria-label="Upload resume file (PDF or DOCX, max 5MB)"
+                    className={`group block relative border border-dashed rounded-sm py-14 md:py-16 px-6 md:px-8 text-center cursor-pointer transition-all ${
+                      drag
+                        ? "border-accent bg-accent/5 scale-[1.003]"
+                        : "border-rule hover:border-ink/40 hover:bg-secondary/25"
+                    }`}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      className="hidden"
+                      accept=".pdf,.docx"
+                      onChange={onPickFile}
+                      id="resume-upload"
+                      aria-label="Upload your resume (PDF or DOCX, max 5MB)"
+                      aria-describedby="resume-upload-hint"
+                    />
+                    <span id="resume-upload-hint" className="sr-only">
+                      Choose a PDF or DOCX file up to 5MB
+                    </span>
+                    <PaperStack tilt={drag} />
+                    <div className="mt-6 font-serif text-2xl md:text-[26px]">
+                      {drag ? "Drop it here." : "Drop your resume here"}
+                    </div>
+                    <div className="mt-2 text-sm text-ink-muted">
+                      or <span className="underline underline-offset-4 decoration-rule group-hover:decoration-ink">click to choose</span>
+                      <span className="md:hidden"> · PDF, DOCX · ≤ {MAX_MB} MB</span>
+                    </div>
+                  </label>
+                )}
+              </Sheet>
+
+              {/* Job description — editorial writing sheet */}
+              <Sheet className="relative p-4 md:p-6 landing-feature-card" lift>
+                <div className="flex items-baseline justify-between gap-4">
+                  <div>
+                    <Eyebrow>Step 02 · The role brief</Eyebrow>
+                    <div className="mt-2 font-serif text-2xl leading-tight">
+                      Paste the role brief
+                    </div>
+                  </div>
+                  <span className="eyebrow text-[10px]">
+                    {wordCount} {wordCount === 1 ? "word" : "words"}
+                  </span>
+                </div>
+                <div className="rule-line my-4" />
+
+                <div className="relative">
+                  {/* Left-margin editorial ruling */}
+                  <div className="absolute top-0 bottom-0 left-6 w-px bg-destructive/25 pointer-events-none hidden md:block" />
+                  <textarea
+                    rows={10}
+                    value={jd}
+                    onChange={(e) => setJd(e.target.value)}
+                    placeholder="Paste the role brief here, exactly as posted…"
+                    className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-y"
+                  />
+                </div>
+
+                <div className="mt-3 text-[11px] text-ink-muted italic font-serif">
+                  Your draft stays saved as you type, so it will still be here if you step away.
+                </div>
+              </Sheet>
+
+              {/* Validation Error */}
+              {error && typeof error === "string" && (
+                <StatusInline message={error} />
+              )}
+
+              {/* Actions */}
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div className="text-xs text-ink-muted italic font-serif">
+                  Your review is private. Filed under your archive only.
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    disabled={loading}
+                    className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm disabled:opacity-50 transition-colors"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAnalyze}
+                    disabled={!canSubmit}
+                    className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                  {loading ? "Reviewing…" : "Begin review →"}
+                  </button>
                 </div>
               </div>
-              <span className="hidden md:block eyebrow text-[10px]">
-                PDF · DOCX · ≤ {MAX_MB} MB
-              </span>
-            </div>
-            <div className="rule-line my-4" />
 
-            {file ? (
-              <FileCard file={file} onReplace={handleReplaceFile} onClear={clearFile}>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className="hidden"
-                  accept=".pdf,.docx"
-                  onChange={onPickFile}
-                />
-              </FileCard>
-            ) : (
-              <label
-                onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
-                onDragLeave={() => setDrag(false)}
-                onDrop={onDrop}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    fileInputRef.current?.click();
-                  }
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label="Upload resume file (PDF or DOCX, max 5MB)"
-                className={`group block relative border border-dashed rounded-sm py-14 md:py-16 px-6 md:px-8 text-center cursor-pointer transition-all ${
-                  drag
-                    ? "border-accent bg-accent/5 scale-[1.003]"
-                    : "border-rule hover:border-ink/40 hover:bg-secondary/25"
-                }`}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className="hidden"
-                  accept=".pdf,.docx"
-                  onChange={onPickFile}
-                  id="resume-upload"
-                  aria-label="Upload your resume (PDF or DOCX, max 5MB)"
-                  aria-describedby="resume-upload-hint"
-                />
-                <span id="resume-upload-hint" className="sr-only">
-                  Choose a PDF or DOCX file up to 5MB
-                </span>
-                <PaperStack tilt={drag} />
-<div className="mt-6 font-serif text-2xl md:text-[26px]">
-                  {drag ? "Drop it here." : "Drop your resume here"}
-                </div>
-                <div className="mt-2 text-sm text-ink-muted">
-                  or <span className="underline underline-offset-4 decoration-rule group-hover:decoration-ink">click to choose</span>
-                  <span className="md:hidden"> · PDF, DOCX · ≤ {MAX_MB} MB</span>
-                </div>
-              </label>
-            )}
-          </Sheet>
-
-          {/* Job description — editorial writing sheet */}
-          <Sheet className="relative p-4 md:p-6 landing-feature-card" lift>
-            <div className="flex items-baseline justify-between gap-4">
-              <div>
-                <Eyebrow>Step 02 · The role brief</Eyebrow>
-                <div className="mt-2 font-serif text-2xl leading-tight">
-                  Paste the role brief
-                </div>
-              </div>
-              <span className="eyebrow text-[10px]">
-                {wordCount} {wordCount === 1 ? "word" : "words"}
-              </span>
-            </div>
-            <div className="rule-line my-4" />
-
-            <div className="relative">
-              {/* Left-margin editorial ruling */}
-              <div className="absolute top-0 bottom-0 left-6 w-px bg-destructive/25 pointer-events-none hidden md:block" />
-              <textarea
-                rows={10}
-                value={jd}
-                onChange={(e) => setJd(e.target.value)}
-                placeholder="Paste the role brief here, exactly as posted…"
-                className="ruled w-full pl-4 md:pl-12 pr-4 py-2 bg-transparent border-0 focus:outline-none text-[15px] leading-[28px] font-serif text-ink placeholder:text-ink-muted/50 resize-y"
-              />
-            </div>
-
-            <div className="mt-3 text-[11px] text-ink-muted italic font-serif">
-              Your draft stays saved as you type, so it will still be here if you step away.
-            </div>
-          </Sheet>
-
-          {/* Error */}
-          {error && (
-            <div className="border-l-2 border-destructive/60 bg-destructive/5 pl-4 pr-4 py-3 text-sm font-serif italic text-destructive">
-              {error}
-            </div>
-          )}
-
-          {/* Actions */}
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="text-xs text-ink-muted italic font-serif">
-              Your review is private. Filed under your archive only.
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handleReset}
-                disabled={loading}
-                className="px-4 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm disabled:opacity-50 transition-colors"
-              >
-                Reset
-              </button>
-              <button
-                type="button"
-                onClick={handleAnalyze}
-                disabled={!canSubmit}
-                className="px-5 py-3 bg-ink text-paper text-sm rounded-sm hover:bg-ink/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-              {loading ? "Reviewing…" : "Begin review →"}
-              </button>
-            </div>
-          </div>
-
-          {/* Reading progress — feels like document analysis, not a spinner */}
-          {loading && (
-            <ReadingProgress progress={progress} stageIdx={stageIdx} file={file} />
+              {/* Reading progress — feels like document analysis, not a spinner */}
+              {loading && (
+                <ReadingProgress progress={progress} stageIdx={stageIdx} file={file} isSlow={isSlow} />
+              )}
+            </>
           )}
         </div>
 
@@ -604,7 +645,7 @@ function FileCard({ file, onReplace, onClear, children }) {
   );
 }
 
-function ReadingProgress({ progress, stageIdx, file }) {
+function ReadingProgress({ progress, stageIdx, file, isSlow }) {
   return (
     <Sheet className="relative p-6 md:p-8 overflow-hidden landing-feature-card" lift>
       <div className="flex items-baseline justify-between gap-4">
@@ -618,6 +659,12 @@ function ReadingProgress({ progress, stageIdx, file }) {
           {Math.round(progress)}%
         </span>
       </div>
+
+      {isSlow && (
+        <div className="mt-4 border-l-2 border-ink-muted/35 bg-secondary/50 pl-4 pr-4 py-2.5 text-xs font-serif italic text-ink-muted animate-fade-in">
+          This review is taking a little longer than usual. Please keep this page open while we finish reviewing your resume.
+        </div>
+      )}
 
       {/* Scanning surface — a small ruled sheet with a moving reading line */}
       <div className="relative mt-6 h-24 md:h-28 bg-paper border border-rule rounded-sm overflow-hidden ruled">
