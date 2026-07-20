@@ -262,14 +262,16 @@ export default function Dashboard() {
 
             {error && error.isApiError ? (
               <div className="py-2">
-                <StatusSheet
+                 <StatusSheet
                   variant={
                     error.type === "OFFLINE" || error.type === "NETWORK"
                       ? "offline"
                       : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
-                      ? "service unavailable"
+                      ? "service"
                       : error.type === "SESSION_EXPIRED"
-                      ? "session expired"
+                      ? "warning"
+                      : error.type === "TIMEOUT"
+                      ? "timeout"
                       : "error"
                   }
                   title={failureMessages[error.type]?.title || "Unable to Load Dashboard"}
@@ -295,9 +297,9 @@ export default function Dashboard() {
                       <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[-5deg]" />
                       <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[3deg] translate-x-1" />
                     </div>
-                    <div className="mt-4 font-serif text-[17px]">Nothing filed yet.</div>
+                    <div className="mt-4 font-serif text-[17px]">No recent activity.</div>
                     <div className="mt-1 text-sm text-ink-muted">
-                      Your first analysis will land here.
+                      Begin your first analysis.
                     </div>
                     <Link
                       to="/app/analyze"

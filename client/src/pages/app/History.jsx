@@ -206,9 +206,11 @@ export default function History() {
                 error.type === "OFFLINE" || error.type === "NETWORK"
                   ? "offline"
                   : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
-                  ? "service unavailable"
+                  ? "service"
                   : error.type === "SESSION_EXPIRED"
-                  ? "session expired"
+                  ? "warning"
+                  : error.type === "TIMEOUT"
+                  ? "timeout"
                   : "error"
               }
               title={failureMessages[error.type]?.title || "Archive Unavailable"}
@@ -733,11 +735,11 @@ function EmptyCabinet() {
         <div className="absolute inset-0 bg-paper border border-rule shadow-stack rotate-[2deg] translate-x-1 translate-y-1" />
         <div className="absolute inset-0 bg-paper border border-rule shadow-paper rotate-[6deg] translate-x-2 translate-y-2" />
       </div>
-      <Eyebrow>The archive is empty</Eyebrow>
-      <div className="mt-3 font-serif text-3xl">Nothing filed yet.</div>
+      <Eyebrow>No archived reviews.</Eyebrow>
+      <div className="mt-3 font-serif text-3xl">No analyses yet.</div>
       <p className="mt-3 text-sm text-ink-muted max-w-md mx-auto">
         Every resume you analyze will be dated, scored, and kept here.
-        Your archive begins with the first analysis.
+        Begin your first analysis.
       </p>
       <Link
         to="/app/analyze"

@@ -150,8 +150,8 @@ export default function StatusSheet({
 
     const { label, onClick, to, disabled, href } = action;
     const baseClass = isPrimary
-      ? "px-5 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 disabled:opacity-50 transition-colors inline-block"
-      : "px-5 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm disabled:opacity-50 transition-colors bg-paper inline-block";
+      ? "px-5 py-2.5 text-sm bg-ink text-paper rounded-sm hover:bg-ink/90 disabled:opacity-50 transition-colors inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      : "px-5 py-2.5 text-sm border border-ink/20 hover:border-ink/60 rounded-sm disabled:opacity-50 transition-colors bg-paper inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
     if (to) {
       return (

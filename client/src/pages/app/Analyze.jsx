@@ -313,9 +313,11 @@ export default function Analyze() {
                 error.type === "OFFLINE" || error.type === "NETWORK"
                   ? "offline"
                   : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
-                  ? "service unavailable"
+                  ? "service"
                   : error.type === "SESSION_EXPIRED"
-                  ? "session expired"
+                  ? "warning"
+                  : error.type === "TIMEOUT"
+                  ? "timeout"
                   : "error"
               }
               title={failureMessages[error.type]?.title}
@@ -323,7 +325,7 @@ export default function Analyze() {
               primaryAction={
                 error.type === "SESSION_EXPIRED"
                   ? { label: "Sign In", onClick: handleOpenLogin }
-                  : { label: "Retry Review", onClick: handleAnalyze }
+                  : { label: "Retry", onClick: handleAnalyze }
               }
               secondaryAction={{
                 label: "Back to Edit",

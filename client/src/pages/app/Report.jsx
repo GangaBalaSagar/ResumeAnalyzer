@@ -206,9 +206,11 @@ export default function Report() {
             error.type === "OFFLINE" || error.type === "NETWORK"
               ? "offline"
               : error.type === "SERVICE_UNAVAILABLE" || error.type === "AI_UNAVAILABLE"
-              ? "service unavailable"
+              ? "service"
               : error.type === "SESSION_EXPIRED"
-              ? "session expired"
+              ? "warning"
+              : error.type === "TIMEOUT"
+              ? "timeout"
               : "error"
           }
           title={failureMessages[error.type]?.title || "Unable to Load Report"}
@@ -234,7 +236,7 @@ export default function Report() {
           title="No analysis report open"
           description="Upload a resume and paste a job description to begin a new review."
           primaryAction={{
-            label: "Begin an analysis",
+            label: "Begin Analysis",
             to: "/app/analyze",
           }}
         />
