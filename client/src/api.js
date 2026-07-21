@@ -53,7 +53,17 @@ export function setupApiInterceptor(
     (response) => response,
     async (error) => {
       const status = error?.response?.status;
-      const isNetworkError = !error.response;
+      const isCanceled =
+        error?.name === "AbortError" ||
+        error?.name === "CanceledError" ||
+        error?.code === "ERR_CANCELED" ||
+        error?.message === "canceled" ||
+        axios.isCancel?.(error);
+
+      if (isCanceled) {
+        return Promise.reject(error);
+      }
+
       if (status === 401 && !isLoggingOut) {
         isLoggingOut = true;
         try {
@@ -80,10 +90,8 @@ export function setupApiInterceptor(
           isLoggingOut = false;
         }
       }
-      // Network error: backend unreachable
-      if (isNetworkError && !isLoggingOut) {
-        setAuthNotice("Unable to reach the server. Check your internet connection and try again.");
-      }
+      // Network failures are handled by the requesting page so we do not
+      // persist a generic auth notice that can leak into the login screen.
       return Promise.reject(error);
     }
   );
