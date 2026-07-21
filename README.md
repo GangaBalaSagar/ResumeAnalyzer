@@ -1,8 +1,38 @@
-# Resume Analyzer
+<p align="center">
+  <img src="client/public/favicon.svg" alt="Resume Analyzer logo" width="96" />
+</p>
+
+<h1 align="center">Resume Analyzer</h1>
+
+<p align="center"><strong>AI-powered resume analysis for private, per-user job matching archives.</strong></p>
 
 Resume Analyzer is a React + Express application that compares a resume against a job description, returns structured analysis, and stores each result in a private per-user archive.
 
 No public live demo URL is published in this repository.
+
+## Technology Stack
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-8.0.16-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/JavaScript-ESM-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-4.x-000000?style=flat-square&logo=express&logoColor=white" alt="Express" />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Supabase-Auth-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Gemini-AI-4285F4?style=flat-square&logo=google&logoColor=white" alt="Google Gemini AI" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Axios-HTTP-5A29E4?style=flat-square&logo=axios&logoColor=white" alt="Axios" />
+</p>
+
+## Repository Status
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-0A0A0A?style=flat-square&logo=opensourceinitiative&logoColor=white" alt="MIT License" />
+  <img src="https://img.shields.io/badge/Version-v1.0.0-111827?style=flat-square&logo=github&logoColor=white" alt="Version 1.0.0" />
+</p>
 
 ## Overview
 
@@ -13,7 +43,11 @@ No public live demo URL is published in this repository.
 
 ## Documentation
 
-- [Documentation Home](docs/README.md)
+> Engineering Documentation
+>
+> Browse the complete engineering documentation including architecture, workflows, deployment, database schema, UI architecture, and release notes.
+>
+> [Documentation Portal](docs/README.md)
 
 ## Architecture
 
@@ -94,11 +128,17 @@ The public `/analyze`, `/report`, and `/history` routes render preview or empty 
 
 The repository includes reference screenshots in `docs/screenshots/`:
 
-- `docs/screenshots/Home.png`
-- `docs/screenshots/Review.png`
-- `docs/screenshots/Report.png`
-- `docs/screenshots/Archive.png`
-- `docs/screenshots/Account.png`
+| Home | Review |
+| --- | --- |
+| ![Home screenshot](docs/screenshots/Home.png) | ![Review screenshot](docs/screenshots/Review.png) |
+
+| Report | Archive |
+| --- | --- |
+| ![Report screenshot](docs/screenshots/Report.png) | ![Archive screenshot](docs/screenshots/Archive.png) |
+
+| Account |
+| --- |
+| ![Account screenshot](docs/screenshots/Account.png) |
 
 ## Repository Structure
 
