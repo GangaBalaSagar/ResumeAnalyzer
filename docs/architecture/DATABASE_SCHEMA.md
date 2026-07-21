@@ -1,5 +1,11 @@
 # Database Schema
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](../workflows/ANALYSIS_FLOW.md) | [Next Document](DEPLOYMENT_ARCHITECTURE.md)
+
+---
+
 ## 1. Purpose
 
 ```mermaid
@@ -161,3 +167,12 @@ flowchart TD
 ```
 
 Resume Analyzer persists one implemented MongoDB collection, `Analysis`, using Mongoose. The backend creates a record after a successful analysis, reads it for dashboard/report/history views, and deletes it only when the authenticated user explicitly removes it.
+
+---
+
+## Related Documentation
+
+- [Architecture](ARCHITECTURE.md)
+- [Analysis Flow](../workflows/ANALYSIS_FLOW.md)
+- [Folder Responsibilities](FOLDER_RESPONSIBILITIES.md)
+

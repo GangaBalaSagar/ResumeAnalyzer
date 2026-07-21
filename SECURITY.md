@@ -2,6 +2,12 @@
 
 Resume Analyzer processes authenticated user data and uploaded resumes, so security and privacy matter at every stage of the workflow.
 
+## Navigation
+
+[Documentation Home](docs/README.md) | [Previous Document](CONTRIBUTING.md) | [Next Document](CHANGELOG.md)
+
+---
+
 ## Supported Versions
 
 | Version | Supported |
@@ -78,3 +84,9 @@ Treat all credentials for these services as sensitive. Contributors should avoid
 ## Security Updates
 
 Future security fixes and notable security-related changes will be documented in `CHANGELOG.md`.
+
+## Related Documents
+
+- [Documentation Home](docs/README.md)
+- [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)

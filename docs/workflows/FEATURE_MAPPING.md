@@ -1,5 +1,11 @@
 # Feature Mapping
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](../architecture/ARCHITECTURE.md) | [Next Document](ANALYSIS_FLOW.md)
+
+---
+
 ## 1. Purpose
 
 This document maps each implemented user-facing feature to the code paths that support it. It traces how a feature starts in the frontend, which API calls it makes, which backend modules run, what services are involved, whether MongoDB is used, and how the response returns to the UI.
@@ -592,3 +598,13 @@ flowchart TD
 **Failure Handling:** Covers offline, timeout, service unavailable, session expired, validation, and render-level failures.
 
 **Implementation Notes:** The same status primitives are reused across multiple pages to keep recovery behavior consistent.
+
+---
+
+## Related Documentation
+
+- [System Overview](../architecture/SYSTEM_OVERVIEW.md)
+- [Architecture](../architecture/ARCHITECTURE.md)
+- [Analysis Flow](ANALYSIS_FLOW.md)
+- [UI Architecture](../architecture/UI_ARCHITECTURE.md)
+

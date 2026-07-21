@@ -1,5 +1,11 @@
 # Folder Responsibilities
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](UI_ARCHITECTURE.md) | [Next Document](../reference/ENVIRONMENT_CONFIGURATION.md)
+
+---
+
 ## 1. Purpose
 
 The purpose of this document is to define the ownership, architectural boundaries, and directory responsibilities across the entire repository. It establishes why each major folder exists, what code and assets belong within it, what must not be placed there, and how directories interact with one another.
@@ -254,3 +260,12 @@ The repository maintains an explicit structural organization:
 * **`.github/`**: Owns repository contribution standards and issue templates.
 
 Each directory maintains strict ownership boundaries, ensuring high maintainability, clear dependency flows, and strong separation of concerns across the codebase.
+
+---
+
+## Related Documentation
+
+- [System Overview](SYSTEM_OVERVIEW.md)
+- [Architecture](ARCHITECTURE.md)
+- [UI Architecture](UI_ARCHITECTURE.md)
+- [Environment Configuration](../reference/ENVIRONMENT_CONFIGURATION.md)

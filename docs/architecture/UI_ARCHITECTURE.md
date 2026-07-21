@@ -1,5 +1,11 @@
 # UI Architecture
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](DEPLOYMENT_ARCHITECTURE.md) | [Next Document](FOLDER_RESPONSIBILITIES.md)
+
+---
+
 ## 1. Purpose
 
 ```mermaid
@@ -196,3 +202,13 @@ flowchart LR
 ```
 
 Resume Analyzer’s frontend is organized around a small set of shared shells, three context providers, a centralized route tree, and a reusable component system. Public pages, preview pages, authentication pages, and protected app pages all share the same visual language while remaining separated by route and layout boundaries.
+
+---
+
+## Related Documentation
+
+- [System Overview](SYSTEM_OVERVIEW.md)
+- [Architecture](ARCHITECTURE.md)
+- [Feature Mapping](../workflows/FEATURE_MAPPING.md)
+- [Folder Responsibilities](FOLDER_RESPONSIBILITIES.md)
+

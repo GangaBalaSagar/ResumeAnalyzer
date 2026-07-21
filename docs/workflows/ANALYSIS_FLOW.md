@@ -1,5 +1,11 @@
 # Analysis Flow
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](FEATURE_MAPPING.md) | [Next Document](../architecture/DATABASE_SCHEMA.md)
+
+---
+
 ## 1. Purpose
 
 ```mermaid
@@ -213,3 +219,13 @@ flowchart TD
 ```
 
 The implemented analysis workflow validates input in the browser, authenticates the request on the API, extracts resume text on the server, runs Gemini analysis, stores the result in MongoDB, and returns the saved analysis for report display.
+
+---
+
+## Related Documentation
+
+- [Feature Mapping](FEATURE_MAPPING.md)
+- [Architecture](../architecture/ARCHITECTURE.md)
+- [Database Schema](../architecture/DATABASE_SCHEMA.md)
+- [Environment Configuration](../reference/ENVIRONMENT_CONFIGURATION.md)
+

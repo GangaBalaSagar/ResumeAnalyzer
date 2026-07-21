@@ -1,8 +1,22 @@
 # Architecture
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](SYSTEM_OVERVIEW.md) | [Next Document](../workflows/FEATURE_MAPPING.md)
+
+---
+
 ## 1. Purpose
 
 This document describes how Resume Analyzer is built at the system level. It focuses on the implemented frontend, backend, authentication, analysis pipeline, and integration boundaries.
+
+```mermaid
+flowchart LR
+  Browser[React frontend] -->|Bearer token + API requests| API[Express API]
+  API -->|Verify session| Supabase[Supabase Auth]
+  API -->|Analyze extracted text| Gemini[Google Gemini]
+  API -->|Persist analysis| MongoDB[MongoDB]
+```
 
 ## 2. Architectural Principles
 
@@ -15,14 +29,6 @@ This document describes how Resume Analyzer is built at the system level. It foc
 - Use shared UI and shared service abstractions where the same behavior appears in multiple routes or pages.
 
 ## 3. High-Level Architecture
-
-```mermaid
-flowchart LR
-  Browser[React frontend] -->|Bearer token + API requests| API[Express API]
-  API -->|Verify session| Supabase[Supabase Auth]
-  API -->|Analyze extracted text| Gemini[Google Gemini]
-  API -->|Persist analysis| MongoDB[MongoDB]
-```
 
 The system is a React single-page application served separately from an Express API.
 
@@ -198,3 +204,13 @@ sequenceDiagram
 ## 12. Current Architecture Summary
 
 Resume Analyzer is a two-tier application built from a React frontend and an Express API. The frontend manages Supabase sessions, route composition, and analysis presentation. The backend verifies identity, processes uploaded documents, calls Gemini, stores analyses in MongoDB, and enforces the security and validation boundaries around the analysis workflow.
+
+---
+
+## Related Documentation
+
+- [System Overview](SYSTEM_OVERVIEW.md)
+- [UI Architecture](UI_ARCHITECTURE.md)
+- [Deployment Architecture](DEPLOYMENT_ARCHITECTURE.md)
+- [Database Schema](DATABASE_SCHEMA.md)
+- [Environment Configuration](../reference/ENVIRONMENT_CONFIGURATION.md)

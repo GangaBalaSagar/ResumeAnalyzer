@@ -2,6 +2,12 @@
 
 Thanks for taking the time to improve Resume Analyzer.
 
+## Navigation
+
+[Documentation Home](docs/README.md) | [Previous Document](CHANGELOG.md) | [Next Document](SECURITY.md)
+
+---
+
 ## What to Contribute
 
 Bug fixes, documentation updates, accessibility improvements, reliability fixes, and focused code cleanups are all welcome.
@@ -98,3 +104,9 @@ If your change affects routes, environment variables, security behavior, or arch
 ## Security
 
 Do not disclose vulnerabilities publicly. See [SECURITY.md](SECURITY.md) for the reporting process.
+
+## Related Documents
+
+- [Documentation Home](docs/README.md)
+- [Changelog](CHANGELOG.md)
+- [Security](SECURITY.md)

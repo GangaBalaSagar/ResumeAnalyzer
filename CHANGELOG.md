@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and [Semantic Versioning](https://semver.org/).
 
+## Navigation
+
+[Documentation Home](docs/README.md) | [Previous Document](SECURITY.md) | [Next Document](CONTRIBUTING.md)
+
+---
+
 ## [Unreleased]
 
 - Nothing yet.
@@ -43,3 +49,9 @@ First public release of Resume Analyzer.
 ### Documentation
 
 - Documented installation, environment variables, API routes, architecture, and deployment notes.
+
+## Related Documents
+
+- [Documentation Home](docs/README.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security](SECURITY.md)

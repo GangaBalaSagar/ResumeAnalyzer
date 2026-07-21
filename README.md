@@ -11,6 +11,10 @@ No public live demo URL is published in this repository.
 - The frontend uses Supabase Auth for sign up, sign in, password reset, session sync, and route protection.
 - The backend validates the Supabase access token on protected routes, extracts text from uploaded resumes, sends only the extracted text to Gemini, and stores the resulting analysis in MongoDB.
 
+## Documentation
+
+- [Documentation Home](docs/README.md)
+
 ## Architecture
 
 ```mermaid

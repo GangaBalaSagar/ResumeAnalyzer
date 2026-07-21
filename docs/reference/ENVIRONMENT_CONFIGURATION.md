@@ -1,5 +1,11 @@
 # Environment Configuration
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](../architecture/FOLDER_RESPONSIBILITIES.md) | [Next Document](RELEASE_v1.0.0.md)
+
+---
+
 ## 1. Purpose
 
 ```flowchart TD
@@ -299,3 +305,11 @@ Resume Analyzer uses a dual-environment configuration architecture:
 * **Client Environment**: Uses Vite build-time environment injection (`VITE_*`) validated at startup to bind API URLs and public authentication keys.
 * **Server Environment**: Uses Node.js runtime environment management (`process.env`), strict startup schema validation (`validateEnv()`), and fail-fast process termination to protect database credentials, service role keys, and AI API credentials.
 * **Service Integrations**: Connects client and server to Supabase Auth, MongoDB Atlas, and Google Gemini AI through clearly partitioned public vs. secret key boundaries.
+
+---
+
+## Related Documentation
+
+- [Folder Responsibilities](../architecture/FOLDER_RESPONSIBILITIES.md)
+- [Deployment Architecture](../architecture/DEPLOYMENT_ARCHITECTURE.md)
+- [Documentation Home](../README.md)

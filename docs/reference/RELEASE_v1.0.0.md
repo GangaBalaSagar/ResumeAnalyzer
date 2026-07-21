@@ -1,5 +1,11 @@
 # Release v1.0.0
 
+## Navigation
+
+[Documentation Home](../README.md) | [Previous Document](ENVIRONMENT_CONFIGURATION.md) | [Next Document](../README.md)
+
+---
+
 ## 1. Release Overview
 
 | Field        | Value                           |
@@ -208,3 +214,11 @@ Reference screenshots included in `docs/screenshots/`: Home, Review, Report, Arc
 ## 9. Release Summary
 
 Resume Analyzer v1.0.0 delivers a production-ready, full-stack resume analysis application. The frontend provides a public marketing website, Supabase-authenticated user sessions, and a protected application experience with dashboard, analysis, report, history, and account views. The backend accepts PDF and DOCX uploads, validates file integrity at the byte level, extracts document text, orchestrates structured Gemini AI analysis with model fallback, and persists results in MongoDB with per-user ownership. The release includes startup environment validation, endpoint-specific rate limiting, comprehensive error classification and recovery UI, cross-tab session synchronization, and fourteen engineering documentation files covering system architecture, feature mapping, data flow, deployment, and configuration.
+
+---
+
+## Related Documents
+
+- [Documentation Home](../README.md)
+- [Environment Configuration](ENVIRONMENT_CONFIGURATION.md)
+- [Changelog](../../CHANGELOG.md)
