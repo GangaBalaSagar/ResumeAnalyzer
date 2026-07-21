@@ -4,11 +4,7 @@ Thanks for taking the time to improve Resume Analyzer.
 
 ## Summary
 
-Describe:
-
-- What changed
-- Why the change was needed
-- The high-level implementation approach
+Describe what changed, why it changed, and the implementation approach.
 
 ## Related Issues
 
@@ -36,16 +32,16 @@ Describe what you tested, how you tested it, and the expected outcome.
 
 ## Manual Verification
 
-- [ ] `npm run build` passes
-- [ ] Frontend works
-- [ ] Backend works
-- [ ] Authentication verified
-- [ ] Resume upload works
-- [ ] Report generation works
-- [ ] History works
+- [ ] `npm run build` passes in `client/`
+- [ ] `npm run lint` passes in `client/`
+- [ ] The backend starts successfully from `server/`
+- [ ] Authentication flows still work
+- [ ] Resume upload works for PDF and DOCX files
+- [ ] Report generation still works
+- [ ] History and dashboard views still work
+- [ ] Account sign out still works
 - [ ] Temporary uploads are cleaned up
 - [ ] No console errors
-- [ ] No build warnings
 
 ## Screenshots
 

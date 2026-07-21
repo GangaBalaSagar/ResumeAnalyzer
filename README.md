@@ -1,184 +1,15 @@
-<p align="center">
-  <img src="client/public/favicon.svg" alt="Resume Analyzer logo" width="96" />
-</p>
+# Resume Analyzer
 
-<h1 align="center">Resume Analyzer</h1>
-<p align="center"><strong>AI-Powered ATS Resume Analysis Platform</strong></p>
-<p align="center">
-  Review a resume against a job description, generate structured AI feedback, and keep every analysis in a private archive.
-</p>
+Resume Analyzer is a React + Express application that compares a resume against a job description, returns structured analysis, and stores each result in a private per-user archive.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=black" alt="React badge" />
-  <img src="https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white" alt="Vite badge" />
-  <img src="https://img.shields.io/badge/Express-4.x-000000?logo=express&logoColor=white" alt="Express badge" />
-  <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white" alt="Node.js badge" />
-  <img src="https://img.shields.io/badge/MongoDB_Atlas-47A248?logo=mongodb&logoColor=white" alt="MongoDB Atlas badge" />
-  <img src="https://img.shields.io/badge/Supabase_Auth-3ECF8E?logo=supabase&logoColor=white" alt="Supabase Auth badge" />
-  <img src="https://img.shields.io/badge/Google_Gemini-8E75FF?logo=google&logoColor=white" alt="Google Gemini badge" />
-  <img src="https://img.shields.io/badge/License-MIT-lightgrey" alt="MIT license badge" />
-</p>
-<p align="center">
-  <a href="#live-demo">Live Demo</a> •
-  <a href="#installation">Installation</a> •
-  <a href="CONTRIBUTING.md">Contributing</a> •
-  <a href="SECURITY.md">Security</a> •
-  <a href="LICENSE">License</a>
-</p>
+No public live demo URL is published in this repository.
 
-## Table of Contents
+## Overview
 
-- [Live Demo](#live-demo)
-- [Project Overview](#project-overview)
-- [Why This Project?](#why-this-project)
-- [Key Features](#key-features)
-- [Application Screenshots](#application-screenshots)
-- [Architecture](#architecture)
-- [Resume Upload Lifecycle](#resume-upload-lifecycle)
-- [Technology Stack](#technology-stack)
-- [Folder Structure](#folder-structure)
-- [Installation](#installation)
-- [Environment Variables](#environment-variables)
-- [API Overview](#api-overview)
-- [Production Highlights](#production-highlights)
-- [Deployment](#deployment)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [Security](#security)
-- [License](#license)
-
-## Live Demo
-
-| Target | Status |
-| --- | --- |
-| Frontend | Coming soon |
-| Backend | Coming soon |
-
-## Project Overview
-
-Resume Analyzer is a production-oriented web application for comparing a resume with a job description. It helps candidates understand fit, identify skill gaps, and revise their resumes with clear, structured feedback.
-
-It exists to solve a simple problem:
-
-- A resume is usually reviewed against a role with limited time.
-- Job seekers need a faster way to understand fit before applying.
-- Recruiters and hiring teams benefit from a consistent, readable analysis format.
-
-What makes it different is the workflow:
-
-- The resume is uploaded temporarily and never treated as permanent file storage.
-- The server extracts resume text and sends only the extracted content to Gemini.
-- The resulting analysis is saved privately per authenticated user in MongoDB.
-
-## Why This Project?
-
-Resume Analyzer was built to make resume screening more structured and more useful than a quick visual scan. It gives candidates a practical ATS-style review before they apply, and it gives reviewers a consistent format for seeing fit, gaps, and suggested improvements.
-
-Temporary uploads were implemented so the application can process resumes without turning the browser experience into long-term file storage. That keeps the upload lifecycle narrow, reduces retention risk, and ensures only the extracted text and analysis result are persisted.
-
-The backend follows a production-oriented shape because the workflow crosses several concerns at once: authentication, file handling, AI analysis, data persistence, and cleanup. Keeping those stages separate makes the system easier to secure, reason about, and maintain.
-
-## Key Features
-
-### Authentication
-
-- Supabase-based sign up, sign in, and password reset
-- Protected dashboard routes
-- Session expiry and inactivity handling
-- Cross-tab session sync
-
-### Resume Analysis
-
-- Upload PDF or DOCX resumes
-- Require both a resume and a job description
-- Extract text on the server before analysis
-- Store results against the signed-in user
-
-### AI
-
-- Gemini-powered analysis of resume and role fit
-- Structured JSON output for:
-  - Match percentage
-  - Matched skills
-  - Missing skills
-  - Suggested changes
-  - Score breakdown
-- Fallback model chain for analysis requests
-
-### Dashboard
-
-- Private dashboard for authenticated users
-- Resume analysis history and summary views
-- Account management and session details
-
-### Archive
-
-- Paginated archive of previous analyses
-- Individual report view for each analysis
-- Delete saved analyses from a private archive
-
-### Security
-
-- Supabase JWT validation on protected backend routes
-- Helmet and CORS on the API server
-- Rate limiting by route group
-- Temporary file cleanup after upload processing
-
-### Responsive Design
-
-- Responsive public and authenticated layouts
-- Mobile navigation
-- Reusable paper-style UI primitives
-- Built with Vite and React for fast local development
-
-### Production Features
-
-- Environment validation on client and server
-- MongoDB persistence
-- Automatic upload cleanup
-- Health endpoint for backend checks
-
-## Application Screenshots
-
-### Landing Page
-
-<p align="center">
-  <img src="docs/screenshots/Home.png" alt="Landing Page" width="900">
-</p>
-
-The homepage introduces Resume Analyzer with a strong editorial hero and clear entry points into review.
-
-### Resume Analysis
-
-<p align="center">
-  <img src="docs/screenshots/Review.png" alt="Resume Analysis" width="900">
-</p>
-
-Upload a resume and job description to begin a private analysis.
-
-### Analysis Report
-
-<p align="center">
-  <img src="docs/screenshots/Report.png" alt="Analysis Report" width="900">
-</p>
-
-Review ATS-style scores, matched skills, missing skills, and suggested improvements.
-
-### Archive
-
-<p align="center">
-  <img src="docs/screenshots/Archive.png" alt="Archive" width="900">
-</p>
-
-Keep past analyses organized in a private archive for later review.
-
-### Account
-
-<p align="center">
-  <img src="docs/screenshots/Account.png" alt="Account" width="900">
-</p>
-
-Manage profile details, password resets, and session access in one place.
+- Public routes provide the landing page, feature overview, FAQ, and preview versions of the review screens.
+- Protected `/app/*` routes provide the authenticated dashboard, review, report, history, and account views.
+- The frontend uses Supabase Auth for sign up, sign in, password reset, session sync, and route protection.
+- The backend validates the Supabase access token on protected routes, extracts text from uploaded resumes, sends only the extracted text to Gemini, and stores the resulting analysis in MongoDB.
 
 ## Architecture
 
@@ -186,118 +17,125 @@ Manage profile details, password resets, and session access in one place.
 Browser (React + Vite)
         |
         v
-Express REST API
+Express API
         |
         v
-Supabase JWT Verification
+Supabase JWT verification
         |
         v
-Temporary Resume Upload
+Temporary PDF/DOCX upload
         |
         v
-Resume Text Extraction
- (pdf-parse / mammoth)
+Server-side text extraction
         |
         v
-Google Gemini
+Google Gemini analysis
         |
         v
-Structured Analysis
-        |
-        v
-MongoDB Atlas
-        |
-        v
-Dashboard and Archive
+MongoDB analysis record
 ```
 
-### How the flow works
+## Routes
 
-- Browser (React + Vite): renders the public site, auth screens, and authenticated app pages.
-- Express REST API: accepts upload and archive requests, applies middleware, and coordinates the analysis flow.
-- Supabase JWT Verification: protects authenticated routes before the backend processes user data.
-- Temporary Resume Upload: stores the incoming file on disk only long enough for processing.
-- Resume Text Extraction: uses `pdf-parse` for PDF files and `mammoth` for DOCX files.
-- Google Gemini: compares the extracted resume text with the job description and returns structured JSON.
-- Structured Analysis: normalizes the AI output into a shape the app can store and render.
-- MongoDB Atlas: persists each analysis record per authenticated user.
-- Dashboard and Archive: display the saved results in the private app experience.
+### Public pages
 
-## Resume Upload Lifecycle
+- `/`
+- `/landing-v2`
+- `/features`
+- `/faq`
+- `/analyze`
+- `/report`
+- `/history`
+- `/login`
+- `/signup`
+- `/forgot-password`
+- `/reset-password`
 
-```text
-User uploads resume + job description
-  ->
-Temporary file stored on disk
-  ->
-Validation checks file type and required input
-  ->
-Text extraction from PDF or DOCX
-  ->
-Gemini analysis
-  ->
-MongoDB persistence
-  ->
-Temporary file cleanup
-```
+The public `/analyze`, `/report`, and `/history` routes render preview or empty states when the user is not signed in.
 
-### Notes
+### Protected app pages
 
-- Resume files are stored temporarily during processing.
-- The extracted text is what the AI analyzes.
-- Temporary files are deleted after success or failure handling.
-- The application does not rely on permanent resume file storage.
-- This architecture is production friendly because it keeps the storage surface small, limits sensitive file retention, and leaves the database responsible only for structured analysis data.
+- `/app`
+- `/app/dashboard`
+- `/app/analyze`
+- `/app/report`
+- `/app/history`
+- `/app/account`
 
-## Technology Stack
+### API routes
 
-| Area | Stack |
-| --- | --- |
-| Frontend | React, Vite, React Router, Framer Motion, Recharts |
-| Backend | Node.js, Express |
-| Database | MongoDB Atlas via Mongoose |
-| Authentication | Supabase Auth |
-| AI | Google Gemini via `@google/generative-ai` |
-| Charts | Recharts |
-| Deployment | Static frontend build, Node/Express backend, MongoDB Atlas, Supabase |
-| Security | Helmet, CORS, rate limiting, JWT validation |
+- `POST /api/analyze`
+- `GET /api/analyses`
+- `GET /api/analyses/:id`
+- `DELETE /api/analyses/:id`
+- `GET /api/health`
 
-## Folder Structure
+## Features
+
+- Supabase authentication with sign up, sign in, password reset, and sign out
+- Protected API access using Supabase bearer tokens
+- Session expiry handling and cross-tab session sync
+- Temporary resume uploads for PDF and DOCX files only
+- Server-side file signature validation before extraction
+- Text extraction with `pdf-parse` and `mammoth`
+- Gemini analysis with structured JSON output
+- Fallback model chain for analysis requests
+- MongoDB persistence for per-user analysis history
+- Dashboard, report, history, and account pages
+- Client-side archive search and pagination
+- Route-level rate limiting, Helmet, and CORS allowlisting
+- Automatic cleanup of uploaded files after success or failure
+- Client and server environment validation at startup
+- Development health endpoint for backend checks
+
+## Validation and Limits
+
+- Resume uploads are limited to PDF and DOCX files.
+- Resume uploads are limited to 5 MB.
+- Only one file is accepted per analysis request.
+- Job descriptions are limited to 10,000 characters.
+- PDF extraction is limited to 50 pages.
+- Text extraction uses a 30 second timeout.
+- Extracted resume text is capped at 500,000 characters before analysis.
+
+## Screenshots
+
+The repository includes reference screenshots in `docs/screenshots/`:
+
+- `docs/screenshots/Home.png`
+- `docs/screenshots/Review.png`
+- `docs/screenshots/Report.png`
+- `docs/screenshots/Archive.png`
+- `docs/screenshots/Account.png`
+
+## Repository Structure
 
 ```text
 ResumeAnalyzer/
 |-- README.md
+|-- CHANGELOG.md
+|-- CONTRIBUTING.md
+|-- SECURITY.md
+|-- LICENSE
 |-- client/
-|   |-- index.html
 |   |-- package.json
-|   |-- package-lock.json
 |   |-- vite.config.js
-|   |-- eslint.config.js
-|   |-- jsconfig.json
-|   |-- public/
-|   |   `-- favicon.svg
 |   `-- src/
-|       |-- App.jsx
 |       |-- api.js
+|       |-- App.jsx
 |       |-- main.jsx
-|       |-- styles.css
 |       |-- components/
 |       |   |-- app/
 |       |   |-- auth/
-|       |   |-- charts/
-|       |   |-- hero/
-|       |   |-- landing/
 |       |   |-- public/
-|       |   |-- ErrorBoundary.jsx
-|       |   |-- ScrollToTop.jsx
-|       |   `-- paper.jsx
+|       |   `-- status/
 |       |-- contexts/
 |       |-- hooks/
 |       |-- pages/
 |       |   |-- app/
 |       |   |-- auth/
-|       |   |-- FAQ.jsx
 |       |   |-- Features.jsx
+|       |   |-- FAQ.jsx
 |       |   |-- LandingV2.jsx
 |       |   `-- NotFound.jsx
 |       |-- routes/
@@ -305,40 +143,24 @@ ResumeAnalyzer/
 |       `-- utils/
 `-- server/
     |-- package.json
-    |-- package-lock.json
     |-- server.js
     |-- config/
-    |   `-- index.js
     |-- controllers/
-    |   `-- analysisController.js
     |-- middleware/
-    |   |-- authMiddleware.js
-    |   |-- errorMiddleware.js
-    |   |-- rateLimiter.js
-    |   |-- upload.js
-    |   `-- validation/
-    |       `-- analysisValidation.js
     |-- models/
-    |   `-- Analysis.js
     |-- routes/
-    |   `-- analysisRoutes.js
     |-- services/
-    |   |-- extractText.js
-    |   `-- geminiService.js
     `-- utils/
-        |-- envValidation.js
-        |-- logger.js
-        `-- uploadCleanup.js
 ```
 
-## Installation
+## Local Setup
 
-### Clone the repository
+### Prerequisites
 
-```bash
-git clone https://github.com/GangaBalaSagar/ResumeAnalyzer.git
-cd ResumeAnalyzer
-```
+- Node.js 18 or later
+- MongoDB connection string
+- Supabase project
+- Google Gemini API key
 
 ### Frontend
 
@@ -356,103 +178,48 @@ npm install
 npm run dev
 ```
 
-### Run locally
-
-- Start the backend first.
-- Start the frontend in a second terminal.
-- Open the Vite development URL in your browser.
+Start the backend before the frontend so the API is available when the client loads.
 
 ## Environment Variables
 
-### client/.env.example
+### `client/.env.example`
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `VITE_API_URL` | Yes | Base URL for the backend API |
 | `VITE_SUPABASE_URL` | Yes | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Yes | Supabase public anonymous key |
+| `VITE_SUPABASE_ANON_KEY` | Yes | Supabase anonymous key used by the browser |
 
-### server/.env.example
+### `server/.env.sample`
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `MONGODB_URI` | Yes | MongoDB connection string |
 | `GEMINI_API_KEY` | Yes | Google Gemini API key |
-| `JWT_SECRET` | Yes | Secret used for JWT-related server logic |
+| `JWT_SECRET` | Yes | Required by server startup validation |
 | `SUPABASE_URL` | Yes | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Supabase service role key for the server |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Supabase service role key used by the API server |
 | `ALLOWED_ORIGINS` | Yes in production | Comma-separated list of allowed frontend origins |
 | `PORT` | No | Backend port, defaults to `5000` |
 | `NODE_ENV` | No | Runtime environment |
-| `GEMINI_API_URL` | No | Optional Gemini endpoint override |
-
-## API Overview
-
-| Method | Route | Purpose |
-| --- | --- | --- |
-| `POST` | `/api/analyze` | Upload a resume and create a new analysis |
-| `GET` | `/api/analyses` | List the signed-in user's analyses |
-| `GET` | `/api/analyses/:id` | Fetch a single analysis by ID |
-| `DELETE` | `/api/analyses/:id` | Delete one saved analysis |
-| `GET` | `/api/health` | Backend health check |
-
-## Production Highlights
-
-- [x] Temporary Upload Pipeline
-- [x] Automatic Upload Cleanup
-- [x] MongoDB Persistence
-- [x] Supabase Authentication
-- [x] Protected Routes
-- [x] Cross-Tab Session Synchronization
-- [x] Environment Validation
-- [x] Helmet Security
-- [x] Rate Limiting
-- [x] Responsive Design
 
 ## Deployment
 
-This repository does not include Render or Vercel deployment manifests, so deployment is driven by the application code and environment variables that are already in the repo.
+This repository does not include deployment manifests. Deploy the two applications separately:
 
-### Frontend
-
-- Build the client with `npm run build` inside `client/`
-- Deploy the generated `client/dist` directory to a static host
-- Set the frontend environment variables in the hosted environment
-
-### Backend
-
-- Run the Express server from `server/server.js`
-- Set the backend environment variables from `server/.env.example`
-- Allow the backend to reach MongoDB Atlas and Supabase
-
-### Database
-
-- Use MongoDB Atlas or another MongoDB-compatible deployment
-- Ensure the backend can connect from the deployed environment
-
-### Environment Variables
-
-- Keep frontend and backend secrets separate
-- Never expose the Supabase service role key in the browser
-
-## Roadmap
-
-Realistic next steps for the current codebase:
-
-- Resume comparison between multiple job descriptions
-- PDF export for reports
-- Interview preparation helpers based on analysis results
-- Keyword heatmap in the report view
-- Basic analytics for archive trends
+- Build the frontend with `npm run build` inside `client/` and serve the generated `client/dist` output from a static host.
+- Run the backend from `server/server.js` in a Node environment that can reach MongoDB and Supabase.
+- Set `ALLOWED_ORIGINS` in production to the exact frontend origins that should be allowed by CORS.
+- Keep `SUPABASE_SERVICE_ROLE_KEY`, `GEMINI_API_KEY`, and `MONGODB_URI` out of the browser environment.
 
 ## Contributing
 
-[CONTRIBUTING.md](CONTRIBUTING.md) covers local setup, branching, coding guidelines, testing expectations, and pull request review expectations.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, branching guidance, coding standards, and manual verification steps.
 
 ## Security
 
-[SECURITY.md](SECURITY.md) explains how to report vulnerabilities privately, what to include, and how responsible disclosure works for this project.
+See [SECURITY.md](SECURITY.md) for the security policy, supported versions, and reporting guidance.
 
 ## License
 
-[LICENSE](LICENSE) contains the MIT license terms for Resume Analyzer.
+See [LICENSE](LICENSE) for the MIT license terms.
