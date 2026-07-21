@@ -2,7 +2,7 @@
 
 ## Navigation
 
-[Documentation Home](../README.md) | [Previous Document](ENVIRONMENT_CONFIGURATION.md) | [Next Document](../README.md)
+[Documentation Home](../README.md) | [Previous Document](ENVIRONMENT_CONFIGURATION.md)
 
 ---
 

@@ -74,17 +74,21 @@ function suggestionsToList(s) {
 }
 
 const DEMO_REPORT = {
-  matchPercent: 87,
-  matchedSkills: ["React", "JavaScript", "Node.js", "REST APIs"],
-  missingSkills: ["TypeScript", "Testing", "Docker"],
+  matchPercent: 86,
+  matchedSkills: ["React", "JavaScript", "Node.js", "Express", "MongoDB", "REST APIs", "Tailwind CSS"],
+  missingSkills: ["TypeScript", "Testing", "Docker", "AWS"],
   suggestions: [
-    "Add TypeScript experience to improve alignment.",
-    "Include unit and integration testing examples.",
-    "Highlight containerization and deployment experience."
+    "Add a few TypeScript examples to show stronger alignment with modern frontend teams.",
+    "Include at least one project that mentions Jest, React Testing Library, or API testing.",
+    "Highlight Docker and AWS usage, even if it is limited to personal deployments or coursework.",
+    "Call out any production-style MERN work more explicitly, especially authentication, CRUD flows, and dashboard interfaces."
   ],
-  jobDescription: "We are looking for a Senior React Developer to join our team. You will build user interfaces with React and JavaScript, and design backend services with Node.js and REST APIs. Additionally, we expect experience with TypeScript, unit Testing, and containerization using Docker.",
-  resumeFilename: "demo_resume_frontend.pdf",
-  createdAt: new Date().toISOString()
+  resumeSummary:
+    "This resume reads like an early-career full stack developer with practical MERN experience, roughly one to two years of project work, and a clear focus on building React interfaces backed by Node.js and Express APIs. The candidate has strong evidence of shipping dashboards, authentication flows, data tables, and MongoDB-backed CRUD features. The main gaps are depth in TypeScript, automated testing, containerization, and cloud deployment.",
+  jobDescription:
+    "We are looking for an early-career Full Stack Developer to join our product team. You will build responsive interfaces with React and Tailwind CSS, develop REST APIs with Node.js and Express, and store application data in MongoDB. Strong experience with JavaScript, authentication flows, CRUD features, and polished dashboard experiences is expected. Bonus points for TypeScript, testing with Jest or React Testing Library, Docker, and AWS deployment experience.",
+  resumeFilename: "jordan-lee-fullstack-engineer-resume.pdf",
+  createdAt: "2026-07-21T09:30:00.000Z"
 };
 
 export default function Report() {
