@@ -12,13 +12,32 @@ function initials(nameOrEmail = "") {
     base[0].toUpperCase();
 }
 
-const navLinks = [
+const sharedLinks = [
   { to: "/", label: "Home", num: "01", end: true },
+  { to: "/features", label: "Features", num: "05", end: true },
+  { to: "/faq", label: "FAQ", num: "06", end: true },
+];
+
+const publicLinks = [
+  sharedLinks[0],
   { to: "/analyze", label: "Review", num: "02" },
   { to: "/report", label: "Report", num: "03" },
   { to: "/history", label: "Archive", num: "04" },
-  { to: "/features", label: "Features", num: "05" },
-  { to: "/faq", label: "FAQ", num: "06" },
+  ...sharedLinks.slice(1),
+];
+
+const privateSharedLinks = [
+  { to: "/features", label: "Features", num: "06", end: true },
+  { to: "/faq", label: "FAQ", num: "07", end: true },
+];
+
+const privateLinks = [
+  sharedLinks[0],
+  { to: "/app/dashboard", label: "Dashboard", num: "02" },
+  { to: "/app/analyze", label: "Review", num: "03" },
+  { to: "/app/report", label: "Report", num: "04" },
+  { to: "/app/history", label: "Archive", num: "05" },
+  ...privateSharedLinks,
 ];
 
 /**
@@ -28,6 +47,7 @@ export default function MobileNav({ open, onClose }) {
   const { user, signOut } = useAuth();
   const ref = useRef(null);
   const lastFocusedRef = useRef(null);
+  const navLinks = user ? privateLinks : publicLinks;
 
   useEffect(() => {
     if (!open) return;
