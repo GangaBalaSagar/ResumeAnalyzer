@@ -13,26 +13,14 @@ No public live demo URL is published in this repository.
 
 ## Architecture
 
-```text
-Browser (React + Vite)
-        |
-        v
-Express API
-        |
-        v
-Supabase JWT verification
-        |
-        v
-Temporary PDF/DOCX upload
-        |
-        v
-Server-side text extraction
-        |
-        v
-Google Gemini analysis
-        |
-        v
-MongoDB analysis record
+```mermaid
+flowchart LR
+  Browser[Browser / React + Vite] --> API[Express API]
+  API --> Auth[Supabase JWT verification]
+  API --> Upload[Temporary PDF/DOCX upload]
+  Upload --> Extract[Server-side text extraction]
+  Extract --> Gemini[Google Gemini analysis]
+  Gemini --> MongoDB[MongoDB analysis record]
 ```
 
 ## Routes
